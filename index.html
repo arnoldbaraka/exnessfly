@@ -3,111 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExnesFly - The Ultimate Tech & Metaverse Experience</title>
+<title>ExnesFly - Fly Beyond Limits</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* --- GENERAL STYLES --- */
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #0a0f2e;
-    color: #ffffff;
-    scroll-behavior: smooth;
-  }
+  /* --- RESET & BASE --- */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #0a0f2e; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
   a { text-decoration: none; color: inherit; }
-  h1, h2, h3 { margin: 0; }
-  section { padding: 80px 20px; }
-  .container { max-width: 1200px; margin: auto; }
 
   /* --- HEADER --- */
-  header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background: rgba(10,15,46,0.9);
-    backdrop-filter: blur(10px);
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-  }
+  header { position: fixed; width: 100%; top: 0; left: 0; background: rgba(10,15,46,0.95); backdrop-filter: blur(10px); z-index: 999; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #ffcc00; }
   header img { height: 50px; }
-  nav a { margin: 0 15px; font-weight: 500; transition: 0.3s; }
+  nav a { margin: 0 15px; font-weight: 600; transition: 0.3s; }
   nav a:hover { color: #ffcc00; }
 
   /* --- HERO --- */
-  .hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg,#0a0f2e,#1c1f4b);
-    text-align: center;
-  }
-  .hero h1 { font-size: 3rem; color: #ffcc00; }
-  .hero p { font-size: 1.2rem; margin-top: 10px; color: #ffffff; max-width: 800px; }
-  .btn-hero {
-    margin-top: 30px;
-    padding: 15px 40px;
-    background: #ffcc00;
-    color: #0a0f2e;
-    font-weight: 700;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .btn-hero:hover { background: #ffdd33; }
+  .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #0a0f2e, #1a1f3d); text-align: center; position: relative; overflow: hidden; }
+  .hero h1 { font-size: 3.5rem; color: #ffcc00; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 20px #ffcc00; }
+  .hero p { font-size: 1.3rem; margin-top: 15px; color: #cfd8ff; max-width: 800px; }
+  .btn-hero { margin-top: 30px; padding: 15px 50px; background: linear-gradient(90deg, #ffcc00, #ffdd33); color: #0a0f2e; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 0 15px #ffcc00; transition: 0.3s; }
+  .btn-hero:hover { transform: scale(1.05); box-shadow: 0 0 25px #ffcc00; }
 
   /* --- SECTIONS --- */
-  .section-title {
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  .section-title h2 { font-size: 2.5rem; color: #ffcc00; margin-bottom: 10px; }
+  section { padding: 100px 20px; position: relative; z-index: 1; }
+  .container { max-width: 1200px; margin: auto; }
+  .section-title { text-align: center; margin-bottom: 60px; }
+  .section-title h2 { font-size: 2.8rem; color: #ffcc00; font-family: 'Orbitron', sans-serif; margin-bottom: 10px; }
   .section-title p { font-size: 1.1rem; color: #cfd8ff; }
 
-  /* --- GRID --- */
+  /* --- GRID / CARDS --- */
   .grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
-
-  .card {
-    background: #111536;
-    border-radius: 15px;
-    padding: 20px;
-    width: 300px;
-    transition: 0.3s;
-    cursor: pointer;
-  }
-  .card:hover { transform: translateY(-10px); box-shadow: 0 0 20px #ffcc00; }
-  .card h3 { color: #ffcc00; margin-bottom: 10px; }
-  .card p { color: #cfd8ff; font-size: 0.95rem; }
+  .card { background: #111536; border-radius: 20px; padding: 25px; width: 320px; transition: 0.3s; cursor: pointer; box-shadow: 0 0 15px #000; border: 1px solid #ffcc00; }
+  .card:hover { transform: translateY(-15px); box-shadow: 0 0 40px #ffcc00; }
+  .card h3 { color: #ffcc00; margin-bottom: 12px; font-family: 'Orbitron', sans-serif; }
+  .card p { color: #cfd8ff; font-size: 1rem; line-height: 1.5; }
 
   /* --- COMMUNITIES --- */
-  .community img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
-  }
+  .community img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
 
   /* --- FOOTER --- */
-  footer {
-    background: #080c25;
-    padding: 40px 20px;
-    text-align: center;
-    color: #666;
-  }
+  footer { background: #080c25; padding: 50px 20px; text-align: center; color: #666; border-top: 1px solid #ffcc00; }
   footer a { color: #ffcc00; font-weight: 600; }
 
   /* --- ANIMATIONS --- */
-  .fade-in { opacity: 0; animation: fadeIn 1.5s forwards; }
-  @keyframes fadeIn { to { opacity: 1; } }
+  .fade-in { opacity: 0; transform: translateY(30px); animation: fadeIn 1.5s forwards; }
+  @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
   /* --- RESPONSIVE --- */
-  @media(max-width: 768px) {
-    .grid { flex-direction: column; align-items: center; }
-  }
+  @media(max-width: 768px) { .grid { flex-direction: column; align-items: center; } .hero h1 { font-size: 2.5rem; } }
 </style>
 </head>
 <body>
@@ -127,9 +70,8 @@
 
 <!-- HERO -->
 <section class="hero">
-  <h1>Welcome to ExnesFly</h1>
-  <p>The world’s first **tech + AI + dropshipping + metaverse-inspired** ecosystem.  
-     Learn, trade, create, shop, and fly beyond limits.</p>
+  <h1>ExnesFly</h1>
+  <p>Welcome to the world's first **futuristic tech, AI, commerce, and metaverse ecosystem**. Learn, trade, create, and shop like never before.</p>
   <button class="btn-hero" onclick="window.location='#services'">Explore Now</button>
 </section>
 
@@ -138,7 +80,7 @@
   <div class="container">
     <div class="section-title fade-in">
       <h2>About ExnesFly</h2>
-      <p>ExnesFly is a global technology, AI, and commerce group delivering innovative solutions, education, and worldwide product fulfillment. Join a community where tech, trading, learning, and commerce meet in one metaverse experience.</p>
+      <p>ExnesFly is a global technology and commerce group delivering innovative solutions, education, and worldwide product fulfillment. Join a community where tech, AI, trading, and commerce converge in a metaverse-inspired experience.</p>
     </div>
   </div>
 </section>
@@ -147,25 +89,25 @@
 <section id="services" style="background:#111536;">
   <div class="container">
     <div class="section-title fade-in">
-      <h2>What We Do</h2>
-      <p>From software to AI, trading systems to global dropshipping, we are building the future today.</p>
+      <h2>Our Services</h2>
+      <p>From software and AI to global dropshipping, we build systems that scale beyond limits.</p>
     </div>
     <div class="grid">
       <div class="card fade-in">
         <h3>AI & Analytics</h3>
-        <p>Predict, analyze, and automate decisions with our cutting-edge AI and ML platforms.</p>
+        <p>Predict, analyze, and automate decisions with cutting-edge AI and ML platforms.</p>
       </div>
       <div class="card fade-in">
         <h3>Software & SaaS</h3>
-        <p>Web, mobile, and enterprise solutions that scale globally.</p>
+        <p>Web, mobile, and enterprise solutions built for global scalability.</p>
       </div>
       <div class="card fade-in">
         <h3>FinTech & Trading</h3>
-        <p>Market insights, dashboards, and education — all designed for intelligent decisions.</p>
+        <p>Real-time market insights, dashboards, and educational tools.</p>
       </div>
       <div class="card fade-in">
         <h3>Commerce & Dropshipping</h3>
-        <p>Sell and ship products worldwide with automation and minimal friction.</p>
+        <p>Sell products worldwide with automated logistics and global reach.</p>
       </div>
     </div>
   </div>
@@ -176,7 +118,7 @@
   <div class="container">
     <div class="section-title fade-in">
       <h2>ExnesFly Academy</h2>
-      <p>Learn trading, AI, software development, and tech skills through our immersive courses and VIP mentorship programs.</p>
+      <p>Learn AI, trading, software, and tech skills through immersive courses and VIP mentorship.</p>
     </div>
     <div class="grid">
       <div class="card fade-in">
@@ -188,8 +130,8 @@
         <p>Build intelligent systems and automate workflows for businesses and startups.</p>
       </div>
       <div class="card fade-in">
-        <h3>Tech Courses</h3>
-        <p>Learn full-stack development, web3, and futuristic digital solutions.</p>
+        <h3>Full-Stack Tech Courses</h3>
+        <p>Learn web3, futuristic software, and full-stack development with real projects.</p>
       </div>
     </div>
   </div>
@@ -200,7 +142,7 @@
   <div class="container">
     <div class="section-title fade-in">
       <h2>Global Dropshipping</h2>
-      <p>ExnesFly Commerce powers worldwide sales and fulfillment. Sell tech, lifestyle, and hybrid digital-physical products effortlessly.</p>
+      <p>ExnesFly Commerce powers worldwide sales and fulfillment for tech, lifestyle, and digital products.</p>
     </div>
     <div class="grid">
       <div class="card fade-in">
@@ -209,7 +151,7 @@
       </div>
       <div class="card fade-in">
         <h3>Lifestyle & Productivity</h3>
-        <p>Office tools, lifestyle enhancements, and smart home gadgets.</p>
+        <p>Office tools, lifestyle gadgets, and smart home devices.</p>
       </div>
       <div class="card fade-in">
         <h3>Digital Products</h3>
@@ -224,18 +166,18 @@
   <div class="container">
     <div class="section-title fade-in">
       <h2>Communities</h2>
-      <p>ExnesFly is more than tech — it’s a global movement. Join vibrant communities, sell merchandise, and participate in SACCOs and team building.</p>
+      <p>Join ExnesFly communities, sell merchandise, participate in SACCOs, and attend team-building events.</p>
     </div>
     <div class="grid">
       <div class="card community fade-in">
         <img src="https://i.ibb.co/6FvDqG0/boyzinthhood.jpg" alt="BoyzInTheHood">
         <h3>BoyzInTheHood</h3>
-        <p>Merchandise, SACCOs, team-building events, and community growth for our urban innovators.</p>
+        <p>Merchandise, SACCO, and team-building activities for urban innovators.</p>
       </div>
       <div class="card community fade-in">
-        <img src="https://i.ibb.co/Ytb9rZm/futuristic-community.jpg" alt="Future Community">
+        <img src="https://i.ibb.co/Ytb9rZm/futuristic-community.jpg" alt="Global Tech Tribe">
         <h3>Global Tech Tribe</h3>
-        <p>Collaboration, hackathons, mentorship, and global networking for tech creators.</p>
+        <p>Hackathons, mentorship, and global networking for creators and innovators.</p>
       </div>
     </div>
   </div>
@@ -246,7 +188,7 @@
   <div class="container">
     <div class="section-title fade-in">
       <h2>Contact Us</h2>
-      <p>Reach out to join ExnesFly, collaborate, or be part of the ultimate metaverse-inspired ecosystem.</p>
+      <p>Reach out to collaborate, join ExnesFly, or become part of the ultimate metaverse-inspired ecosystem.</p>
     </div>
     <div style="text-align:center; margin-top:30px;">
       <p>Email: <a href="mailto:info@exnesfly.org">info@exnesfly.org</a></p>
@@ -261,13 +203,13 @@
 </footer>
 
 <script>
-  // simple fade-in animation
+  // fade-in on scroll
   const faders = document.querySelectorAll('.fade-in');
   const appearOptions = { threshold: 0.1 };
-  const appearOnScroll = new IntersectionObserver(function(entries, observer){
+  const appearOnScroll = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if(!entry.isIntersecting) return;
-      entry.classList.add('appear');
+      entry.target.classList.add('appear');
       observer.unobserve(entry.target);
     });
   }, appearOptions);
@@ -275,7 +217,7 @@
 </script>
 
 <style>
-  .fade-in.appear { opacity: 1; transition: opacity 1.5s ease-in; }
+  .fade-in.appear { opacity: 1; transform: translateY(0); transition: all 1.5s ease-in; }
 </style>
 
 </body>
