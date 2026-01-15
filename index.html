@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY NEXUS 4.0 | Everything Ecosystem</title>
+    <title>EXNESFLY NEXUS 4.0 | Live Business Platform</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,64 +28,35 @@
             color: #f8fafc;
             font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         .glass { backdrop-filter: blur(15px); background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); }
         
-        /* Mobile Slide Animation */
+        /* Animations */
         .slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
         .slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
-
-        /* Hide Scrollbar */
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
         .section-card {
             background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
             border-radius: 24px;
             border: 1px solid rgba(0, 245, 255, 0.1);
+            transition: all 0.3s ease;
         }
         
-        /* Neon Pulse for Active Icons */
+        .section-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+        }
+        
         .active-glow {
             filter: drop-shadow(0 0 8px var(--neon-blue));
             color: var(--neon-blue) !important;
         }
-
-        /* NEW: Interactive Elements */
-        .interactive-btn {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
         
-        .interactive-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .interactive-btn:hover::after {
-            left: 100%;
-        }
-        
-        /* NEW: Loading Animation */
-        .loading-dots::after {
-            content: '.';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-        
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-        
-        /* NEW: Notification Badge */
+        /* Notification Badge */
         .notification-badge {
             position: absolute;
             top: -5px;
@@ -100,36 +78,70 @@
             50% { transform: scale(1.1); }
         }
         
-        /* NEW: Crypto Balance Animation */
-        .balance-change {
-            animation: balanceUpdate 0.5s ease;
+        /* Loading Animation */
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
         }
         
-        @keyframes balanceUpdate {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
         
-        /* NEW: Service Status Indicator */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
+        /* Order Status */
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
             display: inline-block;
-            margin-right: 6px;
         }
         
-        .status-active { background: #00ff9d; box-shadow: 0 0 8px #00ff9d; }
-        .status-inactive { background: #ff005c; }
-        .status-pending { background: #ffd700; animation: blink 1s infinite; }
+        .status-pending { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+        .status-processing { background: rgba(0, 245, 255, 0.2); color: #00f5ff; }
+        .status-completed { background: rgba(0, 255, 157, 0.2); color: #00ff9d; }
+        .status-cancelled { background: rgba(255, 0, 92, 0.2); color: #ff005c; }
         
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+        /* Modal Animations */
+        .modal-enter-active, .modal-leave-active {
+            transition: opacity 0.3s, transform 0.3s;
         }
         
-        /* NEW: Crypto QR Scanner Animation */
+        .modal-enter-from, .modal-leave-to {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        /* Button Effects */
+        .btn-glow {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 245, 255, 0.3);
+        }
+        
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-glow:hover::after {
+            left: 100%;
+        }
+        
+        /* QR Scanner Effect */
         .qr-scan {
             position: relative;
             overflow: hidden;
@@ -150,356 +162,821 @@
             0% { top: 0; }
             100% { top: 100%; }
         }
-        
-        /* NEW: Price Ticker Animation */
-        .price-ticker {
-            overflow: hidden;
-            position: relative;
-            height: 20px;
-        }
-        
-        .price-change {
-            display: inline-block;
-            padding: 0 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
     </style>
 </head>
 <body class="overflow-hidden">
 
+<!-- Firebase Initialization -->
+<script>
+    // YOUR FIREBASE CONFIG - ENTERED CORRECTLY
+    const firebaseConfig = {
+        apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
+        authDomain: "exnesfly.firebaseapp.com",
+        projectId: "exnesfly",
+        storageBucket: "exnesfly.firebasestorage.app",
+        messagingSenderId: "1057610102569",
+        appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938",
+        measurementId: "G-SYSSG8HEFB"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Initialize services
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+    const analytics = firebase.analytics();
+    
+    console.log("✅ Firebase initialized successfully!");
+</script>
+
 <div id="app" class="h-screen w-screen flex flex-col md:flex-row">
 
+    <!-- Authentication Modal -->
+    <div v-if="showAuthModal && !user" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showAuthModal = false"></div>
+        <div class="glass w-full max-w-md p-8 rounded-3xl text-center relative border border-cyan-500/30">
+            <button @click="showAuthModal = false" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-6">
+                <span class="orbitron font-bold text-2xl text-white">EX</span>
+            </div>
+            
+            <h2 class="orbitron text-2xl mb-2">Welcome to EXNESFLY</h2>
+            <p class="text-sm text-slate-400 mb-8">Sign in to access your dashboard and services</p>
+            
+            <!-- Google Sign In -->
+            <button @click="signInWithGoogle" 
+                    :disabled="authLoading"
+                    :class="['w-full py-4 rounded-2xl text-black font-bold orbitron mb-4 flex items-center justify-center gap-3 transition btn-glow', 
+                             authLoading ? 'bg-slate-400 cursor-not-allowed' : 'bg-white hover:bg-gray-100']">
+                <i class="fab fa-google text-red-500"></i>
+                Sign in with Google
+                <i v-if="authLoading" class="fas fa-spinner fa-spin ml-2"></i>
+            </button>
+            
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-slate-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-slate-900 text-slate-500">or use email</span>
+                </div>
+            </div>
+            
+            <!-- Email Sign In -->
+            <div class="space-y-4">
+                <input v-model="authEmail" type="email" placeholder="Email address" 
+                       class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                <input v-model="authPassword" type="password" placeholder="Password" 
+                       class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                
+                <button @click="isSignUp ? signUpWithEmail() : signInWithEmail()" 
+                        :disabled="authLoading"
+                        :class="['w-full py-4 rounded-2xl font-bold orbitron transition btn-glow', 
+                                 authLoading ? 'bg-slate-400 cursor-not-allowed' : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-black hover:opacity-90']">
+                    <i v-if="authLoading" class="fas fa-spinner fa-spin mr-2"></i>
+                    {{ isSignUp ? 'Create Account' : 'Sign In' }}
+                </button>
+                
+                <p class="text-sm text-slate-500 mt-4">
+                    {{ isSignUp ? 'Already have an account?' : 'New to EXNESFLY?' }}
+                    <button @click="isSignUp = !isSignUp" class="text-cyan-400 hover:text-cyan-300 ml-1 font-semibold">
+                        {{ isSignUp ? 'Sign In' : 'Create Account' }}
+                    </button>
+                </p>
+            </div>
+            
+            <!-- Error Message -->
+            <div v-if="authError" class="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <p class="text-sm text-red-400">{{ authError }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Creation Modal -->
+    <div v-if="showOrderModal" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showOrderModal = false"></div>
+        <div class="glass w-full max-w-2xl p-8 rounded-3xl relative border border-cyan-500/30 max-h-[90vh] overflow-y-auto">
+            <button @click="showOrderModal = false" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <h2 class="orbitron text-2xl mb-2">Create New Order</h2>
+            <p class="text-sm text-slate-400 mb-6">Select service and provide details</p>
+            
+            <div class="space-y-6">
+                <!-- Service Selection -->
+                <div>
+                    <label class="block text-sm font-semibold mb-3">Select Service</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div v-for="service in orderServices" 
+                             @click="selectedOrderService = service.id"
+                             :class="['p-4 rounded-xl border cursor-pointer transition', 
+                                      selectedOrderService === service.id ? 'border-cyan-500 bg-cyan-500/10' : 'border-slate-700 bg-slate-900/50 hover:border-slate-600']">
+                            <div class="flex items-center gap-3">
+                                <i :class="[service.icon, 'text-cyan-400']"></i>
+                                <div>
+                                    <p class="font-semibold">{{ service.name }}</p>
+                                    <p class="text-xs text-slate-500">{{ service.price }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Details -->
+                <div>
+                    <label class="block text-sm font-semibold mb-3">Order Details <span class="text-red-400">*</span></label>
+                    <textarea v-model="orderDetails" 
+                              placeholder="Describe what you need in detail..."
+                              class="w-full h-32 bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500"
+                              rows="4"></textarea>
+                </div>
+                
+                <!-- Budget & Timeline -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-3">Budget Range</label>
+                        <select v-model="orderBudget" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                            <option value="">Select budget range</option>
+                            <option value="$100 - $500">$100 - $500</option>
+                            <option value="$500 - $2,000">$500 - $2,000</option>
+                            <option value="$2,000 - $5,000">$2,000 - $5,000</option>
+                            <option value="$5,000+">$5,000+</option>
+                            <option value="Custom Quote">Custom Quote</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-3">Timeline</label>
+                        <select v-model="orderTimeline" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                            <option value="">Select timeline</option>
+                            <option value="Urgent (1-3 days)">Urgent (1-3 days)</option>
+                            <option value="Normal (1-2 weeks)">Normal (1-2 weeks)</option>
+                            <option value="Flexible (1 month+)">Flexible (1 month+)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div>
+                    <h3 class="text-sm font-semibold mb-3">Contact Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input v-model="orderContact.email" type="email" placeholder="Email *" 
+                               class="bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                        <input v-model="orderContact.phone" type="tel" placeholder="Phone (optional)" 
+                               class="bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+                
+                <!-- Order Notes -->
+                <div>
+                    <label class="block text-sm font-semibold mb-3">Additional Notes</label>
+                    <textarea v-model="orderNotes" 
+                              placeholder="Any special requirements or notes..."
+                              class="w-full h-24 bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:outline-none focus:border-cyan-500"></textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <button @click="submitOrder" 
+                        :disabled="submittingOrder"
+                        :class="['w-full py-4 rounded-2xl text-black font-bold orbitron mt-6 transition btn-glow',
+                                 submittingOrder ? 'bg-slate-400 cursor-not-allowed' : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90']">
+                    <template v-if="!submittingOrder">
+                        <i class="fas fa-paper-plane mr-2"></i> Submit Order
+                    </template>
+                    <template v-else>
+                        <i class="fas fa-spinner fa-spin mr-2"></i> Creating Order...
+                    </template>
+                </button>
+                
+                <!-- Validation Error -->
+                <div v-if="orderError" class="p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                    <p class="text-sm text-red-400">{{ orderError }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div v-if="selectedOrder" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="selectedOrder = null"></div>
+        <div class="glass w-full max-w-2xl p-8 rounded-3xl relative border border-cyan-500/30 max-h-[90vh] overflow-y-auto">
+            <button @click="selectedOrder = null" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="orbitron text-2xl mb-2">Order #{{ selectedOrder.orderId }}</h2>
+                    <span :class="['order-status', 'status-' + selectedOrder.status]">
+                        {{ selectedOrder.status.toUpperCase() }}
+                    </span>
+                </div>
+                <p class="text-slate-400 text-sm">{{ formatDate(selectedOrder.createdAt) }}</p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Order Info -->
+                <div class="section-card p-6">
+                    <h3 class="font-semibold mb-4 text-lg">Order Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-slate-500">Service</p>
+                            <p class="font-semibold">{{ selectedOrder.service }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Budget</p>
+                            <p class="font-semibold">{{ selectedOrder.budget }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Timeline</p>
+                            <p class="font-semibold">{{ selectedOrder.timeline }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Priority</p>
+                            <p class="font-semibold">{{ selectedOrder.priority }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="section-card p-6">
+                    <h3 class="font-semibold mb-3 text-lg">Description</h3>
+                    <p class="text-slate-300 whitespace-pre-line">{{ selectedOrder.description }}</p>
+                </div>
+                
+                <!-- Additional Notes -->
+                <div v-if="selectedOrder.notes" class="section-card p-6">
+                    <h3 class="font-semibold mb-3 text-lg">Additional Notes</h3>
+                    <p class="text-slate-300 whitespace-pre-line">{{ selectedOrder.notes }}</p>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="section-card p-6">
+                    <h3 class="font-semibold mb-3 text-lg">Contact Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-slate-500">Email</p>
+                            <p class="font-semibold">{{ selectedOrder.contact?.email || 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Phone</p>
+                            <p class="font-semibold">{{ selectedOrder.contact?.phone || 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Updates -->
+                <div v-if="selectedOrder.updates && selectedOrder.updates.length > 0" class="section-card p-6">
+                    <h3 class="font-semibold mb-3 text-lg">Updates</h3>
+                    <div class="space-y-4">
+                        <div v-for="(update, index) in selectedOrder.updates" 
+                             :key="index"
+                             class="p-4 bg-slate-900/50 rounded-xl border-l-4 border-cyan-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-semibold">{{ update.title }}</span>
+                                <span class="text-xs text-slate-500">{{ formatDate(update.timestamp) }}</span>
+                            </div>
+                            <p class="text-sm text-slate-300">{{ update.message }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex flex-wrap gap-3 pt-6 border-t border-slate-700">
+                    <button @click="updateOrderStatus(selectedOrder.id, 'completed')" 
+                            v-if="selectedOrder.status !== 'completed'"
+                            class="px-6 py-3 bg-green-500/20 text-green-400 rounded-xl hover:bg-green-500/30 transition btn-glow">
+                        <i class="fas fa-check mr-2"></i> Mark Complete
+                    </button>
+                    <button @click="updateOrderStatus(selectedOrder.id, 'cancelled')" 
+                            v-if="selectedOrder.status !== 'cancelled'"
+                            class="px-6 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition btn-glow">
+                        <i class="fas fa-times mr-2"></i> Cancel Order
+                    </button>
+                    <button @click="contactSupport(selectedOrder.orderId)" 
+                            class="px-6 py-3 bg-cyan-500/20 text-cyan-400 rounded-xl hover:bg-cyan-500/30 transition btn-glow">
+                        <i class="fas fa-headset mr-2"></i> Contact Support
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crypto Donation Modal -->
+    <div v-if="showCrypto" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showCrypto = false"></div>
+        <div class="glass w-full max-w-md p-8 rounded-3xl text-center relative border border-cyan-500/30">
+            <button @click="showCrypto = false" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <h2 class="orbitron text-2xl mb-2 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">SUPPORT OUR ECOSYSTEM</h2>
+            <p class="text-sm text-slate-400 mb-6">Your crypto fuels innovation and community growth</p>
+            
+            <div class="flex gap-2 mb-6 p-1 bg-slate-900/50 rounded-full">
+                <button @click="activeCoin = 0" 
+                        :class="['flex-1 py-3 rounded-full text-sm font-bold orbitron transition', 
+                                 activeCoin === 0 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' : 'text-slate-400 hover:text-white']">
+                    <i class="fab fa-btc mr-2"></i> BITCOIN
+                </button>
+                <button @click="activeCoin = 1" 
+                        :class="['flex-1 py-3 rounded-full text-sm font-bold orbitron transition', 
+                                 activeCoin === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-black' : 'text-slate-400 hover:text-white']">
+                    <i class="fas fa-coins mr-2"></i> USDC
+                </button>
+            </div>
+            
+            <div class="qr-scan mb-6">
+                <div class="w-64 h-64 mx-auto bg-white p-4 rounded-2xl">
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                        <span class="orbitron text-2xl font-bold text-slate-800">{{ coins[activeCoin].symbol }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-900/50 p-4 rounded-2xl font-mono text-sm break-all mb-4 text-cyan-400">
+                {{ coins[activeCoin].addr }}
+                <button @click="copyToClipboard(coins[activeCoin].addr)" 
+                        class="ml-4 text-xs bg-cyan-500/20 hover:bg-cyan-500 hover:text-black px-3 py-1 rounded transition">
+                    COPY
+                </button>
+            </div>
+            
+            <p class="text-xs text-red-400 uppercase tracking-widest mb-2">⚠️ IMPORTANT</p>
+            <p class="text-xs text-slate-400 mb-8">Only send {{ coins[activeCoin].net }} assets to this address</p>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
     <transition name="slide">
         <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
-            <div class="p-6 flex items-center justify-between">
+            <div class="p-6 flex items-center justify-between border-b border-slate-800/50">
                 <div class="flex items-center gap-3">
-                    <!-- UPDATED: Interactive Logo with Status -->
-                    <div class="relative">
-                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform" @click="refreshAllData">
-                            <span class="orbitron font-bold text-white">∞</span>
-                            <div v-if="systemStatus === 'active'" class="status-dot status-active absolute -top-1 -right-1"></div>
-                            <div v-if="systemStatus === 'degraded'" class="status-dot status-pending absolute -top-1 -right-1"></div>
-                        </div>
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                        <span class="orbitron font-bold text-white">EX</span>
                     </div>
                     <div>
                         <h1 class="orbitron font-bold text-lg tracking-tighter text-cyan-400">EXNESFLY</h1>
-                        <p class="text-[9px] text-slate-500">{{ systemStatus.toUpperCase() }} SYSTEM</p>
+                        <p class="text-[9px] text-slate-500 uppercase tracking-widest">Nexus 4.0</p>
                     </div>
                 </div>
-                <!-- NEW: Refresh Button -->
-                <button @click="refreshAllData" class="text-slate-400 hover:text-cyan-400 transition p-2 rounded-lg hover:bg-slate-800/50" title="Refresh Data">
-                    <i class="fas fa-sync-alt" :class="{'animate-spin': refreshing}"></i>
+                <button @click="menuOpen = false" class="md:hidden text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <!-- NEW: Quick Stats Bar -->
-            <div class="px-6 py-3 border-y border-slate-800/50">
-                <div class="flex items-center justify-between">
-                    <div class="text-center">
-                        <p class="text-[9px] text-slate-500">BTC</p>
-                        <p class="orbitron text-xs font-bold" :class="{'text-green-400': btcChange > 0, 'text-red-400': btcChange < 0}">
-                            ${{ formatNumber(cryptoPrices.BTC) }}
-                            <span v-if="btcChange !== 0" class="text-[8px]">({{ btcChange > 0 ? '+' : '' }}{{ btcChange.toFixed(2) }}%)</span>
-                        </p>
+            <!-- User Profile Section -->
+            <div v-if="user" class="px-6 py-4 border-b border-slate-800/50">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <img :src="user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=0f172a&color=00f5ff`" 
+                             class="w-12 h-12 rounded-full user-avatar cursor-pointer border-2 border-cyan-500/30"
+                             @click="toggleUserMenu">
+                        <div v-if="user.emailVerified" class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-900"></div>
                     </div>
-                    <div class="text-center">
-                        <p class="text-[9px] text-slate-500">USDC</p>
-                        <p class="orbitron text-xs font-bold">$1.00</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold truncate">{{ user.displayName || 'User' }}</p>
+                        <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded">Member</span>
+                            <span v-if="userStats.totalOrders > 0" class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded">
+                                {{ userStats.totalOrders }} orders
+                            </span>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <p class="text-[9px] text-slate-500">SACCO</p>
-                        <p class="orbitron text-xs font-bold text-green-400">+{{ saccoApy }}%</p>
+                </div>
+                
+                <!-- User Menu Dropdown -->
+                <div v-if="showUserMenu" class="absolute left-6 mt-2 w-60 glass rounded-xl border border-slate-700 shadow-xl z-50">
+                    <div class="p-4 border-b border-slate-700">
+                        <p class="font-semibold">{{ user.displayName || 'User' }}</p>
+                        <p class="text-sm text-slate-400 truncate">{{ user.email }}</p>
+                    </div>
+                    <div class="p-2">
+                        <button @click="view = 'eaas'; showUserMenu = false" 
+                                class="w-full text-left p-3 rounded-lg hover:bg-slate-800/50 transition flex items-center gap-3">
+                            <i class="fas fa-th-large text-cyan-400"></i>
+                            Dashboard
+                        </button>
+                        <button @click="view = 'orders'; showUserMenu = false" 
+                                class="w-full text-left p-3 rounded-lg hover:bg-slate-800/50 transition flex items-center gap-3">
+                            <i class="fas fa-shopping-cart text-cyan-400"></i>
+                            My Orders
+                            <span v-if="pendingOrders > 0" class="ml-auto w-5 h-5 bg-red-500 text-[10px] flex items-center justify-center rounded-full">
+                                {{ pendingOrders }}
+                            </span>
+                        </button>
+                        <button @click="view = 'profile'; showUserMenu = false" 
+                                class="w-full text-left p-3 rounded-lg hover:bg-slate-800/50 transition flex items-center gap-3">
+                            <i class="fas fa-user text-cyan-400"></i>
+                            Profile
+                        </button>
+                        <div class="border-t border-slate-700 mt-2 pt-2">
+                            <button @click="signOut" 
+                                    class="w-full text-left p-3 rounded-lg hover:bg-red-500/10 text-red-400 transition flex items-center gap-3">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Sign Out
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Auth Prompt -->
+            <div v-else class="px-6 py-4 border-b border-slate-800/50">
+                <p class="text-sm text-slate-400 mb-3">Sign in to access all features</p>
+                <button @click="showAuthModal = true" 
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold orbitron text-sm btn-glow">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Sign In / Register
+                </button>
+            </div>
 
+            <!-- Navigation -->
             <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
                 <div v-for="(category, name) in navGroups" :key="name">
                     <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p>
                     <div v-for="item in category" 
                          @click="selectView(item.id)" 
-                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all relative', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
+                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all relative', 
+                                  view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
                         <i :class="item.icon"></i>
                         <span class="text-sm font-medium">{{ item.label }}</span>
-                        <!-- NEW: Notification Badges -->
-                        <div v-if="item.notifications && item.notifications > 0" class="notification-badge">
-                            {{ item.notifications > 9 ? '9+' : item.notifications }}
+                        <!-- Order Notification -->
+                        <div v-if="item.id === 'orders' && pendingOrders > 0" class="ml-auto">
+                            <span class="w-5 h-5 bg-red-500 text-[10px] flex items-center justify-center rounded-full">
+                                {{ pendingOrders }}
+                            </span>
                         </div>
-                        <!-- NEW: Live Indicator -->
-                        <div v-if="item.live" class="status-dot status-active ml-auto"></div>
                     </div>
                 </div>
             </nav>
 
+            <!-- Sidebar Footer -->
             <div class="p-4 border-t border-slate-800">
-                <!-- UPDATED: Crypto Balance Display -->
-                <div class="mb-4 p-3 bg-slate-900/50 rounded-xl">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-slate-400">Crypto Balance</span>
-                        <button @click="toggleBalanceVisibility" class="text-xs text-cyan-400 hover:text-cyan-300">
-                            <i :class="balanceVisible ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-                        </button>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs">BTC</span>
-                            <span class="orbitron text-sm font-bold" :class="balanceChangeClass('BTC')">
-                                {{ balanceVisible ? cryptoBalances.BTC.toFixed(4) : '****' }}
-                            </span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs">USDC</span>
-                            <span class="orbitron text-sm font-bold text-green-400">
-                                {{ balanceVisible ? formatNumber(cryptoBalances.USDC) : '****' }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <button @click="showCrypto = true; menuOpen = false" 
-                        class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron shadow-lg shadow-cyan-500/20 interactive-btn">
-                    <i class="fab fa-bitcoin mr-2"></i> DONATE CRYPTO
-                    <span v-if="unreadDonations > 0" class="notification-badge top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
-                        {{ unreadDonations }}
-                    </span>
+                <!-- Create Order Button -->
+                <button v-if="user" @click="showOrderModal = true" 
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold text-sm orbitron shadow-lg shadow-green-500/20 mb-3 btn-glow">
+                    <i class="fas fa-plus mr-2"></i> CREATE ORDER
                 </button>
                 
-                <!-- NEW: Quick Actions -->
-                <div class="flex gap-2 mt-3">
-                    <button @click="quickAction('support')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs transition">
-                        Support
-                    </button>
-                    <button @click="quickAction('docs')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs transition">
-                        Docs
-                    </button>
-                </div>
+                <button @click="showCrypto = true" 
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-sm orbitron shadow-lg shadow-cyan-500/20 btn-glow">
+                    <i class="fab fa-bitcoin mr-2"></i> DONATE CRYPTO
+                </button>
             </div>
         </aside>
     </transition>
 
-    <!-- UPDATED: Mobile Header with Status -->
-    <header class="md:hidden flex items-center justify-between p-4 glass z-[90]">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                <span class="orbitron font-bold text-white">∞</span>
-            </div>
-            <div>
+    <!-- Mobile Header -->
+    <header class="md:hidden flex items-center justify-between p-4 glass z-[90] border-b border-slate-800/50">
+        <button @click="menuOpen = true" class="text-cyan-400 text-2xl">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+        
+        <!-- Mobile User Info -->
+        <div v-if="user" class="flex items-center gap-2">
+            <img :src="user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=0f172a&color=00f5ff`" 
+                 class="w-8 h-8 rounded-full">
+            <div class="text-right">
                 <h2 class="orbitron text-xs font-bold tracking-widest">{{ viewTitles[view] }}</h2>
-                <p class="text-[8px] text-slate-500">{{ getCurrentTime() }}</p>
+                <p class="text-[8px] text-slate-500">Hi, {{ user.displayName?.split(' ')[0] || 'User' }}</p>
             </div>
         </div>
+        <div v-else>
+            <h2 class="orbitron text-xs font-bold tracking-widest">{{ viewTitles[view] }}</h2>
+        </div>
         
-        <div class="flex items-center gap-4">
-            <!-- NEW: Connection Status -->
-            <div class="relative" @click="checkConnection">
-                <i class="fas fa-wifi text-slate-400" :class="{'text-green-400': connectionActive}"></i>
-                <div v-if="!connectionActive" class="status-dot status-pending absolute -top-1 -right-1"></div>
-            </div>
-            
-            <!-- NEW: Notification Bell -->
-            <button @click="showNotifications = !showNotifications" class="relative text-slate-400 hover:text-cyan-400">
-                <i class="fas fa-bell"></i>
-                <div v-if="totalNotifications > 0" class="notification-badge">
-                    {{ totalNotifications > 9 ? '9+' : totalNotifications }}
-                </div>
+        <div class="flex items-center gap-3">
+            <!-- Order Quick Action -->
+            <button v-if="user" @click="showOrderModal = true" class="text-green-400 hover:text-green-300">
+                <i class="fas fa-plus"></i>
             </button>
             
-            <button @click="menuOpen = true" class="text-cyan-400 text-xl">
-                <i class="fas fa-bars-staggered"></i>
+            <!-- Auth/User Menu -->
+            <button v-if="!user" @click="showAuthModal = true" class="text-cyan-400 hover:text-cyan-300">
+                <i class="fas fa-sign-in-alt"></i>
+            </button>
+            <button v-else @click="toggleUserMenu" class="text-cyan-400 hover:text-cyan-300 relative">
+                <i class="fas fa-user"></i>
+                <div v-if="pendingOrders > 0" class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
             </button>
         </div>
     </header>
 
-    <!-- NEW: Notification Panel -->
-    <transition name="slide">
-        <div v-if="showNotifications" class="fixed inset-0 z-[1000] md:hidden">
-            <div class="absolute inset-0 bg-black/50" @click="showNotifications = false"></div>
-            <div class="absolute top-16 right-4 w-72 glass rounded-2xl p-4">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="orbitron font-bold">Notifications</h3>
-                    <button @click="clearNotifications" class="text-xs text-slate-400 hover:text-white">
-                        Clear All
-                    </button>
-                </div>
-                <div class="space-y-3 max-h-64 overflow-y-auto">
-                    <div v-for="notification in notifications" 
-                         :class="['p-3 rounded-lg', notification.read ? 'bg-slate-800/50' : 'bg-cyan-500/10']"
-                         @click="markAsRead(notification.id)">
-                        <div class="flex items-start gap-2">
-                            <i :class="['text-xs mt-1', notification.icon, notification.type === 'success' ? 'text-green-400' : 'text-cyan-400']"></i>
-                            <div>
-                                <p class="text-xs font-semibold">{{ notification.title }}</p>
-                                <p class="text-[10px] text-slate-400 mt-1">{{ notification.message }}</p>
-                                <p class="text-[9px] text-slate-500 mt-2">{{ notification.time }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </transition>
-
-    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
-        
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-32 md:pb-8">
+        <!-- Background Elements -->
         <div class="fixed top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[120px] rounded-full -z-10"></div>
         <div class="fixed bottom-0 left-0 w-96 h-96 bg-fuchsia-500/5 blur-[150px] rounded-full -z-10"></div>
 
         <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
-
-            <!-- UPDATED: EaaS Dashboard with Live Updates -->
+            
+            <!-- EaaS Dashboard -->
             <div v-if="view === 'eaas'" class="space-y-8">
                 <div class="text-center md:text-left">
-                    <h2 class="text-4xl md:text-6xl font-black orbitron mb-4">EaaS <span class="text-cyan-400">3.0</span></h2>
-                    <p class="text-slate-400 max-w-2xl">The modular gateway to AI, Logistics, and Global Trade infrastructure.</p>
-                    
-                    <!-- NEW: System Status Bar -->
-                    <div class="flex items-center gap-4 mt-6 flex-wrap">
-                        <div class="flex items-center gap-2">
-                            <div :class="['status-dot', systemStatus === 'active' ? 'status-active' : 'status-pending']"></div>
-                            <span class="text-sm">System: {{ systemStatus }}</span>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <h2 class="text-4xl md:text-6xl font-black orbitron mb-4">EaaS <span class="text-cyan-400">3.0</span></h2>
+                            <p class="text-slate-400 max-w-2xl">
+                                {{ user ? `Welcome back, ${user.displayName || user.email}` : 'The modular gateway to AI, Logistics, and Global Trade' }}
+                            </p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-users text-slate-400"></i>
-                            <span class="text-sm">{{ activeUsers }} active users</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-bolt text-yellow-400"></i>
-                            <span class="text-sm">API Latency: {{ apiLatency }}ms</span>
+                        <!-- Quick Stats -->
+                        <div v-if="user" class="flex gap-4 mt-4 md:mt-0">
+                            <div class="text-center p-4 bg-slate-900/50 rounded-2xl">
+                                <p class="text-xs text-slate-500">Active Orders</p>
+                                <p class="orbitron text-2xl font-bold text-cyan-400">{{ userStats.activeOrders || 0 }}</p>
+                            </div>
+                            <div class="text-center p-4 bg-slate-900/50 rounded-2xl">
+                                <p class="text-xs text-slate-500">Total Spent</p>
+                                <p class="orbitron text-2xl font-bold text-green-400">${{ userStats.totalSpent || 0 }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- UPDATED: Services with Live Status -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="s in services" 
-                         :class="['section-card p-6 group hover:border-cyan-400 transition-all cursor-pointer relative', s.status === 'down' ? 'opacity-60' : '']"
-                         @click="activateService(s.id)">
-                        
-                        <!-- NEW: Service Status Indicator -->
-                        <div class="absolute top-4 right-4">
-                            <div :class="['status-dot', s.status === 'active' ? 'status-active' : s.status === 'degraded' ? 'status-pending' : 'status-inactive']"></div>
+                <!-- User-Specific Content -->
+                <div v-if="user" class="section-card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="orbitron text-xl font-bold">Your Recent Activity</h3>
+                        <button @click="refreshUserData" class="text-sm text-cyan-400 hover:text-cyan-300">
+                            <i class="fas fa-sync-alt" :class="{'animate-spin': refreshing}"></i>
+                        </button>
+                    </div>
+                    
+                    <div v-if="userOrders.length > 0" class="space-y-4">
+                        <div v-for="order in userOrders.slice(0, 3)" 
+                             @click="selectedOrder = order"
+                             class="p-4 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-cyan-500 cursor-pointer transition">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-semibold">{{ order.service }}</p>
+                                    <p class="text-xs text-slate-500">#{{ order.orderId }}</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span :class="['order-status', 'status-' + order.status]">
+                                        {{ order.status.toUpperCase() }}
+                                    </span>
+                                    <span class="text-sm font-semibold">{{ order.budget }}</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 mt-3 line-clamp-2">{{ order.description }}</p>
+                            <p class="text-xs text-slate-500 mt-2">{{ formatDate(order.createdAt) }}</p>
                         </div>
                         
-                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
-                        <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
-                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
-                        
-                        <!-- NEW: Service Metrics -->
-                        <div class="flex items-center justify-between mb-4 text-xs">
-                            <span class="text-slate-500">Uptime: {{ s.uptime }}</span>
-                            <span class="text-slate-500">Users: {{ s.users }}</span>
-                        </div>
-                        
-                        <button @click.stop="activateService(s.id)" 
-                                :class="['w-full py-2 rounded-lg text-[10px] font-bold tracking-widest transition interactive-btn', 
-                                         s.status === 'active' ? 'bg-cyan-500 text-black hover:bg-cyan-600' : 'bg-slate-800 hover:bg-slate-700']">
-                            {{ s.status === 'active' ? 'MANAGE MODULE' : 'ACTIVATE MODULE' }}
-                            <span v-if="s.pendingUpdates" class="notification-badge top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
-                                {{ s.pendingUpdates }}
-                            </span>
+                        <button @click="view = 'orders'" class="w-full py-3 border border-slate-700 rounded-xl text-sm hover:bg-slate-800 transition">
+                            View All Orders
+                        </button>
+                    </div>
+                    
+                    <div v-else class="text-center py-8">
+                        <i class="fas fa-shopping-cart text-4xl text-slate-700 mb-4"></i>
+                        <p class="text-slate-400 mb-2">No orders yet</p>
+                        <p class="text-sm text-slate-500 mb-6">Start by creating your first order</p>
+                        <button @click="showOrderModal = true" class="py-2 px-6 bg-cyan-500 text-black rounded-lg font-semibold btn-glow">
+                            Create Your First Order
                         </button>
                     </div>
                 </div>
-                
-                <!-- NEW: Live Activity Feed -->
-                <div class="section-card p-6">
-                    <h3 class="orbitron font-bold text-lg mb-4">Live Activity</h3>
-                    <div class="space-y-3">
-                        <div v-for="activity in liveActivities" class="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
-                            <i :class="['text-cyan-400', activity.icon]"></i>
-                            <div class="flex-1">
-                                <p class="text-sm">{{ activity.message }}</p>
-                                <p class="text-[10px] text-slate-500">{{ activity.time }}</p>
-                            </div>
-                            <span class="text-xs px-2 py-1 rounded-full" 
-                                  :class="activity.type === 'trade' ? 'bg-green-500/20 text-green-400' : 
-                                          activity.type === 'service' ? 'bg-cyan-500/20 text-cyan-400' :
-                                          'bg-purple-500/20 text-purple-400'">
-                                {{ activity.type }}
-                            </span>
-                        </div>
+
+                <!-- Services Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div v-for="s in services" 
+                         @click="user ? showOrderModalForService(s.title) : showAuthModal = true"
+                         class="section-card p-6 cursor-pointer">
+                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
+                        <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
+                        <button :class="['w-full py-2 rounded-lg text-[10px] font-bold tracking-widest transition btn-glow', 
+                                 user ? 'bg-slate-800 hover:bg-cyan-500 hover:text-black' : 'bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30']">
+                            {{ user ? 'ORDER NOW' : 'SIGN IN TO ORDER' }}
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- UPDATED: SACCO with Live Updates -->
-            <div v-if="view === 'sacco'" class="space-y-6">
-                <div class="section-card p-8 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/5 to-transparent">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
-                            <p class="text-sm text-yellow-500 mb-6 uppercase tracking-widest font-bold italic">Decentralized Community Finance</p>
-                        </div>
-                        <!-- NEW: SACCO Performance -->
-                        <div class="text-right">
-                            <p class="text-xs text-slate-500">Last Distribution</p>
-                            <p class="orbitron text-lg text-green-400">+{{ lastDistribution }}%</p>
-                        </div>
+            <!-- Orders Dashboard -->
+            <div v-if="view === 'orders'" class="space-y-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-4xl font-black orbitron mb-2">My Orders</h2>
+                        <p class="text-slate-400">Track and manage all your service requests</p>
                     </div>
-                    
-                    <!-- UPDATED: Stats with Live Updates -->
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="p-4 bg-black/40 rounded-2xl">
-                            <span class="text-[10px] text-slate-500 block uppercase">Global Pool</span>
-                            <span class="orbitron text-xl text-white font-bold">${{ formatNumber(saccoPool) }}</span>
-                            <div v-if="poolChange !== 0" class="text-[10px] mt-1" 
-                                 :class="poolChange > 0 ? 'text-green-400' : 'text-red-400'">
-                                {{ poolChange > 0 ? '↑' : '↓' }} ${{ formatNumber(Math.abs(poolChange)) }}
-                            </div>
-                        </div>
-                        <div class="p-4 bg-black/40 rounded-2xl">
-                            <span class="text-[10px] text-slate-500 block uppercase">APY Return</span>
-                            <span class="orbitron text-xl text-green-400 font-bold">{{ saccoApy }}%</span>
-                            <div class="text-[10px] text-slate-500 mt-1">Next update: {{ nextDistribution }}</div>
-                        </div>
+                    <button @click="showOrderModal = true" 
+                            class="py-3 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold orbitron rounded-xl btn-glow mt-4 md:mt-0">
+                        <i class="fas fa-plus mr-2"></i> NEW ORDER
+                    </button>
+                </div>
+                
+                <!-- Orders Filter -->
+                <div class="flex gap-2 overflow-x-auto pb-2">
+                    <button v-for="filter in orderFilters" 
+                            @click="activeOrderFilter = filter.value"
+                            :class="['px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition',
+                                     activeOrderFilter === filter.value ? 'bg-cyan-500 text-black' : 'bg-slate-800 text-slate-400 hover:bg-slate-700']">
+                        {{ filter.label }} ({{ filter.count }})
+                    </button>
+                </div>
+                
+                <!-- Orders List -->
+                <div v-if="loadingOrders" class="space-y-4">
+                    <div v-for="i in 3" class="section-card p-6">
+                        <div class="h-6 w-1/3 bg-slate-800 rounded mb-4 animate-pulse"></div>
+                        <div class="h-4 w-full bg-slate-800 rounded mb-2"></div>
+                        <div class="h-4 w-2/3 bg-slate-800 rounded"></div>
                     </div>
-                    
-                    <!-- NEW: Investment Calculator -->
-                    <div class="mb-8 p-4 bg-slate-900/50 rounded-xl">
-                        <p class="text-sm font-semibold mb-3">Investment Calculator</p>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-xs text-slate-500 block mb-1">Amount to Invest ($)</label>
-                                <input type="range" v-model="investmentAmount" min="100" max="100000" step="100" 
-                                       class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                <div class="flex justify-between text-xs text-slate-400 mt-1">
-                                    <span>$100</span>
-                                    <span>${{ formatNumber(investmentAmount) }}</span>
-                                    <span>$100k</span>
+                </div>
+                
+                <div v-else-if="filteredOrders.length > 0" class="space-y-4">
+                    <div v-for="order in filteredOrders" 
+                         @click="selectedOrder = order"
+                         class="section-card p-6 cursor-pointer hover:border-cyan-500">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="font-semibold">{{ order.service }}</span>
+                                    <span :class="['order-status', 'status-' + order.status]">
+                                        {{ order.status.toUpperCase() }}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-slate-400 line-clamp-2">{{ order.description }}</p>
+                                <div class="flex items-center gap-4 mt-3 text-xs text-slate-500">
+                                    <span><i class="far fa-calendar mr-1"></i> {{ formatDate(order.createdAt) }}</span>
+                                    <span><i class="fas fa-dollar-sign mr-1"></i> {{ order.budget }}</span>
+                                    <span><i class="far fa-clock mr-1"></i> {{ order.timeline }}</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between p-3 bg-black/40 rounded-lg">
-                                <span class="text-sm">Projected Return (1 Year)</span>
-                                <span class="orbitron text-lg text-green-400">
-                                    ${{ formatNumber(calculateProjectedReturn(investmentAmount)) }}
-                                </span>
+                            <div class="flex items-center gap-3 mt-4 md:mt-0">
+                                <button @click.stop="updateOrderStatus(order.id, 'completed')" 
+                                        v-if="order.status !== 'completed'"
+                                        class="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition">
+                                    Complete
+                                </button>
+                                <button @click.stop="contactSupport(order.orderId)"
+                                        class="px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition">
+                                    Contact
+                                </button>
                             </div>
                         </div>
                     </div>
-                    
-                    <button @click="joinSacco" 
-                            :class="['w-full py-4 text-black font-black orbitron rounded-2xl shadow-xl shadow-yellow-500/20 interactive-btn', 
-                                     joiningSacco ? 'bg-yellow-600' : 'bg-yellow-500']"
-                            :disabled="joiningSacco">
-                        <template v-if="!joiningSacco">
-                            JOIN THE SACCO
-                        </template>
-                        <template v-else>
-                            PROCESSING<span class="loading-dots"></span>
-                        </template>
+                </div>
+                
+                <div v-else class="text-center py-12">
+                    <i class="fas fa-shopping-cart text-5xl text-slate-700 mb-4"></i>
+                    <p class="text-xl text-slate-400 mb-2">No orders found</p>
+                    <p class="text-slate-500 mb-6">Create your first order to get started</p>
+                    <button @click="showOrderModal = true" 
+                            class="py-3 px-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold orbitron rounded-xl btn-glow">
+                        CREATE FIRST ORDER
                     </button>
                 </div>
             </div>
 
-            <!-- UPDATED: DevSecOps with Interactive Features -->
+            <!-- User Profile -->
+            <div v-if="view === 'profile'" class="space-y-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-4xl font-black orbitron mb-2">My Profile</h2>
+                        <p class="text-slate-400">Manage your account and preferences</p>
+                    </div>
+                    <button @click="refreshUserData" class="text-cyan-400 hover:text-cyan-300">
+                        <i class="fas fa-sync-alt" :class="{'animate-spin': refreshing}"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Profile Info -->
+                    <div class="md:col-span-2 space-y-6">
+                        <div class="section-card p-8">
+                            <div class="flex items-center gap-6 mb-8">
+                                <img :src="user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=0f172a&color=00f5ff`" 
+                                     class="w-20 h-20 rounded-full border-4 border-cyan-500/30">
+                                <div class="flex-1">
+                                    <h3 class="orbitron text-xl font-bold mb-2">{{ user.displayName || 'User' }}</h3>
+                                    <p class="text-slate-400">{{ user.email }}</p>
+                                    <div class="flex gap-2 mt-3">
+                                        <span class="text-xs bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full">
+                                            Member since {{ formatDate(user.metadata?.creationTime) }}
+                                        </span>
+                                        <span v-if="user.emailVerified" class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full">
+                                            Verified
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="p-4 bg-slate-900/50 rounded-xl">
+                                    <p class="text-sm text-slate-500">Total Orders</p>
+                                    <p class="orbitron text-2xl font-bold mt-2">{{ userStats.totalOrders || 0 }}</p>
+                                </div>
+                                <div class="p-4 bg-slate-900/50 rounded-xl">
+                                    <p class="text-sm text-slate-500">Completed</p>
+                                    <p class="orbitron text-2xl font-bold text-green-400 mt-2">{{ userStats.completedOrders || 0 }}</p>
+                                </div>
+                                <div class="p-4 bg-slate-900/50 rounded-xl">
+                                    <p class="text-sm text-slate-500">Total Spent</p>
+                                    <p class="orbitron text-2xl font-bold text-cyan-400 mt-2">${{ userStats.totalSpent || 0 }}</p>
+                                </div>
+                                <div class="p-4 bg-slate-900/50 rounded-xl">
+                                    <p class="text-sm text-slate-500">Active</p>
+                                    <p class="orbitron text-2xl font-bold text-yellow-400 mt-2">{{ userStats.activeOrders || 0 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="section-card p-6">
+                            <h3 class="orbitron text-lg font-bold mb-4">Recent Activity</h3>
+                            <div class="space-y-3">
+                                <div v-for="activity in userActivity" 
+                                     class="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
+                                    <i :class="[activity.icon, 'text-cyan-400']"></i>
+                                    <div class="flex-1">
+                                        <p class="text-sm">{{ activity.message }}</p>
+                                        <p class="text-xs text-slate-500">{{ activity.time }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="space-y-6">
+                        <div class="section-card p-6">
+                            <h3 class="orbitron text-lg font-bold mb-4">Quick Actions</h3>
+                            <div class="space-y-3">
+                                <button @click="showOrderModal = true" 
+                                        class="w-full p-3 bg-cyan-500/10 text-cyan-400 rounded-lg hover:bg-cyan-500/20 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-plus"></i> New Order
+                                </button>
+                                <button @click="view = 'orders'" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-shopping-cart"></i> View Orders
+                                </button>
+                                <button @click="showCrypto = true" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fab fa-bitcoin"></i> Make Donation
+                                </button>
+                                <button @click="contactSupport()" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-headset"></i> Contact Support
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Settings -->
+                        <div class="section-card p-6">
+                            <h3 class="orbitron text-lg font-bold mb-4">Account Settings</h3>
+                            <div class="space-y-3">
+                                <button @click="editProfile" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-user-edit"></i> Edit Profile
+                                </button>
+                                <button @click="resetPassword" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-key"></i> Reset Password
+                                </button>
+                                <button @click="toggleNotifications" 
+                                        class="w-full p-3 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition text-left flex items-center gap-3">
+                                    <i class="fas fa-bell"></i> Notifications
+                                </button>
+                                <button @click="signOut" 
+                                        class="w-full p-3 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition text-left flex items-center gap-3 mt-4">
+                                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SACCO View -->
+            <div v-if="view === 'sacco'" class="space-y-6">
+                <div class="section-card p-8 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/5 to-transparent">
+                    <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
+                    <p class="text-sm text-yellow-500 mb-6 uppercase tracking-widest font-bold italic">Decentralized Community Finance</p>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="p-4 bg-black/40 rounded-2xl">
+                            <span class="text-[10px] text-slate-500 block uppercase">Global Pool</span>
+                            <span class="orbitron text-xl text-white font-bold">$1.2M+</span>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-2xl">
+                            <span class="text-[10px] text-slate-500 block uppercase">APY Return</span>
+                            <span class="orbitron text-xl text-green-400 font-bold">18.4%</span>
+                        </div>
+                    </div>
+                    <button @click="contact('SACCO Membership')" class="w-full py-4 bg-yellow-500 text-black font-black orbitron rounded-2xl shadow-xl shadow-yellow-500/20 btn-glow">JOIN THE SACCO</button>
+                </div>
+            </div>
+
+            <!-- DevSecOps View -->
             <div v-if="view === 'devsecops'" class="space-y-6">
                 <div class="section-card p-6 md:p-10 border-t-2 border-cyan-500">
                     <div class="flex flex-col md:flex-row gap-10">
@@ -510,177 +987,734 @@
                                 <span class="text-cyan-500">></span> Secure CI/CD Engineering.<br>
                                 <span class="text-cyan-500">></span> Knowledge Transfer Protocol Active.
                             </p>
-                            
-                            <!-- NEW: Progress Tracker -->
-                            <div class="mb-8">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-semibold">Course Progress</span>
-                                    <span class="text-xs text-cyan-400">{{ courseProgress }}%</span>
-                                </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500" 
-                                         :style="{width: courseProgress + '%'}"></div>
-                                </div>
-                            </div>
-                            
                             <div class="space-y-4">
-                                <div class="flex items-center gap-4 p-4 glass rounded-xl hover:bg-slate-800/50 cursor-pointer transition"
-                                     @click="selectCourse('fullstack')">
+                                <div class="flex items-center gap-4 p-4 glass rounded-xl">
                                     <i class="fas fa-code text-blue-400"></i>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-bold">End-to-End Fullstack</p>
-                                        <p class="text-[10px] text-slate-500">Go, Python, Vue 3, Docker</p>
-                                    </div>
-                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                    <div><p class="text-sm font-bold">End-to-End Fullstack</p><p class="text-[10px] text-slate-500">Go, Python, Vue 3, Docker</p></div>
                                 </div>
-                                <div class="flex items-center gap-4 p-4 glass rounded-xl hover:bg-slate-800/50 cursor-pointer transition"
-                                     @click="selectCourse('security')">
+                                <div class="flex items-center gap-4 p-4 glass rounded-xl">
                                     <i class="fas fa-shield-halved text-emerald-400"></i>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-bold">Pentesting & Security</p>
-                                        <p class="text-[10px] text-slate-500">Secure Architecture Deployment</p>
-                                    </div>
-                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                    <div><p class="text-sm font-bold">Pentesting & Security</p><p class="text-[10px] text-slate-500">Secure Architecture Deployment</p></div>
                                 </div>
                             </div>
                         </div>
-                        <!-- UPDATED: Interactive Button -->
-                        <button @click="startCourse" 
-                                :class="['md:hidden py-4 text-black font-black orbitron rounded-xl interactive-btn w-full', 
-                                         startingCourse ? 'bg-white/90' : 'bg-white']"
-                                :disabled="startingCourse">
-                            <template v-if="!startingCourse">
-                                VIEW CURRICULUM
-                            </template>
-                            <template v-else>
-                                LOADING<span class="loading-dots"></span>
-                            </template>
-                        </button>
+                        <button @click="contact('DevSecOps Course')" class="md:hidden py-4 bg-white text-black font-black orbitron rounded-xl btn-glow">VIEW CURRICULUM</button>
                     </div>
                 </div>
-                
-                <!-- NEW: Course Modules -->
-                <div v-if="selectedCourse" class="section-card p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="orbitron text-xl font-bold">{{ selectedCourse.title }}</h3>
-                        <button @click="selectedCourse = null" class="text-slate-400 hover:text-white">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="module in selectedCourse.modules" 
-                             class="p-4 bg-slate-900/50 rounded-xl">
-                            <div class="flex items-center gap-3 mb-3">
-                                <i :class="[module.icon, 'text-cyan-400']"></i>
-                                <span class="text-sm font-semibold">{{ module.name }}</span>
-                            </div>
-                            <p class="text-xs text-slate-400 mb-4">{{ module.description }}</p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs text-slate-500">{{ module.duration }}</span>
-                                <button @click="startModule(module.id)" 
-                                        class="text-xs px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30">
-                                    Start
-                                </button>
-                            </div>
+            </div>
+
+            <!-- BoyzInTheHood View -->
+            <div v-if="view === 'boyz'" class="space-y-6">
+                <h2 class="orbitron text-2xl font-bold border-b border-slate-800 pb-4">Industrial Builds</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div v-for="p in portfolio" class="section-card overflow-hidden group">
+                        <div class="h-48 overflow-hidden">
+                            <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-70">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="orbitron font-bold text-lg mb-2">{{ p.title }}</h3>
+                            <p class="text-xs text-slate-400 mb-6">{{ p.desc }}</p>
+                            <button @click="contact('Construction Inquiry: ' + p.title)" class="w-full py-2 border border-slate-700 rounded-lg text-[10px] orbitron font-bold hover:bg-white hover:text-black transition btn-glow">REQUEST SPECS</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- UPDATED: BoyzInTheHood with Interactive Portfolio -->
-            <div v-if="view === 'boyz'" class="space-y-6">
-                <div class="flex items-center justify-between">
-                    <h2 class="orbitron text-2xl font-bold border-b border-slate-800 pb-4">Industrial Builds</h2>
-                    <!-- NEW: Filter Options -->
-                    <div class="flex gap-2">
-                        <button v-for="filter in portfolioFilters" 
-                                @click="activeFilter = filter"
-                                :class="['px-3 py-1 text-xs rounded-full transition', 
-                                         activeFilter === filter ? 'bg-cyan-500 text-black' : 'bg-slate-800 text-slate-400']">
-                            {{ filter }}
-                        </button>
-                    </div>
-                </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-16 flex items-center justify-around z-[100] border-t border-slate-800">
+        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-1 p-3', view === 'eaas' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-home text-lg"></i><span class="text-[8px] font-bold orbitron">HOME</span>
+        </div>
+        <div @click="user ? selectView('orders') : showAuthModal = true" :class="['flex flex-col items-center gap-1 p-3 relative', view === 'orders' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-shopping-cart text-lg"></i>
+            <span class="text-[8px] font-bold orbitron">ORDERS</span>
+            <div v-if="pendingOrders > 0" class="absolute -top-1 right-1/4 w-2 h-2 bg-red-500 rounded-full"></div>
+        </div>
+        <div @click="user ? showOrderModal = true : showAuthModal = true" class="flex flex-col items-center gap-1 text-green-400">
+            <div class="w-12 h-12 -mt-6 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center btn-glow">
+                <i class="fas fa-plus text-lg text-black"></i>
+            </div>
+        </div>
+        <div @click="selectView('sacco')" :class="['flex flex-col items-center gap-1 p-3', view === 'sacco' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-vault text-lg"></i><span class="text-[8px] font-bold orbitron">SACCO</span>
+        </div>
+        <div @click="user ? selectView('profile') : showAuthModal = true" :class="['flex flex-col items-center gap-1 p-3', view === 'profile' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-user text-lg"></i><span class="text-[8px] font-bold orbitron">PROFILE</span>
+        </div>
+    </nav>
+
+</div>
+
+<script>
+    const { createApp } = Vue;
+    
+    createApp({
+        data() {
+            return {
+                // UI State
+                view: 'eaas',
+                menuOpen: false,
+                showAuthModal: false,
+                showOrderModal: false,
+                showCrypto: false,
+                showUserMenu: false,
+                isMobile: window.innerWidth < 768,
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div v-for="p in filteredPortfolio" 
-                         class="section-card overflow-hidden group hover:transform hover:scale-[1.02] transition-transform duration-300">
-                        <div class="h-48 overflow-hidden relative">
-                            <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-70">
-                            <!-- NEW: Project Status -->
-                            <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs" 
-                                 :class="p.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                                         p.status === 'ongoing' ? 'bg-yellow-500/20 text-yellow-400' :
-                                         'bg-blue-500/20 text-blue-400'">
-                                {{ p.status }}
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <div>
-                                    <h3 class="orbitron font-bold text-lg mb-2">{{ p.title }}</h3>
-                                    <p class="text-xs text-slate-400">{{ p.desc }}</p>
-                                </div>
-                                <!-- NEW: Quick Actions -->
-                                <div class="flex gap-2">
-                                    <button @click="viewProjectDetails(p.id)" 
-                                            class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition">
-                                        <i class="fas fa-eye text-xs"></i>
-                                    </button>
-                                    <button @click="contact('Construction Inquiry: ' + p.title)" 
-                                            class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center hover:bg-cyan-600 transition">
-                                        <i class="fas fa-envelope text-xs"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- NEW: Project Metrics -->
-                            <div class="grid grid-cols-3 gap-4 mb-6">
-                                <div class="text-center">
-                                    <p class="text-[10px] text-slate-500">Budget</p>
-                                    <p class="orbitron text-sm">{{ p.budget }}</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-[10px] text-slate-500">Timeline</p>
-                                    <p class="orbitron text-sm">{{ p.timeline }}</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-[10px] text-slate-500">Progress</p>
-                                    <p class="orbitron text-sm">{{ p.progress }}%</p>
-                                </div>
-                            </div>
-                            
-                            <button @click="requestSpecs(p)" 
-                                    class="w-full py-2 border border-slate-700 rounded-lg text-[10px] orbitron font-bold hover:bg-white hover:text-black transition interactive-btn">
-                                <template v-if="!p.loadingSpecs">
-                                    REQUEST SPECS
-                                </template>
-                                <template v-else>
-                                    SENDING<span class="loading-dots"></span>
-                                </template>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                // Authentication
+                user: null,
+                authLoading: false,
+                authEmail: '',
+                authPassword: '',
+                authError: '',
+                isSignUp: false,
                 
-                <!-- NEW: Materials Calculator -->
-                <div class="section-card p-6">
-                    <h3 class="orbitron font-bold text-lg mb-4">Construction Calculator</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="text-sm font-semibold mb-2 block">Project Type</label>
-                            <select v-model="projectType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3">
-                                <option value="residential">Residential</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="industrial">Industrial</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold mb-2 block">Area (sq ft)</label>
-                            <input type="number" v-model="projectArea" 
-                                   class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3">
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold mb-2 block">Estimated Cost</label>
-                            <div class="p-3 bg-black/40 rounded-lg">
-                                <p class="orbitron text-xl text-cyan-400">${{ calculateProjectCost }}</p>
+                // Order Management
+                selectedOrder: null,
+                selectedOrderService: null,
+                orderDetails: '',
+                orderBudget: '',
+                orderTimeline: '',
+                orderNotes: '',
+                orderContact: { email: '', phone: '' },
+                orderError: '',
+                submittingOrder: false,
+                
+                // Data
+                userOrders: [],
+                userStats: {},
+                userActivity: [],
+                loadingOrders: false,
+                refreshing: false,
+                pendingOrders: 0,
+                activeOrderFilter: 'all',
+                
+                // Crypto
+                activeCoin: 0,
+                
+                // Navigation
+                navGroups: {
+                    'Operations': [
+                        { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th-large' },
+                        { id: 'trading', label: 'Trading Hub', icon: 'fas fa-chart-line' },
+                        { id: 'devsecops', label: 'DevSecOps Academy', icon: 'fas fa-user-shield' },
+                        { id: 'orders', label: 'My Orders', icon: 'fas fa-shopping-cart' }
+                    ],
+                    'Finance & Real World': [
+                        { id: 'sacco', label: 'Digital SACCO', icon: 'fas fa-vault' },
+                        { id: 'boyz', label: 'BoyzInTheHood', icon: 'fas fa-city' },
+                        { id: 'profile', label: 'My Profile', icon: 'fas fa-user' }
+                    ]
+                },
+                
+                viewTitles: {
+                    eaas: 'GLOBAL EAAS',
+                    trading: 'QUANTA SIGNALS',
+                    devsecops: 'BARAKA ACADEMY',
+                    sacco: 'SMART SACCO',
+                    boyz: 'URBAN PORTFOLIO',
+                    orders: 'MY ORDERS',
+                    profile: 'MY PROFILE'
+                },
+                
+                services: [
+                    { title: 'AI Integration', icon: 'fas fa-brain', desc: 'Custom LLM training and business workflow automation.' },
+                    { title: 'Signal Selling', icon: 'fas fa-wifi', desc: 'Premium HFX & Crypto signals delivered via encrypted channels.' },
+                    { title: 'Course Library', icon: 'fas fa-graduation-cap', desc: 'Proprietary knowledge on dropshipping and fintech.' },
+                    { title: 'Energy Meters', icon: 'fas fa-bolt', desc: 'Smart IOT evolution for modern energy management.' }
+                ],
+                
+                orderServices: [
+                    { id: 'ai', name: 'AI Integration', icon: 'fas fa-brain', price: 'From $999' },
+                    { id: 'signals', name: 'Trading Signals', icon: 'fas fa-wifi', price: 'From $299/mo' },
+                    { id: 'construction', name: 'Construction', icon: 'fas fa-hard-hat', price: 'Project Based' },
+                    { id: 'education', name: 'Education', icon: 'fas fa-graduation-cap', price: 'From $199' },
+                    { id: 'development', name: 'Development', icon: 'fas fa-code', price: 'Custom Quote' },
+                    { id: 'consulting', name: 'Consulting', icon: 'fas fa-chart-line', price: 'From $499/hr' }
+                ],
+                
+                orderFilters: [
+                    { label: 'All', value: 'all', count: 0 },
+                    { label: 'Pending', value: 'pending', count: 0 },
+                    { label: 'Processing', value: 'processing', count: 0 },
+                    { label: 'Completed', value: 'completed', count: 0 },
+                    { label: 'Cancelled', value: 'cancelled', count: 0 }
+                ],
+                
+                portfolio: [
+                    { title: 'Alpha Complex', desc: 'IOT-Integrated residential builds.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80' },
+                    { title: 'Logistics One', desc: 'Supply chain automation warehouse.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80' }
+                ],
+                
+                coins: [
+                    { 
+                        symbol: 'BTC',
+                        net: 'Bitcoin Network', 
+                        addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', 
+                    },
+                    { 
+                        symbol: 'USDC',
+                        net: 'Avalanche C-Chain', 
+                        addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', 
+                    }
+                ]
+            };
+        },
+        
+        computed: {
+            filteredOrders() {
+                if (this.activeOrderFilter === 'all') {
+                    return this.userOrders;
+                }
+                return this.userOrders.filter(order => order.status === this.activeOrderFilter);
+            }
+        },
+        
+        methods: {
+            // ========== AUTHENTICATION ==========
+            async signInWithGoogle() {
+                try {
+                    this.authLoading = true;
+                    this.authError = '';
+                    
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    const result = await firebase.auth().signInWithPopup(provider);
+                    
+                    // Save user to Firestore
+                    await this.saveUserToFirestore(result.user);
+                    
+                    this.showNotification('Successfully signed in with Google!', 'success');
+                    this.showAuthModal = false;
+                } catch (error) {
+                    console.error('Google sign in error:', error);
+                    this.authError = error.message;
+                    this.showNotification('Sign in failed: ' + error.message, 'error');
+                } finally {
+                    this.authLoading = false;
+                }
+            },
+            
+            async signInWithEmail() {
+                try {
+                    if (!this.authEmail || !this.authPassword) {
+                        this.authError = 'Please enter email and password';
+                        return;
+                    }
+                    
+                    this.authLoading = true;
+                    this.authError = '';
+                    
+                    const result = await firebase.auth().signInWithEmailAndPassword(this.authEmail, this.authPassword);
+                    
+                    this.showNotification('Successfully signed in!', 'success');
+                    this.showAuthModal = false;
+                    this.authEmail = '';
+                    this.authPassword = '';
+                } catch (error) {
+                    console.error('Email sign in error:', error);
+                    this.authError = error.message;
+                    this.showNotification('Sign in failed: ' + error.message, 'error');
+                } finally {
+                    this.authLoading = false;
+                }
+            },
+            
+            async signUpWithEmail() {
+                try {
+                    if (!this.authEmail || !this.authPassword) {
+                        this.authError = 'Please enter email and password';
+                        return;
+                    }
+                    
+                    if (this.authPassword.length < 6) {
+                        this.authError = 'Password must be at least 6 characters';
+                        return;
+                    }
+                    
+                    this.authLoading = true;
+                    this.authError = '';
+                    
+                    const result = await firebase.auth().createUserWithEmailAndPassword(this.authEmail, this.authPassword);
+                    
+                    // Send verification email
+                    await result.user.sendEmailVerification();
+                    
+                    // Save user to Firestore
+                    await this.saveUserToFirestore(result.user);
+                    
+                    this.showNotification('Account created! Please check your email for verification.', 'success');
+                    this.showAuthModal = false;
+                    this.authEmail = '';
+                    this.authPassword = '';
+                    this.isSignUp = false;
+                } catch (error) {
+                    console.error('Sign up error:', error);
+                    this.authError = error.message;
+                    this.showNotification('Sign up failed: ' + error.message, 'error');
+                } finally {
+                    this.authLoading = false;
+                }
+            },
+            
+            async saveUserToFirestore(user) {
+                try {
+                    const userRef = firebase.firestore().collection('users').doc(user.uid);
+                    const userDoc = await userRef.get();
+                    
+                    if (!userDoc.exists) {
+                        await userRef.set({
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName || user.email.split('@')[0],
+                            photoURL: user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.email)}&background=0f172a&color=00f5ff`,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            tier: 'member',
+                            role: 'user',
+                            ordersCount: 0,
+                            totalSpent: 0
+                        });
+                        console.log('User saved to Firestore');
+                    }
+                } catch (error) {
+                    console.error('Error saving user to Firestore:', error);
+                }
+            },
+            
+            async signOut() {
+                try {
+                    await firebase.auth().signOut();
+                    this.user = null;
+                    this.userOrders = [];
+                    this.userStats = {};
+                    this.showUserMenu = false;
+                    this.view = 'eaas';
+                    this.showNotification('Successfully signed out', 'success');
+                } catch (error) {
+                    console.error('Sign out error:', error);
+                    this.showNotification('Sign out failed', 'error');
+                }
+            },
+            
+            resetPassword() {
+                if (!this.user || !this.user.email) {
+                    this.showNotification('Please sign in first', 'error');
+                    return;
+                }
+                
+                firebase.auth().sendPasswordResetEmail(this.user.email)
+                    .then(() => {
+                        this.showNotification('Password reset email sent! Check your inbox.', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Password reset error:', error);
+                        this.showNotification('Failed to send reset email', 'error');
+                    });
+            },
+            
+            // ========== ORDER MANAGEMENT ==========
+            async submitOrder() {
+                if (!this.user) {
+                    this.showAuthModal = true;
+                    return;
+                }
+                
+                // Validation
+                if (!this.selectedOrderService) {
+                    this.orderError = 'Please select a service';
+                    return;
+                }
+                
+                if (!this.orderDetails.trim()) {
+                    this.orderError = 'Please provide order details';
+                    return;
+                }
+                
+                if (!this.orderBudget) {
+                    this.orderError = 'Please select a budget range';
+                    return;
+                }
+                
+                if (!this.orderTimeline) {
+                    this.orderError = 'Please select a timeline';
+                    return;
+                }
+                
+                if (!this.orderContact.email) {
+                    this.orderError = 'Please provide your email';
+                    return;
+                }
+                
+                this.submittingOrder = true;
+                this.orderError = '';
+                
+                try {
+                    const orderService = this.orderServices.find(s => s.id === this.selectedOrderService);
+                    const orderId = 'EXN-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                    
+                    const orderData = {
+                        orderId: orderId,
+                        userId: this.user.uid,
+                        service: orderService.name,
+                        description: this.orderDetails.trim(),
+                        budget: this.orderBudget,
+                        timeline: this.orderTimeline,
+                        priority: this.orderTimeline.includes('Urgent') ? 'high' : 'normal',
+                        status: 'pending',
+                        contact: {
+                            email: this.orderContact.email,
+                            phone: this.orderContact.phone || ''
+                        },
+                        notes: this.orderNotes.trim(),
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updates: [{
+                            title: 'Order Created',
+                            message: 'Your order has been submitted successfully',
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        }]
+                    };
+                    
+                    // Save to Firestore
+                    const docRef = await firebase.firestore().collection('orders').add(orderData);
+                    
+                    // Update user's order count
+                    await firebase.firestore().collection('users').doc(this.user.uid).update({
+                        ordersCount: firebase.firestore.FieldValue.increment(1),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Add to local state
+                    orderData.id = docRef.id;
+                    orderData.createdAt = new Date().toISOString();
+                    this.userOrders.unshift(orderData);
+                    
+                    this.updateOrderCounts();
+                    
+                    // Reset form
+                    this.showOrderModal = false;
+                    this.resetOrderForm();
+                    
+                    // Show success
+                    this.showNotification(`Order #${orderId} created successfully!`, 'success');
+                    
+                    // Switch to orders view
+                    this.view = 'orders';
+                    
+                } catch (error) {
+                    console.error('Error creating order:', error);
+                    this.orderError = 'Failed to create order: ' + error.message;
+                    this.showNotification('Failed to create order', 'error');
+                } finally {
+                    this.submittingOrder = false;
+                }
+            },
+            
+            resetOrderForm() {
+                this.selectedOrderService = null;
+                this.orderDetails = '';
+                this.orderBudget = '';
+                this.orderTimeline = '';
+                this.orderNotes = '';
+                this.orderContact = { 
+                    email: this.user ? this.user.email : '', 
+                    phone: '' 
+                };
+                this.orderError = '';
+            },
+            
+            async loadUserOrders() {
+                if (!this.user) return;
+                
+                this.loadingOrders = true;
+                try {
+                    const ordersRef = firebase.firestore().collection('orders');
+                    const query = ordersRef
+                        .where('userId', '==', this.user.uid)
+                        .orderBy('createdAt', 'desc');
+                    
+                    const snapshot = await query.get();
+                    
+                    this.userOrders = [];
+                    snapshot.forEach(doc => {
+                        const order = doc.data();
+                        order.id = doc.id;
+                        // Convert Firestore timestamp to Date
+                        if (order.createdAt && order.createdAt.toDate) {
+                            order.createdAt = order.createdAt.toDate().toISOString();
+                        }
+                        if (order.updatedAt && order.updatedAt.toDate) {
+                            order.updatedAt = order.updatedAt.toDate().toISOString();
+                        }
+                        this.userOrders.push(order);
+                    });
+                    
+                    this.updateOrderCounts();
+                    
+                } catch (error) {
+                    console.error('Error loading orders:', error);
+                    this.showNotification('Failed to load orders', 'error');
+                } finally {
+                    this.loadingOrders = false;
+                }
+            },
+            
+            updateOrderCounts() {
+                // Update filter counts
+                this.orderFilters.forEach(filter => {
+                    if (filter.value === 'all') {
+                        filter.count = this.userOrders.length;
+                    } else {
+                        filter.count = this.userOrders.filter(order => order.status === filter.value).length;
+                    }
+                });
+                
+                // Update pending orders count
+                this.pendingOrders = this.userOrders.filter(order => 
+                    order.status === 'pending' || order.status === 'processing'
+                ).length;
+                
+                // Update user stats
+                this.userStats.totalOrders = this.userOrders.length;
+                this.userStats.completedOrders = this.userOrders.filter(order => order.status === 'completed').length;
+                this.userStats.activeOrders = this.pendingOrders;
+                this.userStats.totalSpent = this.userOrders
+                    .filter(order => order.status === 'completed')
+                    .reduce((total, order) => {
+                        const amount = parseFloat(order.budget?.replace(/[^0-9.]/g, '') || 0);
+                        return total + amount;
+                    }, 0);
+            },
+            
+            async updateOrderStatus(orderId, status) {
+                try {
+                    await firebase.firestore().collection('orders').doc(orderId).update({
+                        status: status,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Update local state
+                    const orderIndex = this.userOrders.findIndex(o => o.id === orderId);
+                    if (orderIndex !== -1) {
+                        this.userOrders[orderIndex].status = status;
+                        this.userOrders[orderIndex].updates.push({
+                            title: `Status Updated to ${status}`,
+                            message: `Order status has been changed to ${status}`,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                    
+                    this.updateOrderCounts();
+                    this.showNotification(`Order status updated to ${status}`, 'success');
+                    
+                } catch (error) {
+                    console.error('Error updating order:', error);
+                    this.showNotification('Failed to update order status', 'error');
+                }
+            },
+            
+            // ========== USER DATA ==========
+            async loadUserData() {
+                if (!this.user) return;
+                
+                this.refreshing = true;
+                try {
+                    // Load user document from Firestore
+                    const userDoc = await firebase.firestore().collection('users').doc(this.user.uid).get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        this.userStats = {
+                            totalOrders: userData.ordersCount || 0,
+                            totalSpent: userData.totalSpent || 0
+                        };
+                    }
+                    
+                    // Load orders
+                    await this.loadUserOrders();
+                    
+                    // Generate activity feed
+                    this.userActivity = [
+                        { 
+                            icon: 'fas fa-sign-in-alt', 
+                            message: 'You signed in successfully', 
+                            time: 'Just now',
+                            type: 'auth'
+                        }
+                    ];
+                    
+                    if (this.userOrders.length > 0) {
+                        const latestOrder = this.userOrders[0];
+                        this.userActivity.unshift({
+                            icon: 'fas fa-shopping-cart',
+                            message: `Created order #${latestOrder.orderId}`,
+                            time: 'Recently',
+                            type: 'order'
+                        });
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                } finally {
+                    this.refreshing = false;
+                }
+            },
+            
+            async refreshUserData() {
+                await this.loadUserData();
+                this.showNotification('Data refreshed', 'success');
+            },
+            
+            // ========== UI HELPERS ==========
+            selectView(viewId) {
+                if ((viewId === 'orders' || viewId === 'profile') && !this.user) {
+                    this.showAuthModal = true;
+                    return;
+                }
+                this.view = viewId;
+                this.menuOpen = false;
+                this.showUserMenu = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+            
+            showOrderModalForService(serviceName) {
+                if (!this.user) {
+                    this.showAuthModal = true;
+                    return;
+                }
+                
+                const service = this.orderServices.find(s => s.name === serviceName);
+                if (service) {
+                    this.selectedOrderService = service.id;
+                    this.orderContact.email = this.user.email;
+                    this.showOrderModal = true;
+                }
+            },
+            
+            toggleUserMenu() {
+                this.showUserMenu = !this.showUserMenu;
+            },
+            
+            formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+                
+                if (isNaN(date.getTime())) {
+                    return 'Invalid date';
+                }
+                
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+                
+                if (diffMins < 1) return 'Just now';
+                if (diffMins < 60) return `${diffMins}m ago`;
+                if (diffHours < 24) return `${diffHours}h ago`;
+                if (diffDays < 7) return `${diffDays}d ago`;
+                
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            },
+            
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        this.showNotification('Address copied to clipboard!', 'success');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        this.showNotification('Failed to copy address', 'error');
+                    });
+            },
+            
+            showNotification(message, type = 'info') {
+                // Simple alert for now - can be enhanced with a proper notification system
+                if (type === 'success') {
+                    alert('✅ ' + message);
+                } else if (type === 'error') {
+                    alert('❌ ' + message);
+                } else {
+                    alert('ℹ️ ' + message);
+                }
+            },
+            
+            contact(subject) {
+                window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${encodeURIComponent(subject)}`;
+            },
+            
+            contactSupport(orderId = null) {
+                const subject = orderId ? `Support for Order #${orderId}` : 'General Support Request';
+                window.location.href = `mailto:support@exnesfly.org?subject=${encodeURIComponent(subject)}`;
+            },
+            
+            editProfile() {
+                this.showNotification('Profile editing coming soon!', 'info');
+            },
+            
+            toggleNotifications() {
+                this.showNotification('Notification settings coming soon!', 'info');
+            },
+            
+            goToDashboard() {
+                this.view = 'eaas';
+                this.showUserMenu = false;
+            }
+        },
+        
+        watch: {
+            user(newUser) {
+                if (newUser) {
+                    this.orderContact.email = newUser.email;
+                    this.loadUserData();
+                }
+            }
+        },
+        
+        mounted() {
+            // Set up auth state listener
+            firebase.auth().onAuthStateChanged((user) => {
+                this.user = user;
+                if (user) {
+                    console.log('User signed in:', user.email);
+                    this.loadUserData();
+                } else {
+                    console.log('User signed out');
+                    this.userOrders = [];
+                    this.userStats = {};
+                    this.pendingOrders = 0;
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                this.isMobile = window.innerWidth < 768;
+                if (!this.isMobile) {
+                    this.menuOpen = true;
+                }
+            });
+            
+            // Initialize mobile menu state
+            this.isMobile = window.innerWidth < 768;
+            if (!this.isMobile) {
+                this.menuOpen = true;
+            }
+            
+            // Close user menu when clicking outside
+            document.addEventListener('click', (event) => {
+                if (this.showUserMenu && !event.target.closest('.user-avatar')) {
+                    this.showUserMenu = false;
+                }
+            });
+            
+            console.log('🚀 EXNESFLY NEXUS 4.0 loaded successfully!');
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
