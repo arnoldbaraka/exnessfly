@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>EXNESFLY 2.0 - The Ultimate Tech Ecosystem</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Poppins:wght@300;400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>EXNESFLY 3.0 - Everything-as-a-Service Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Poppins:wght@300;400;600;700;800&family=Roboto+Mono:wght@300;400;500&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
 /* ========== CUSTOM PROPERTIES ========== */
 :root {
-  --primary: #0a0f2e;
-  --secondary: #ffcc00;
-  --accent: #00ffcc;
-  --danger: #ff3366;
-  --dark: #080c25;
-  --light: #cfd8ff;
-  --neon-glow: 0 0 20px;
-  --space-gradient: linear-gradient(135deg, #0a0f2e 0%, #1a1f3d 30%, #2d1b69 70%, #0a0f2e 100%);
-  --matrix-gradient: linear-gradient(90deg, #00ffcc, #0099cc, #0066ff);
-  --transition-fast: 0.3s ease;
-  --transition-medium: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --transition-slow: 1s cubic-bezier(0.19, 1, 0.22, 1);
+  --primary: #000814;
+  --secondary: #00F5FF;
+  --accent: #FF005C;
+  --gold: #FFD700;
+  --silver: #C0C0C0;
+  --green: #00FF9D;
+  --dark: #0A0A12;
+  --light: #E8F1F5;
+  --neon-glow: 0 0 25px;
+  --space-gradient: linear-gradient(135deg, #000814 0%, #001D3D 30%, #003566 70%, #000814 100%);
+  --cyber-gradient: linear-gradient(90deg, #00F5FF, #00B4D8, #0077B6);
+  --money-gradient: linear-gradient(90deg, #00FF9D, #00CC7A, #00995C);
+  --danger-gradient: linear-gradient(90deg, #FF005C, #FF3A7A, #FF6B98);
+  --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-medium: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== RESET & BASE ========== */
@@ -33,138 +37,114 @@ body {
   color: var(--light);
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 204, 0, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(0, 255, 204, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 50% 50%, rgba(255, 51, 102, 0.03) 0%, transparent 30%);
+    radial-gradient(circle at 10% 20%, rgba(0, 245, 255, 0.08) 0%, transparent 25%),
+    radial-gradient(circle at 90% 80%, rgba(255, 0, 92, 0.08) 0%, transparent 25%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.05) 0%, transparent 35%);
 }
 ::selection { background: var(--secondary); color: var(--primary); }
-::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: var(--dark); }
-::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar-thumb { 
+  background: var(--cyber-gradient);
+  border-radius: 6px;
+  border: 2px solid var(--dark);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
 
-/* ========== GLITCH EFFECT ========== */
-.glitch-wrapper {
+/* ========== GENERATED LOGO CONTAINER ========== */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   position: relative;
-  display: inline-block;
 }
-.glitch-text {
+.generated-logo {
+  width: 55px;
+  height: 55px;
   position: relative;
-  color: var(--secondary);
-  font-family: 'Orbitron', monospace;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.glitch-text::before, .glitch-text::after {
-  content: attr(data-text);
+.logo-symbol {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.logo-symbol::before {
+  content: '∞';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: var(--secondary);
+  text-shadow: 0 0 20px var(--secondary);
+  animation: logo-pulse 3s infinite alternate;
 }
-.glitch-text::before {
-  color: var(--accent);
-  animation: glitch-effect 3s infinite linear alternate-reverse;
-  z-index: -1;
+.logo-symbol::after {
+  content: '';
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  top: -10%;
+  left: -10%;
+  animation: logo-rotate 8s linear infinite;
+  opacity: 0.7;
 }
-.glitch-text::after {
-  color: var(--danger);
-  animation: glitch-effect 2s infinite linear alternate-reverse;
-  z-index: -2;
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1); text-shadow: 0 0 20px var(--secondary); }
+  50% { transform: scale(1.1); text-shadow: 0 0 30px var(--secondary), 0 0 40px var(--accent); }
 }
-@keyframes glitch-effect {
-  0% { transform: translate(0); clip-path: inset(40% 0 61% 0); }
-  5% { clip-path: inset(92% 0 1% 0); }
-  10% { clip-path: inset(43% 0 1% 0); transform: translate(-5px, 3px); }
-  15% { clip-path: inset(25% 0 58% 0); }
-  20% { clip-path: inset(54% 0 7% 0); transform: translate(5px, -3px); }
-  45% { clip-path: inset(58% 0 43% 0); transform: translate(3px, 1px); }
-  50% { clip-path: inset(98% 0 1% 0); }
-  55% { clip-path: inset(75% 0 23% 0); transform: translate(-3px, 2px); }
-  60% { clip-path: inset(54% 0 30% 0); }
-  65% { clip-path: inset(78% 0 5% 0); }
-  70% { clip-path: inset(100% 0 1% 0); transform: translate(4px, -2px); }
-  75% { clip-path: inset(23% 0 65% 0); }
-  80% { clip-path: inset(34% 0 40% 0); transform: translate(-2px, 4px); }
-  85% { clip-path: inset(80% 0 3% 0); }
-  90% { clip-path: inset(1% 0 99% 0); transform: translate(1px, -1px); }
-  95% { clip-path: inset(68% 0 30% 0); }
-  100% { clip-path: inset(10% 0 90% 0); transform: translate(0); }
+@keyframes logo-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-
-/* ========== MATRIX BACKGROUND ========== */
-.matrix-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -100;
-  opacity: 0.1;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 255, 204, 0.03) 0px,
-    rgba(0, 255, 204, 0.03) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--secondary), var(--accent), var(--green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+  animation: text-glow 4s infinite alternate;
+}
+@keyframes text-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; text-shadow: 0 0 25px rgba(0, 245, 255, 0.5); }
 }
 
-/* ========== HEADER - FLOATING NEON NAV ========== */
+/* ========== HEADER ========== */
 header {
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
-  background: rgba(10, 15, 46, 0.85);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+  background: rgba(10, 10, 18, 0.92);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border-bottom: 1px solid rgba(0, 245, 255, 0.2);
   z-index: 9999;
-  padding: 15px 40px;
+  padding: 18px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: var(--transition-medium);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
 }
 .header-scrolled {
-  padding: 10px 40px;
-  background: rgba(10, 15, 46, 0.95);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.logo {
-  height: 50px;
-  width: auto;
-  filter: drop-shadow(0 0 10px var(--secondary));
-  animation: logo-pulse 4s infinite alternate;
-}
-@keyframes logo-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px var(--secondary)); }
-  50% { transform: scale(1.05); filter: drop-shadow(0 0 20px var(--secondary)); }
-}
-.logo-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: 1px;
+  padding: 12px 40px;
+  background: rgba(10, 10, 18, 0.97);
+  border-bottom: 1px solid var(--secondary);
 }
 
 .nav-links {
   display: flex;
-  gap: 25px;
+  gap: 30px;
 }
 .nav-link {
   position: relative;
@@ -172,6 +152,8 @@ header {
   padding: 8px 0;
   overflow: hidden;
   transition: var(--transition-fast);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }
 .nav-link::before {
   content: '';
@@ -180,24 +162,28 @@ header {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--secondary);
+  background: var(--cyber-gradient);
   transition: var(--transition-medium);
 }
 .nav-link:hover::before { width: 100%; }
 .nav-link:hover { color: var(--secondary); }
 
 .nav-cta {
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
+  background: var(--cyber-gradient);
   color: var(--primary);
-  padding: 10px 25px;
+  padding: 12px 30px;
   border-radius: 30px;
   font-weight: 700;
-  transition: var(--transition-fast);
-  box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+  transition: var(--transition-medium);
+  box-shadow: 0 5px 20px rgba(0, 245, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }
 .nav-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 204, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 245, 255, 0.5);
 }
 
 .mobile-menu-btn {
@@ -207,9 +193,125 @@ header {
   color: var(--light);
   font-size: 1.8rem;
   cursor: pointer;
+  transition: var(--transition-fast);
+}
+.mobile-menu-btn:hover { color: var(--secondary); }
+
+/* ========== CRYPTO DONATIONS MODAL ========== */
+.crypto-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 8, 20, 0.95);
+  backdrop-filter: blur(15px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.5s ease;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.crypto-modal.active {
+  display: flex;
+}
+.modal-content {
+  background: rgba(10, 10, 18, 0.95);
+  border: 2px solid var(--secondary);
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 245, 255, 0.2);
+  animation: modalSlideUp 0.5s ease;
+}
+@keyframes modalSlideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--light);
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.close-modal:hover { color: var(--accent); }
+.modal-title {
+  color: var(--secondary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.crypto-options {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.crypto-option {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  transition: var(--transition-medium);
+  cursor: pointer;
+}
+.crypto-option:hover {
+  background: rgba(0, 245, 255, 0.1);
+  border-color: var(--secondary);
+  transform: translateY(-5px);
+}
+.crypto-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.crypto-icon {
+  font-size: 2rem;
+  color: var(--gold);
+}
+.crypto-icon.usdc { color: #2775CA; }
+.crypto-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--light);
+}
+.crypto-network {
+  color: var(--secondary);
+  font-size: 0.9rem;
+  font-family: 'Roboto Mono', monospace;
+  margin-top: 5px;
+}
+.crypto-address {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 10px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--light);
+  word-break: break-all;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.crypto-warning {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 10px;
 }
 
-/* ========== HERO - IMMERSIVE FULLSCREEN ========== */
+/* ========== HERO SECTION ========== */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -217,7 +319,7 @@ header {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 120px 20px 80px;
+  padding: 140px 20px 80px;
   position: relative;
   overflow: hidden;
   background: var(--space-gradient);
@@ -230,26 +332,26 @@ header {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(255, 204, 0, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(0, 255, 204, 0.1) 0%, transparent 40%);
+    radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 92, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 20%, rgba(0, 255, 157, 0.1) 0%, transparent 30%);
   z-index: -1;
 }
 
 .hero-title {
-  font-size: 5rem;
+  font-size: 4.5rem;
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   line-height: 1.1;
-}
-.hero-title .highlight {
-  background: linear-gradient(90deg, var(--secondary), var(--accent), var(--danger));
+  background: linear-gradient(90deg, var(--secondary), var(--accent), var(--green));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient-shift 8s infinite alternate;
+  animation: title-glow 8s infinite alternate;
+  text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
 }
-@keyframes gradient-shift {
+@keyframes title-glow {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
@@ -258,19 +360,24 @@ header {
   font-size: 1.5rem;
   max-width: 900px;
   margin: 0 auto 40px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--light);
+  font-weight: 300;
+}
+.hero-subtitle strong {
+  color: var(--secondary);
+  font-weight: 600;
 }
 
 .hero-cta-container {
   display: flex;
   gap: 25px;
-  margin-top: 40px;
+  margin-top: 50px;
   flex-wrap: wrap;
   justify-content: center;
 }
 .hero-btn {
-  padding: 18px 40px;
+  padding: 18px 45px;
   border-radius: 50px;
   font-weight: 700;
   font-size: 1.1rem;
@@ -282,7 +389,8 @@ header {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  letter-spacing: 0.5px;
 }
 .hero-btn::before {
   content: '';
@@ -291,20 +399,20 @@ header {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
   transition: var(--transition-medium);
   z-index: -1;
 }
 .hero-btn:hover::before { left: 100%; }
 
 .btn-primary {
-  background: linear-gradient(90deg, var(--secondary), #ffdd33);
+  background: var(--cyber-gradient);
   color: var(--primary);
-  box-shadow: 0 10px 30px rgba(255, 204, 0, 0.4);
+  box-shadow: 0 10px 35px rgba(0, 245, 255, 0.4);
 }
 .btn-primary:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(255, 204, 0, 0.6);
+  box-shadow: 0 20px 50px rgba(0, 245, 255, 0.6);
 }
 
 .btn-secondary {
@@ -313,55 +421,25 @@ header {
   border: 2px solid var(--secondary);
 }
 .btn-secondary:hover {
-  background: rgba(255, 204, 0, 0.1);
+  background: rgba(0, 245, 255, 0.1);
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(255, 204, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 245, 255, 0.3);
 }
 
-/* ========== INTERACTIVE STATS ========== */
-.stats-container {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  margin-top: 80px;
-  flex-wrap: wrap;
+.btn-accent {
+  background: var(--danger-gradient);
+  color: white;
+  box-shadow: 0 10px 35px rgba(255, 0, 92, 0.4);
 }
-.stat-box {
-  text-align: center;
-  padding: 25px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  min-width: 200px;
-  transition: var(--transition-medium);
-}
-.stat-box:hover {
-  transform: translateY(-10px);
-  border-color: var(--secondary);
-  box-shadow: 0 15px 30px rgba(255, 204, 0, 0.2);
-}
-.stat-number {
-  font-size: 3.5rem;
-  font-weight: 900;
-  font-family: 'Orbitron', sans-serif;
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  line-height: 1;
-}
-.stat-label {
-  font-size: 1rem;
-  color: var(--light);
-  margin-top: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.btn-accent:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(255, 0, 92, 0.6);
 }
 
-/* ========== 3D INTERACTIVE SHOWCASE ========== */
-.showcase-section {
+/* ========== BUSINESS MODEL SECTION ========== */
+.business-section {
   padding: 120px 20px;
+  background: rgba(10, 10, 18, 0.8);
   position: relative;
   overflow: hidden;
 }
@@ -371,79 +449,81 @@ header {
 }
 .section-subtitle {
   font-size: 1.2rem;
-  color: var(--accent);
+  color: var(--secondary);
   font-family: 'Roboto Mono', monospace;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   text-transform: uppercase;
   letter-spacing: 3px;
 }
 .section-title {
   font-size: 3.5rem;
   font-family: 'Orbitron', sans-serif;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  color: var(--light);
   position: relative;
 }
 .section-title::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: var(--matrix-gradient);
-  border-radius: 2px;
+  width: 120px;
+  height: 5px;
+  background: var(--cyber-gradient);
+  border-radius: 3px;
 }
 .section-desc {
   font-size: 1.2rem;
   max-width: 800px;
-  margin: 0 auto;
-  color: var(--light);
-  line-height: 1.6;
+  margin: 40px auto 0;
+  color: rgba(232, 241, 245, 0.8);
+  line-height: 1.7;
 }
 
-/* ========== INTERACTIVE CARD GRID ========== */
-.card-grid {
+/* ========== EVERYTHING-AS-A-SERVICE GRID ========== */
+.eaas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 35px;
   margin-top: 60px;
 }
-.interactive-card {
-  background: rgba(17, 21, 54, 0.8);
+.eaas-card {
+  background: rgba(17, 25, 40, 0.7);
   border-radius: 25px;
-  padding: 35px;
+  padding: 40px 30px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 204, 0, 0.2);
+  border: 1px solid rgba(0, 245, 255, 0.2);
   transition: var(--transition-medium);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-.interactive-card::before {
+.eaas-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 5px;
-  background: var(--matrix-gradient);
+  background: var(--cyber-gradient);
   transform: scaleX(0);
   transform-origin: left;
   transition: var(--transition-medium);
 }
-.interactive-card:hover::before { transform: scaleX(1); }
-.interactive-card:hover {
+.eaas-card:hover::before { transform: scaleX(1); }
+.eaas-card:hover {
   transform: translateY(-15px) scale(1.02);
   border-color: var(--secondary);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  background: rgba(20, 30, 48, 0.8);
 }
 .card-icon {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
+  background: var(--cyber-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -451,34 +531,62 @@ header {
 .card-title {
   font-size: 1.8rem;
   font-family: 'Orbitron', sans-serif;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   color: var(--secondary);
 }
 .card-desc {
-  color: var(--light);
-  line-height: 1.6;
-  margin-bottom: 25px;
+  color: rgba(232, 241, 245, 0.8);
+  line-height: 1.7;
+  margin-bottom: 30px;
   flex-grow: 1;
+}
+.card-features {
+  list-style: none;
+  margin-bottom: 30px;
+}
+.card-features li {
+  color: var(--light);
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card-features li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: bold;
+}
+.card-pricing {
+  color: var(--green);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: 'Orbitron', sans-serif;
 }
 .card-btn {
   align-self: flex-start;
-  padding: 10px 25px;
-  background: rgba(255, 204, 0, 0.1);
+  padding: 12px 30px;
+  background: rgba(0, 245, 255, 0.1);
   color: var(--secondary);
   border-radius: 30px;
   font-weight: 600;
-  transition: var(--transition-fast);
-  border: 1px solid rgba(255, 204, 0, 0.3);
+  transition: var(--transition-medium);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .card-btn:hover {
-  background: rgba(255, 204, 0, 0.2);
-  transform: translateX(5px);
+  background: rgba(0, 245, 255, 0.2);
+  transform: translateX(10px);
 }
 
-/* ========== BOYZ IN THE HOOD SECTION ========== */
+/* ========== BOYZ IN THE HOOD DIVERSIFIED ========== */
 .boyz-section {
-  background: linear-gradient(135deg, rgba(8, 12, 37, 0.9), rgba(20, 10, 40, 0.9));
   padding: 120px 20px;
+  background: linear-gradient(135deg, rgba(20, 10, 40, 0.9), rgba(10, 10, 18, 0.9));
   position: relative;
   overflow: hidden;
 }
@@ -492,38 +600,13 @@ header {
   background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
   background-size: cover;
   background-position: center;
-  opacity: 0.15;
+  opacity: 0.1;
   z-index: -1;
-}
-
-.boyz-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-.boyz-title {
-  font-size: 4rem;
-  font-family: 'Orbitron', sans-serif;
-  margin-bottom: 15px;
-  color: var(--secondary);
-  text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
-}
-.boyz-subtitle {
-  font-size: 1.3rem;
-  color: var(--accent);
-  font-family: 'Roboto Mono', monospace;
-  margin-bottom: 10px;
-}
-.boyz-tagline {
-  font-size: 1.8rem;
-  color: var(--light);
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
 }
 
 .boyz-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-top: 60px;
 }
@@ -531,34 +614,22 @@ header {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 20px;
-  padding: 30px;
+  padding: 35px 30px;
   text-align: center;
-  border: 1px solid rgba(255, 204, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.3);
   transition: var(--transition-medium);
   position: relative;
   overflow: hidden;
 }
 .boyz-card:hover {
   transform: translateY(-10px);
-  border-color: var(--secondary);
-  box-shadow: 0 20px 40px rgba(255, 204, 0, 0.2);
+  border-color: var(--gold);
+  box-shadow: 0 25px 50px rgba(255, 215, 0, 0.2);
 }
-.boyz-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,204,0,0.1) 0%, transparent 70%);
-  opacity: 0;
-  transition: var(--transition-medium);
-}
-.boyz-card:hover::before { opacity: 1; }
 .boyz-icon {
   font-size: 3.5rem;
-  color: var(--secondary);
-  margin-bottom: 20px;
+  color: var(--gold);
+  margin-bottom: 25px;
 }
 .boyz-card-title {
   font-size: 1.8rem;
@@ -567,17 +638,68 @@ header {
   font-family: 'Orbitron', sans-serif;
 }
 .boyz-card-desc {
-  color: var(--light);
-  line-height: 1.6;
+  color: rgba(232, 241, 245, 0.8);
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+.boyz-card-price {
+  color: var(--green);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.boyz-cta {
-  text-align: center;
-  margin-top: 80px;
+/* ========== CRYPTO DONATION SECTION ========== */
+.donation-section {
+  padding: 120px 20px;
+  background: rgba(10, 10, 18, 0.9);
+  position: relative;
+  overflow: hidden;
 }
-.boyz-cta-btn {
-  padding: 20px 50px;
-  background: linear-gradient(90deg, var(--secondary), #ff9900);
+.donation-container {
+  background: rgba(20, 30, 48, 0.7);
+  border-radius: 30px;
+  padding: 60px;
+  border: 2px solid rgba(0, 245, 255, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.donation-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.donation-title {
+  color: var(--secondary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.donation-subtitle {
+  color: var(--light);
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+.donation-btn {
+  padding: 18px 50px;
+  background: var(--money-gradient);
   color: var(--primary);
   border-radius: 50px;
   font-weight: 800;
@@ -587,235 +709,70 @@ header {
   border: none;
   cursor: pointer;
   transition: var(--transition-medium);
-  box-shadow: 0 10px 30px rgba(255, 204, 0, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 255, 157, 0.3);
   display: inline-flex;
   align-items: center;
   gap: 15px;
+  position: relative;
+  z-index: 1;
 }
-.boyz-cta-btn:hover {
+.donation-btn:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(255, 204, 0, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 255, 157, 0.5);
 }
 
-/* ========== INTERACTIVE PRODUCT SHOWCASE ========== */
-.product-showcase {
-  padding: 120px 20px;
-  position: relative;
-  overflow: hidden;
-}
-.swiper-container {
-  width: 100%;
-  height: 500px;
-  border-radius: 25px;
-  overflow: hidden;
-  margin-top: 60px;
-}
-.swiper-slide {
-  background: rgba(17, 21, 54, 0.8);
-  border-radius: 25px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding: 40px;
-  border: 1px solid rgba(255, 204, 0, 0.2);
-}
-.product-image {
-  flex: 1;
-  height: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-}
-.product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: var(--transition-medium);
-}
-.swiper-slide:hover .product-image img { transform: scale(1.05); }
-.product-info {
-  flex: 1;
-  padding: 0 40px;
-}
-.product-title {
-  font-size: 2.5rem;
-  font-family: 'Orbitron', sans-serif;
-  margin-bottom: 20px;
-  color: var(--secondary);
-}
-.product-desc {
-  color: var(--light);
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-.product-features {
-  list-style: none;
-  margin-bottom: 30px;
-}
-.product-features li {
-  color: var(--light);
-  margin-bottom: 10px;
-  padding-left: 25px;
-  position: relative;
-}
-.product-features li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: bold;
-}
-.product-btn {
-  padding: 15px 35px;
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  color: var(--primary);
-  border-radius: 30px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.product-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(255, 204, 0, 0.4);
-}
-
-/* ========== INTERACTIVE COMMUNITY HUB ========== */
+/* ========== COMMUNITY SECTION ========== */
 .community-section {
   padding: 120px 20px;
   background: var(--space-gradient);
   position: relative;
 }
-.community-container {
-  display: flex;
-  gap: 50px;
-  margin-top: 60px;
-  flex-wrap: wrap;
-}
-.community-chat {
-  flex: 1;
-  min-width: 300px;
-  background: rgba(17, 21, 54, 0.8);
-  border-radius: 25px;
-  padding: 30px;
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-}
-.chat-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.2);
-}
-.chat-icon {
-  font-size: 2rem;
-  color: var(--secondary);
-}
-.chat-title {
-  font-size: 1.8rem;
-  font-family: 'Orbitron', sans-serif;
-  color: var(--light);
-}
-.chat-messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  max-height: 400px;
-  padding-right: 10px;
-  margin-bottom: 20px;
-}
-.chat-message {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 15px;
-  border-left: 3px solid var(--secondary);
-}
-.chat-sender {
-  font-weight: 700;
-  color: var(--secondary);
-  margin-bottom: 5px;
-}
-.chat-text {
-  color: var(--light);
-}
-.chat-input {
-  display: flex;
-  gap: 10px;
-}
-.chat-input input {
-  flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 204, 0, 0.3);
-  border-radius: 30px;
-  padding: 15px 20px;
-  color: var(--light);
-  font-family: 'Poppins', sans-serif;
-}
-.chat-input input:focus {
-  outline: none;
-  border-color: var(--secondary);
-}
-.chat-input button {
-  padding: 15px 25px;
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  color: var(--primary);
-  border: none;
-  border-radius: 30px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-.chat-input button:hover { transform: scale(1.05); }
-
 .community-stats {
-  flex: 1;
-  min-width: 300px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 25px;
+  margin-top: 60px;
 }
 .community-stat {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  padding: 30px;
+  padding: 35px 25px;
   text-align: center;
-  border: 1px solid rgba(255, 204, 0, 0.2);
+  border: 1px solid rgba(0, 245, 255, 0.2);
   transition: var(--transition-medium);
+  position: relative;
+  overflow: hidden;
 }
 .community-stat:hover {
   transform: translateY(-10px);
   border-color: var(--secondary);
-  box-shadow: 0 15px 30px rgba(255, 204, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 245, 255, 0.2);
 }
 .stat-icon {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   color: var(--secondary);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 .stat-number {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
   color: var(--light);
   margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
 }
 .stat-label {
-  color: var(--light);
+  color: rgba(232, 241, 245, 0.8);
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
-/* ========== FOOTER - INTERACTIVE ========== */
+/* ========== FOOTER ========== */
 .footer {
-  background: var(--dark);
+  background: rgba(5, 5, 10, 0.95);
   padding: 80px 20px 30px;
-  border-top: 1px solid rgba(255, 204, 0, 0.3);
+  border-top: 2px solid rgba(0, 245, 255, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -826,7 +783,7 @@ header {
   left: 0;
   width: 100%;
   height: 5px;
-  background: var(--matrix-gradient);
+  background: var(--cyber-gradient);
 }
 .footer-grid {
   display: grid;
@@ -840,16 +797,16 @@ header {
   margin-bottom: 25px;
   color: var(--secondary);
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 }
 .footer-column h3::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 50px;
-  height: 3px;
-  background: var(--matrix-gradient);
+  width: 60px;
+  height: 4px;
+  background: var(--cyber-gradient);
 }
 .footer-links {
   list-style: none;
@@ -858,7 +815,7 @@ header {
   margin-bottom: 15px;
 }
 .footer-links a {
-  color: var(--light);
+  color: rgba(232, 241, 245, 0.8);
   transition: var(--transition-fast);
   display: inline-block;
 }
@@ -873,146 +830,128 @@ header {
   margin-top: 25px;
 }
 .social-link {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--light);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   transition: var(--transition-medium);
-  border: 1px solid rgba(255, 204, 0, 0.2);
+  border: 1px solid rgba(0, 245, 255, 0.2);
 }
 .social-link:hover {
-  background: rgba(255, 204, 0, 0.2);
+  background: rgba(0, 245, 255, 0.2);
   color: var(--secondary);
-  transform: translateY(-5px);
+  transform: translateY(-5px) rotate(10deg);
 }
-
-.newsletter {
-  margin-top: 25px;
-}
-.newsletter p {
-  color: var(--light);
-  margin-bottom: 15px;
-}
-.newsletter-form {
-  display: flex;
-}
-.newsletter-form input {
-  flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 204, 0, 0.3);
-  border-radius: 30px 0 0 30px;
-  padding: 15px 20px;
-  color: var(--light);
-}
-.newsletter-form button {
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  color: var(--primary);
-  border: none;
-  border-radius: 0 30px 30px 0;
-  padding: 0 25px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-.newsletter-form button:hover { transform: scale(1.05); }
 
 .footer-bottom {
   text-align: center;
   padding-top: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--light);
+  color: rgba(232, 241, 245, 0.6);
 }
 .footer-bottom a {
   color: var(--secondary);
   font-weight: 600;
 }
 
-/* ========== MOBILE RESPONSIVENESS ========== */
+/* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
-  .hero-title { font-size: 4rem; }
-  .section-title { font-size: 3rem; }
-  .boyz-title { font-size: 3.5rem; }
-  .swiper-slide { flex-direction: column; height: auto; }
-  .product-info { padding: 40px 0 0; }
+  .hero-title { font-size: 3.5rem; }
+  .section-title { font-size: 2.8rem; }
+  .nav-links { gap: 20px; }
 }
 
 @media (max-width: 768px) {
   header { padding: 15px 20px; }
-  .nav-links { display: none; }
+  .nav-links { 
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 18, 0.98);
+    flex-direction: column;
+    padding: 30px 20px;
+    gap: 25px;
+    border-top: 1px solid rgba(0, 245, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .nav-links.active { display: flex; }
   .mobile-menu-btn { display: block; }
-  .hero-title { font-size: 3rem; }
+  .hero-title { font-size: 2.8rem; }
   .hero-subtitle { font-size: 1.2rem; }
-  .section-title { font-size: 2.5rem; }
-  .card-grid { grid-template-columns: 1fr; }
-  .boyz-title { font-size: 2.8rem; }
-  .stats-container { gap: 30px; }
-  .stat-box { min-width: 150px; }
-  .community-container { flex-direction: column; }
+  .section-title { font-size: 2.2rem; }
+  .hero-cta-container { flex-direction: column; align-items: center; }
+  .hero-btn { width: 100%; max-width: 300px; justify-content: center; }
+  .donation-container { padding: 40px 20px; }
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: 2.5rem; }
-  .hero-cta-container { flex-direction: column; align-items: center; }
-  .hero-btn { width: 100%; max-width: 300px; justify-content: center; }
-  .section-title { font-size: 2rem; }
-  .boyz-title { font-size: 2.2rem; }
-  .stat-number { font-size: 2.5rem; }
-  .footer-grid { grid-template-columns: 1fr; }
-}
-
-/* ========== CUSTOM CURSOR ========== */
-.custom-cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(255, 204, 0, 0.5);
-  pointer-events: none;
-  z-index: 99999;
-  mix-blend-mode: difference;
-  transition: transform 0.2s ease;
-}
-.custom-cursor-follower {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 204, 0, 0.3);
-  pointer-events: none;
-  z-index: 99998;
-  transition: all 0.6s ease;
+  .hero-title { font-size: 2.2rem; }
+  .section-title { font-size: 1.8rem; }
+  .logo-text { font-size: 1.5rem; }
+  .generated-logo { width: 45px; height: 45px; }
+  .eaas-grid { grid-template-columns: 1fr; }
+  .modal-content { padding: 30px 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- MATRIX BACKGROUND -->
-<div class="matrix-bg"></div>
-
-<!-- CUSTOM CURSOR -->
-<div class="custom-cursor"></div>
-<div class="custom-cursor-follower"></div>
+<!-- CRYPTO DONATIONS MODAL -->
+<div class="crypto-modal" id="cryptoModal">
+  <div class="modal-content">
+    <button class="close-modal" id="closeModal">&times;</button>
+    <h2 class="modal-title">Support Our Ecosystem</h2>
+    <div class="crypto-options">
+      <div class="crypto-option">
+        <div class="crypto-header">
+          <div class="crypto-icon"><i class="fab fa-btc"></i></div>
+          <div>
+            <div class="crypto-name">Bitcoin (BTC)</div>
+            <div class="crypto-network">Bitcoin Network - Taproot</div>
+          </div>
+        </div>
+        <div class="crypto-address">bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4</div>
+        <div class="crypto-warning">Only send Bitcoin network assets to this address</div>
+      </div>
+      
+      <div class="crypto-option">
+        <div class="crypto-header">
+          <div class="crypto-icon usdc"><i class="fas fa-coins"></i></div>
+          <div>
+            <div class="crypto-name">USDC</div>
+            <div class="crypto-network">Avalanche C-Chain Network</div>
+          </div>
+        </div>
+        <div class="crypto-address">0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd</div>
+        <div class="crypto-warning">Only send Avalanche C-Chain assets to this address</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- HEADER -->
 <header id="header">
   <div class="logo-container">
-    <img src="https://i.ibb.co/4Ycg5Dg/ExnesFly-Logo.png" alt="ExnesFly Logo" class="logo">
+    <div class="generated-logo">
+      <div class="logo-symbol"></div>
+    </div>
     <div class="logo-text">EXNESFLY</div>
   </div>
   
-  <nav class="nav-links">
+  <nav class="nav-links" id="navLinks">
     <a href="#home" class="nav-link">Home</a>
-    <a href="#showcase" class="nav-link">Showcase</a>
+    <a href="#services" class="nav-link">EaaS</a>
     <a href="#boyz" class="nav-link">BoyzInTheHood</a>
-    <a href="#products" class="nav-link">Products</a>
+    <a href="#donate" class="nav-link">Donate</a>
     <a href="#community" class="nav-link">Community</a>
-    <a href="#contact" class="nav-link">Contact</a>
-    <a href="#join" class="nav-cta">Join Now</a>
+    <button class="nav-cta" id="openModal">Donate Crypto</button>
   </nav>
   
   <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1022,121 +961,129 @@ header {
 
 <!-- HERO SECTION -->
 <section class="hero" id="home">
-  <div class="glitch-wrapper">
-    <h1 class="hero-title glitch-text" data-text="EXNESFLY 2.0">EXNESFLY <span class="highlight">2.0</span></h1>
-  </div>
+  <h1 class="hero-title">Everything-as-a-Service</h1>
   
   <p class="hero-subtitle">
-    Welcome to the world's most advanced <span style="color:#ffcc00">futuristic tech ecosystem</span>. 
-    Experience <span style="color:#00ffcc">AI, commerce, metaverse integration</span>, and 
-    <span style="color:#ff3366">global community</span> like never before.
+    Welcome to <strong>EXNESFLY 3.0</strong> - The world's first <strong>complete business ecosystem</strong> 
+    where <strong>every service is available on-demand</strong>. From AI development to construction materials, 
+    global logistics to financial services - <strong>we deliver it all</strong>.
   </p>
   
   <div class="hero-cta-container">
-    <button class="hero-btn btn-primary" onclick="window.location='#showcase'">
-      <i class="fas fa-rocket"></i> Launch Experience
+    <button class="hero-btn btn-primary" onclick="window.location='#services'">
+      <i class="fas fa-bolt"></i> Explore Services
     </button>
     <button class="hero-btn btn-secondary" onclick="window.location='#boyz'">
-      <i class="fas fa-hammer"></i> Explore Construction Materials
+      <i class="fas fa-hammer"></i> Construction Portal
     </button>
-    <button class="hero-btn btn-secondary" onclick="window.location='#community'">
-      <i class="fas fa-users"></i> Join Community
+    <button class="hero-btn btn-accent" id="heroDonateBtn">
+      <i class="fab fa-bitcoin"></i> Crypto Donate
     </button>
-  </div>
-  
-  <div class="stats-container">
-    <div class="stat-box">
-      <div class="stat-number" id="stat1">0</div>
-      <div class="stat-label">Active Members</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-number" id="stat2">0</div>
-      <div class="stat-label">Products Delivered</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-number" id="stat3">0</div>
-      <div class="stat-label">Countries Reached</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-number" id="stat4">0</div>
-      <div class="stat-label">Projects Completed</div>
-    </div>
   </div>
 </section>
 
-<!-- SHOWCASE SECTION -->
-<section class="showcase-section" id="showcase">
+<!-- EVERYTHING-AS-A-SERVICE SECTION -->
+<section class="business-section" id="services">
   <div class="container">
     <div class="section-header">
-      <div class="section-subtitle">FUTURISTIC ECOSYSTEM</div>
-      <h2 class="section-title">Interactive <span style="color:#ffcc00">Experiences</span></h2>
+      <div class="section-subtitle">REVOLUTIONARY BUSINESS MODEL</div>
+      <h2 class="section-title">Everything-as-a-Service</h2>
       <p class="section-desc">
-        ExnesFly delivers cutting-edge technology solutions that transform industries. 
-        From AI analytics to global commerce, we build systems that scale beyond limits.
+        We've revolutionized business by making every possible service available on-demand through 
+        our unified platform. From tech to trade, construction to consulting - access it all with 
+        a single subscription.
       </p>
     </div>
     
-    <div class="card-grid">
-      <div class="interactive-card">
+    <div class="eaas-grid">
+      <div class="eaas-card">
         <div class="card-icon">
-          <i class="fas fa-brain"></i>
+          <i class="fas fa-robot"></i>
         </div>
-        <h3 class="card-title">AI & Analytics</h3>
+        <h3 class="card-title">AI & Tech Services</h3>
         <p class="card-desc">
-          Predictive AI systems, machine learning platforms, and real-time analytics dashboards 
-          that transform data into actionable intelligence for businesses worldwide.
+          On-demand AI development, machine learning solutions, software engineering, and 
+          tech consulting for businesses of all sizes.
         </p>
-        <a href="#" class="card-btn">Explore AI <i class="fas fa-arrow-right"></i></a>
+        <ul class="card-features">
+          <li>Custom AI Model Development</li>
+          <li>Software Development Teams</li>
+          <li>Cloud Infrastructure Setup</li>
+          <li>Cybersecurity Solutions</li>
+        </ul>
+        <div class="card-pricing">From $999/mo</div>
+        <a href="#" class="card-btn">Get Started <i class="fas fa-arrow-right"></i></a>
       </div>
       
-      <div class="interactive-card">
+      <div class="eaas-card">
         <div class="card-icon">
-          <i class="fas fa-code"></i>
+          <i class="fas fa-hard-hat"></i>
         </div>
-        <h3 class="card-title">Software & SaaS</h3>
+        <h3 class="card-title">Construction & Logistics</h3>
         <p class="card-desc">
-          Enterprise-grade software solutions, SaaS platforms, and custom applications built 
-          for scalability, security, and seamless user experiences across all devices.
+          Complete construction material supply, project management, and logistics services 
+          across Kenya and East Africa.
         </p>
-        <a href="#" class="card-btn">View Solutions <i class="fas fa-arrow-right"></i></a>
+        <ul class="card-features">
+          <li>Building Material Supply</li>
+          <li>Construction Project Management</li>
+          <li>Nationwide Delivery</li>
+          <li>Equipment Rental</li>
+        </ul>
+        <div class="card-pricing">Project-based</div>
+        <a href="#" class="card-btn">Request Quote <i class="fas fa-arrow-right"></i></a>
       </div>
       
-      <div class="interactive-card">
+      <div class="eaas-card">
         <div class="card-icon">
-          <i class="fas fa-chart-line"></i>
+          <i class="fas fa-chart-network"></i>
         </div>
-        <h3 class="card-title">FinTech & Trading</h3>
+        <h3 class="card-title">Financial & Trading</h3>
         <p class="card-desc">
-          Advanced trading platforms, financial analytics tools, and investment education 
-          systems that empower traders with real-time insights and automated strategies.
+          Comprehensive financial services including trading education, investment platforms, 
+          and fintech solutions for modern investors.
         </p>
-        <a href="#" class="card-btn">Trade Smarter <i class="fas fa-arrow-right"></i></a>
+        <ul class="card-features">
+          <li>Trading Education & Signals</li>
+          <li>Investment Portfolio Management</li>
+          <li>Crypto & Forex Platforms</li>
+          <li>Financial Consulting</li>
+        </ul>
+        <div class="card-pricing">From $299/mo</div>
+        <a href="#" class="card-btn">Invest Now <i class="fas fa-arrow-right"></i></a>
       </div>
       
-      <div class="interactive-card">
+      <div class="eaas-card">
         <div class="card-icon">
-          <i class="fas fa-globe"></i>
+          <i class="fas fa-globe-africa"></i>
         </div>
         <h3 class="card-title">Global Commerce</h3>
         <p class="card-desc">
-          Worldwide dropshipping networks, automated logistics, and e-commerce platforms 
-          that connect buyers with quality products from across the globe.
+          International trade, dropshipping networks, import/export services, and global 
+          market access for African businesses.
         </p>
-        <a href="#" class="card-btn">Start Selling <i class="fas fa-arrow-right"></i></a>
+        <ul class="card-features">
+          <li>International Product Sourcing</li>
+          <li>Dropshipping Automation</li>
+          <li>Import/Export Documentation</li>
+          <li>Global Market Access</li>
+        </ul>
+        <div class="card-pricing">From $499/mo</div>
+        <a href="#" class="card-btn">Go Global <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BOYZ IN THE HOOD SECTION -->
+<!-- BOYZ IN THE HOOD DIVERSIFIED -->
 <section class="boyz-section" id="boyz">
   <div class="container">
-    <div class="boyz-header">
-      <div class="boyz-subtitle">SPECIAL SHOUT OUT TO</div>
-      <h2 class="boyz-title">BOYZ IN THE HOOD</h2>
-      <p class="boyz-tagline">
-        Your trusted partners for <span style="color:#ffcc00">ALL construction materials in Kenya</span>. 
-        From foundation to finish, we deliver quality building supplies nationwide.
+    <div class="section-header">
+      <div class="section-subtitle">DIVERSIFIED BUSINESS GROUP</div>
+      <h2 class="section-title">BoyzInTheHood Enterprises</h2>
+      <p class="section-desc">
+        Beyond construction materials, we're a complete business ecosystem. From merchandise to financial 
+        services, community development to international trade - we do it all.
       </p>
     </div>
     
@@ -1145,350 +1092,218 @@ header {
         <div class="boyz-icon">
           <i class="fas fa-truck-loading"></i>
         </div>
-        <h3 class="boyz-card-title">Nationwide Delivery</h3>
+        <h3 class="boyz-card-title">Construction Division</h3>
         <p class="boyz-card-desc">
-          Fast and reliable delivery of construction materials to any site across Kenya.
-          From cement to roofing, we've got you covered.
+          Premium building materials, equipment rental, and construction project management 
+          services across Kenya.
         </p>
-      </div>
-      
-      <div class="boyz-card">
-        <div class="boyz-icon">
-          <i class="fas fa-hard-hat"></i>
-        </div>
-        <h3 class="boyz-card-title">Quality Materials</h3>
-        <p class="boyz-card-desc">
-          Premium construction supplies from trusted manufacturers. 
-          Cement, steel, sand, aggregates, roofing, plumbing, and electrical materials.
-        </p>
-      </div>
-      
-      <div class="boyz-card">
-        <div class="boyz-icon">
-          <i class="fas fa-handshake"></i>
-        </div>
-        <h3 class="boyz-card-title">Community SACCO</h3>
-        <p class="boyz-card-desc">
-          Join our community SACCO for financial empowerment, group investments, 
-          and access to construction financing for members.
-        </p>
+        <div class="boyz-card-price">Nationwide Delivery</div>
       </div>
       
       <div class="boyz-card">
         <div class="boyz-icon">
           <i class="fas fa-tshirt"></i>
         </div>
-        <h3 class="boyz-card-title">Exclusive Merchandise</h3>
+        <h3 class="boyz-card-title">Merchandise & Apparel</h3>
         <p class="boyz-card-desc">
-          Official BoyzInTheHood apparel and accessories. Show your pride with 
-          quality hoodies, t-shirts, caps, and construction gear.
+          Official BoyzInTheHood clothing line, accessories, and branded merchandise for 
+          the urban professional.
         </p>
+        <div class="boyz-card-price">Global Shipping</div>
+      </div>
+      
+      <div class="boyz-card">
+        <div class="boyz-icon">
+          <i class="fas fa-hand-holding-usd"></i>
+        </div>
+        <h3 class="boyz-card-title">Financial Services</h3>
+        <p class="boyz-card-desc">
+          Community SACCO, investment groups, microloans, and financial empowerment 
+          programs for members.
+        </p>
+        <div class="boyz-card-price">Member Benefits</div>
+      </div>
+      
+      <div class="boyz-card">
+        <div class="boyz-icon">
+          <i class="fas fa-network-wired"></i>
+        </div>
+        <h3 class="boyz-card-title">Business Networking</h3>
+        <p class="boyz-card-desc">
+          Exclusive networking events, business matchmaking, and partnership opportunities 
+          within our ecosystem.
+        </p>
+        <div class="boyz-card-price">Premium Access</div>
       </div>
     </div>
-    
-    <div class="boyz-cta">
-      <button class="boyz-cta-btn" onclick="window.open('tel:+254712345678')">
-        <i class="fas fa-phone-alt"></i> Call Now for Construction Materials
+  </div>
+</section>
+
+<!-- CRYPTO DONATION SECTION -->
+<section class="donation-section" id="donate">
+  <div class="container">
+    <div class="donation-container">
+      <h2 class="donation-title">Support Our Vision</h2>
+      <p class="donation-subtitle">
+        Help us build the future of business-as-a-service. Your crypto donations fuel our ecosystem development, 
+        community programs, and global expansion. Every contribution brings us closer to revolutionizing 
+        how the world does business.
+      </p>
+      <button class="donation-btn" id="donationBtn">
+        <i class="fab fa-bitcoin"></i> Donate with Crypto
       </button>
     </div>
   </div>
 </section>
 
-<!-- PRODUCT SHOWCASE -->
-<section class="product-showcase" id="products">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-subtitle">GLOBAL PRODUCTS</div>
-      <h2 class="section-title">Interactive <span style="color:#ffcc00">Showcase</span></h2>
-      <p class="section-desc">
-        Explore our curated selection of tech gadgets, lifestyle products, and innovative solutions 
-        available for worldwide shipping through our global network.
-      </p>
-    </div>
-    
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="AI Assistant Device">
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">Nexus AI Assistant</h3>
-            <p class="product-desc">
-              Next-generation AI-powered assistant with voice recognition, smart home integration, 
-              and predictive analytics capabilities for both personal and professional use.
-            </p>
-            <ul class="product-features">
-              <li>Real-time language translation</li>
-              <li>Smart home device control</li>
-              <li>Predictive task automation</li>
-              <li>24/7 cloud connectivity</li>
-            </ul>
-            <button class="product-btn">
-              <i class="fas fa-shopping-cart"></i> Order Now - $299
-            </button>
-          </div>
-        </div>
-        
-        <div class="swiper-slide">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Smart Construction Helmet">
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">SmartSite Helmet Pro</h3>
-            <p class="product-desc">
-              Advanced construction helmet with built-in communication system, environmental sensors, 
-              and augmented reality display for enhanced worksite safety and productivity.
-            </p>
-            <ul class="product-features">
-              <li>Built-in team communication</li>
-              <li>AR blueprint visualization</li>
-              <li>Environmental hazard detection</li>
-              <li>Long-lasting battery (48hrs)</li>
-            </ul>
-            <button class="product-btn">
-              <i class="fas fa-shopping-cart"></i> Order Now - $189
-            </button>
-          </div>
-        </div>
-        
-        <div class="swiper-slide">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2042&q=80" alt="Portable Trading Station">
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">TradePad Pro</h3>
-            <p class="product-desc">
-              Portable multi-screen trading station with real-time market data, advanced charting tools, 
-              and AI-powered trading signals for professionals on the move.
-            </p>
-            <ul class="product-features">
-              <li>Quad-screen display setup</li>
-              <li>Real-time market alerts</li>
-              <li>AI trading signal integration</li>
-              <li>Global connectivity</li>
-            </ul>
-            <button class="product-btn">
-              <i class="fas fa-shopping-cart"></i> Order Now - $749
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-    </div>
-  </div>
-</section>
-
-<!-- COMMUNITY HUB -->
+<!-- COMMUNITY SECTION -->
 <section class="community-section" id="community">
   <div class="container">
     <div class="section-header">
       <div class="section-subtitle">GLOBAL NETWORK</div>
-      <h2 class="section-title">Interactive <span style="color:#ffcc00">Community Hub</span></h2>
+      <h2 class="section-title">Join Our Ecosystem</h2>
       <p class="section-desc">
-        Join thousands of innovators, creators, and professionals in our active global community. 
-        Share ideas, collaborate on projects, and grow together.
+        Become part of the fastest-growing business ecosystem in Africa and beyond. 
+        Access services, network with professionals, and grow with us.
       </p>
     </div>
     
-    <div class="community-container">
-      <div class="community-chat">
-        <div class="chat-header">
-          <div class="chat-icon">
-            <i class="fas fa-comments"></i>
-          </div>
-          <h3 class="chat-title">Live Community Chat</h3>
+    <div class="community-stats">
+      <div class="community-stat">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
         </div>
-        
-        <div class="chat-messages" id="chatMessages">
-          <div class="chat-message">
-            <div class="chat-sender">Alex (Nairobi):</div>
-            <div class="chat-text">Just received my construction materials from BoyzInTheHood. Quality is exceptional!</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-sender">Sarah (Dubai):</div>
-            <div class="chat-text">The AI trading signals from ExnesFly Academy helped me identify a profitable entry today.</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-sender">Mike (London):</div>
-            <div class="chat-text">Looking for partners for a fintech startup. Anyone interested in blockchain payment solutions?</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-sender">Priya (Mumbai):</div>
-            <div class="chat-text">Just joined the ExnesFly mentorship program. The quality of education is world-class!</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-sender">Kwame (Accra):</div>
-            <div class="chat-text">Need 50 bags of cement delivered to Kumasi. Can BoyzInTheHood handle this?</div>
-          </div>
-        </div>
-        
-        <div class="chat-input">
-          <input type="text" id="chatInput" placeholder="Type your message here...">
-          <button id="sendMessageBtn">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
+        <div class="stat-number">15,842</div>
+        <div class="stat-label">Active Members</div>
       </div>
       
-      <div class="community-stats">
-        <div class="community-stat">
-          <div class="stat-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <div class="stat-number">12,847</div>
-          <div class="stat-label">Active Members</div>
+      <div class="community-stat">
+        <div class="stat-icon">
+          <i class="fas fa-globe-africa"></i>
         </div>
-        
-        <div class="community-stat">
-          <div class="stat-icon">
-            <i class="fas fa-globe-africa"></i>
-          </div>
-          <div class="stat-number">94</div>
-          <div class="stat-label">Countries</div>
+        <div class="stat-number">28</div>
+        <div class="stat-label">African Countries</div>
+      </div>
+      
+      <div class="community-stat">
+        <div class="stat-icon">
+          <i class="fas fa-project-diagram"></i>
         </div>
-        
-        <div class="community-stat">
-          <div class="stat-icon">
-            <i class="fas fa-project-diagram"></i>
-          </div>
-          <div class="stat-number">328</div>
-          <div class="stat-label">Live Projects</div>
+        <div class="stat-number">412</div>
+        <div class="stat-label">Live Projects</div>
+      </div>
+      
+      <div class="community-stat">
+        <div class="stat-icon">
+          <i class="fas fa-shipping-fast"></i>
         </div>
-        
-        <div class="community-stat">
-          <div class="stat-icon">
-            <i class="fas fa-graduation-cap"></i>
-          </div>
-          <div class="stat-number">5,239</div>
-          <div class="stat-label">Students Trained</div>
-        </div>
+        <div class="stat-number">8,927</div>
+        <div class="stat-label">Deliveries Made</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer" id="contact">
+<footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-column">
-        <h3>ExnesFly</h3>
-        <p style="color: var(--light); line-height: 1.6; margin-bottom: 25px;">
-          A global technology and commerce ecosystem delivering innovative solutions, 
-          education, and worldwide product fulfillment. Join the future today.
+        <h3>EXNESFLY Ecosystem</h3>
+        <p style="color: rgba(232, 241, 245, 0.8); line-height: 1.7; margin-bottom: 25px;">
+          The future of business-as-a-service is here. Join our revolutionary ecosystem 
+          where every service is available on-demand through a unified platform.
         </p>
         <div class="social-links">
           <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
           <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
           <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
           <a href="#" class="social-link"><i class="fab fa-github"></i></a>
         </div>
       </div>
       
       <div class="footer-column">
-        <h3>Quick Links</h3>
+        <h3>Services</h3>
         <ul class="footer-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#showcase">Services</a></li>
-          <li><a href="#boyz">BoyzInTheHood</a></li>
-          <li><a href="#products">Products</a></li>
-          <li><a href="#community">Community</a></li>
-          <li><a href="#">Academy</a></li>
+          <li><a href="#services">Everything-as-a-Service</a></li>
+          <li><a href="#boyz">Construction Materials</a></li>
+          <li><a href="#services">AI & Tech Development</a></li>
+          <li><a href="#services">Financial Services</a></li>
+          <li><a href="#services">Global Commerce</a></li>
+          <li><a href="#donate">Crypto Donations</a></li>
         </ul>
       </div>
       
       <div class="footer-column">
-        <h3>Contact Info</h3>
+        <h3>Contact</h3>
         <ul class="footer-links">
-          <li><i class="fas fa-envelope" style="color:#ffcc00; margin-right:10px;"></i> info@exnesfly.org</li>
-          <li><i class="fas fa-phone" style="color:#ffcc00; margin-right:10px;"></i> +254 712 345 678</li>
-          <li><i class="fas fa-map-marker-alt" style="color:#ffcc00; margin-right:10px;"></i> Nairobi, Kenya</li>
-          <li><i class="fas fa-globe" style="color:#ffcc00; margin-right:10px;"></i> exnesfly.org</li>
+          <li><i class="fas fa-envelope" style="color:var(--secondary); margin-right:10px;"></i> info@exnesfly.org</li>
+          <li><i class="fas fa-phone" style="color:var(--secondary); margin-right:10px;"></i> +254 712 345 678</li>
+          <li><i class="fas fa-map-marker-alt" style="color:var(--secondary); margin-right:10px;"></i> Nairobi, Kenya</li>
+          <li><i class="fas fa-globe" style="color:var(--secondary); margin-right:10px;"></i> exnesfly.org</li>
         </ul>
-        <div class="newsletter">
-          <p>Subscribe to our newsletter</p>
-          <form class="newsletter-form">
-            <input type="email" placeholder="Your email address">
-            <button type="submit"><i class="fas fa-paper-plane"></i></button>
-          </form>
-        </div>
       </div>
     </div>
     
     <div class="footer-bottom">
-      <p>&copy; 2026 <span style="color:#ffcc00">ExnesFly Group</span>. All rights reserved. | 
-      <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      <p>&copy; 2024 <span style="color:var(--secondary);">EXNESFLY Ecosystem</span>. All rights reserved.</p>
       <p style="margin-top: 15px; font-size: 0.9rem;">
-        Special thanks to <span style="color:#ffcc00; font-weight:700;">BoyzInTheHood</span> for construction materials partnership in Kenya.
+        Revolutionizing business through Everything-as-a-Service | 
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
       </p>
     </div>
   </div>
 </footer>
 
-<!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-// Initialize Swiper
-const swiper = new Swiper('.swiper-container', {
-  loop: true,
-  speed: 800,
-  autoplay: {
-    delay: 5000,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-  effect: 'slide',
-  grabCursor: true,
-});
+// Crypto Modal Functionality
+const cryptoModal = document.getElementById('cryptoModal');
+const openModalBtn = document.getElementById('openModal');
+const heroDonateBtn = document.getElementById('heroDonateBtn');
+const donationBtn = document.getElementById('donationBtn');
+const closeModalBtn = document.getElementById('closeModal');
 
-// Animated Stats Counter
-function animateCounter(id, start, end, duration) {
-  let obj = document.getElementById(id);
-  let startTime = null;
-  
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const progress = Math.min((timestamp - startTime) / duration, 1);
-    const value = Math.floor(progress * (end - start) + start);
-    obj.innerHTML = value.toLocaleString();
-    
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  }
-  
-  window.requestAnimationFrame(step);
+function openModal() {
+  cryptoModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-// Trigger stats animation when in viewport
-const observerOptions = {
-  threshold: 0.5
-};
+function closeModal() {
+  cryptoModal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      animateCounter('stat1', 0, 12847, 2000);
-      animateCounter('stat2', 0, 53429, 2500);
-      animateCounter('stat3', 0, 94, 1500);
-      animateCounter('stat4', 0, 328, 2000);
-      observer.unobserve(entry.target);
-    }
+openModalBtn.addEventListener('click', openModal);
+heroDonateBtn.addEventListener('click', openModal);
+donationBtn.addEventListener('click', openModal);
+closeModalBtn.addEventListener('click', closeModal);
+
+// Close modal when clicking outside
+cryptoModal.addEventListener('click', (e) => {
+  if (e.target === cryptoModal) {
+    closeModal();
+  }
+});
+
+// Mobile Menu Functionality
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navLinks = document.getElementById('navLinks');
+
+mobileMenuBtn.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+  mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+    ? '<i class="fas fa-times"></i>' 
+    : '<i class="fas fa-bars"></i>';
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
+    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
   });
-}, observerOptions);
-
-observer.observe(document.querySelector('.stats-container'));
+});
 
 // Header scroll effect
 window.addEventListener('scroll', function() {
@@ -1500,109 +1315,66 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Custom cursor
-const cursor = document.querySelector('.custom-cursor');
-const cursorFollower = document.querySelector('.custom-cursor-follower');
+// Animated stats counter
+const observerOptions = {
+  threshold: 0.5
+};
 
-document.addEventListener('mousemove', (e) => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-  
-  setTimeout(() => {
-    cursorFollower.style.left = e.clientX + 'px';
-    cursorFollower.style.top = e.clientY + 'px';
-  }, 100);
-});
-
-document.addEventListener('mousedown', () => {
-  cursor.style.transform = 'scale(0.8)';
-  cursorFollower.style.transform = 'scale(1.2)';
-});
-
-document.addEventListener('mouseup', () => {
-  cursor.style.transform = 'scale(1)';
-  cursorFollower.style.transform = 'scale(1)';
-});
-
-// Interactive chat
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const sendMessageBtn = document.getElementById('sendMessageBtn');
-
-const sampleMessages = [
-  {sender: "Jamal (Mombasa):", text: "Just completed the AI development course. Highly recommended!"},
-  {sender: "Lisa (Cape Town):", text: "Looking for construction materials suppliers in South Africa. Any recommendations?"},
-  {sender: "David (Lagos):", text: "The ExnesFly trading signals helped me make 15% profit this week!"},
-  {sender: "Aisha (Dar es Salaam):", text: "Interested in the SACCO program. How do I join?"},
-  {sender: "Carlos (São Paulo):", text: "Just ordered the Nexus AI Assistant. Can't wait to try it!"},
-];
-
-function addMessage(sender, text) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = 'chat-message';
-  messageDiv.innerHTML = `
-    <div class="chat-sender">${sender}</div>
-    <div class="chat-text">${text}</div>
-  `;
-  chatMessages.appendChild(messageDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-sendMessageBtn.addEventListener('click', () => {
-  if (chatInput.value.trim() !== '') {
-    addMessage("You:", chatInput.value);
-    chatInput.value = '';
-    
-    // Simulate a reply after 1 second
-    setTimeout(() => {
-      const randomMessage = sampleMessages[Math.floor(Math.random() * sampleMessages.length)];
-      addMessage(randomMessage.sender, randomMessage.text);
-    }, 1000);
-  }
-});
-
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    sendMessageBtn.click();
-  }
-});
-
-// Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const navLinks = document.querySelector('.nav-links');
-
-mobileMenuBtn.addEventListener('click', () => {
-  navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-  navLinks.style.flexDirection = 'column';
-  navLinks.style.position = 'absolute';
-  navLinks.style.top = '100%';
-  navLinks.style.left = '0';
-  navLinks.style.width = '100%';
-  navLinks.style.background = 'rgba(10, 15, 46, 0.98)';
-  navLinks.style.backdropFilter = 'blur(15px)';
-  navLinks.style.padding = '30px 20px';
-  navLinks.style.gap = '25px';
-  navLinks.style.borderTop = '1px solid rgba(255, 204, 0, 0.3)';
-  navLinks.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
-});
-
-// Glitch effect interval
-setInterval(() => {
-  const glitchTexts = document.querySelectorAll('.glitch-text');
-  glitchTexts.forEach(text => {
-    text.style.animation = 'none';
-    setTimeout(() => {
-      text.style.animation = 'glitch-effect 3s infinite linear alternate-reverse';
-    }, 10);
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const stats = entry.target.querySelectorAll('.stat-number');
+      const targetValues = [15842, 28, 412, 8927];
+      
+      stats.forEach((stat, index) => {
+        const target = targetValues[index];
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          stat.textContent = Math.floor(current).toLocaleString();
+        }, 16);
+      });
+      
+      observer.unobserve(entry.target);
+    }
   });
-}, 5000);
+}, observerOptions);
 
-// Initialize with some chat messages
-window.addEventListener('DOMContentLoaded', () => {
-  // Add initial chat messages
-  setTimeout(() => {
-    addMessage("System:", "Welcome to the ExnesFly Community Hub! Type a message to join the conversation.");
-  }, 1000);
+observer.observe(document.querySelector('.community-section'));
+
+// Copy crypto address to clipboard
+document.querySelectorAll('.crypto-address').forEach(address => {
+  address.addEventListener('click', function() {
+    const text = this.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const original = this.textContent;
+      this.textContent = 'Copied to clipboard!';
+      this.style.color = '#00FF9D';
+      
+      setTimeout(() => {
+        this.textContent = original;
+        this.style.color = '';
+      }, 2000);
+    });
+  });
+});
+
+// Add hover effect to cards
+document.querySelectorAll('.eaas-card, .boyz-card').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-15px) scale(1.02)';
+  });
+  
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0) scale(1)';
+  });
 });
 </script>
 </body>
