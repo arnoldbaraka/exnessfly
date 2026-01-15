@@ -3,831 +3,684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY NEXUS 4.0 | The Complete Everything Ecosystem</title>
+    <title>EXNESFLY NEXUS 4.0 | Everything Ecosystem</title>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <style>
         :root {
-            --neon-cyan: #00f5ff;
-            --neon-pink: #ff00ff;
-            --neon-green: #00ff9d;
-            --neon-gold: #ffd700;
-            --deep-space: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.85);
-            --card-gradient: linear-gradient(145deg, rgba(30,41,59,0.6) 0%, rgba(15,23,42,0.9) 100%);
+            --neon-blue: #00f5ff;
+            --deep-dark: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.8);
         }
-        
         body {
-            background: var(--deep-space);
+            background-color: var(--deep-dark);
             color: #f8fafc;
             font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 40%);
         }
-        
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        .montserrat { font-family: 'Montserrat', sans-serif; }
+        .glass { backdrop-filter: blur(15px); background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); }
         
-        .glass {
-            backdrop-filter: blur(20px) saturate(180%);
-            background: var(--glass-bg);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
+        /* Mobile Slide Animation */
+        .slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
+        .slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
+
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        .cyber-card {
-            background: var(--card-gradient);
+        .section-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
             border-radius: 24px;
-            border: 1px solid rgba(0, 245, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 245, 255, 0.1);
         }
         
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 245, 255, 0.05), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-        
-        .cyber-card:hover::before {
-            transform: translateX(100%);
-        }
-        
-        .cyber-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.15);
-        }
-        
+        /* Neon Pulse for Active Icons */
         .active-glow {
-            filter: drop-shadow(0 0 12px var(--neon-cyan));
-            color: var(--neon-cyan) !important;
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+            color: var(--neon-blue) !important;
         }
-        
-        .pulse-ring {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(0, 245, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0); }
-        }
-        
-        .slide-enter-active,
-        .slide-leave-active {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .slide-enter-from,
-        .slide-leave-to {
-            transform: translateX(-100%);
-        }
-        
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .cyber-btn {
-            background: linear-gradient(90deg, var(--neon-cyan), #00b4d8);
-            color: black;
-            font-weight: 900;
-            border: none;
-            transition: all 0.3s;
+
+        /* NEW: Interactive Elements */
+        .interactive-btn {
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .cyber-btn::after {
+        .interactive-btn::after {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
         
-        .cyber-btn:hover::after {
+        .interactive-btn:hover::after {
             left: 100%;
         }
         
-        .cyber-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 245, 255, 0.4);
+        /* NEW: Loading Animation */
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
         }
         
-        .neon-text {
-            text-shadow: 0 0 10px currentColor;
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
         
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -100;
-            opacity: 0.05;
-            background-image: 
-                linear-gradient(transparent 95%, rgba(0, 245, 255, 0.1) 100%),
-                linear-gradient(90deg, transparent 95%, rgba(0, 245, 255, 0.1) 100%);
-            background-size: 50px 50px;
-        }
-        
-        .custom-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
+        /* NEW: Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(45deg, #ff005c, #ff3366);
             border-radius: 50%;
-            background: rgba(0, 245, 255, 0.6);
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
         }
         
-        .custom-cursor-follower {
-            position: fixed;
-            width: 40px;
-            height: 40px;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* NEW: Crypto Balance Animation */
+        .balance-change {
+            animation: balanceUpdate 0.5s ease;
+        }
+        
+        @keyframes balanceUpdate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* NEW: Service Status Indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            border: 2px solid rgba(0, 245, 255, 0.3);
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.3s;
+            display: inline-block;
+            margin-right: 6px;
         }
         
-        .qr-scan-effect {
+        .status-active { background: #00ff9d; box-shadow: 0 0 8px #00ff9d; }
+        .status-inactive { background: #ff005c; }
+        .status-pending { background: #ffd700; animation: blink 1s infinite; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* NEW: Crypto QR Scanner Animation */
+        .qr-scan {
             position: relative;
             overflow: hidden;
         }
         
-        .qr-scan-effect::after {
+        .qr-scan::after {
             content: '';
             position: absolute;
-            top: -100%;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 8px;
-            background: linear-gradient(transparent, var(--neon-cyan), transparent);
-            animation: scan 3s infinite;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            animation: scan 3s infinite linear;
         }
         
         @keyframes scan {
-            0% { top: -100%; }
-            50% { top: 100%; }
-            100% { top: -100%; }
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        /* NEW: Price Ticker Animation */
+        .price-ticker {
+            overflow: hidden;
+            position: relative;
+            height: 20px;
+        }
+        
+        .price-change {
+            display: inline-block;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body class="overflow-hidden">
 
-<!-- CUSTOM CURSOR -->
-<div class="custom-cursor"></div>
-<div class="custom-cursor-follower"></div>
-
-<!-- MATRIX BACKGROUND -->
-<div class="matrix-bg"></div>
-
 <div id="app" class="h-screen w-screen flex flex-col md:flex-row">
 
-    <!-- SIDEBAR -->
     <transition name="slide">
-        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-80 z-[100] glass flex flex-col md:relative md:flex border-r border-slate-800/50">
-            <div class="p-8 flex items-center justify-between border-b border-slate-800/50">
-                <div class="flex items-center gap-4">
-                    <!-- GENERATED LOGO -->
-                    <div class="relative w-12 h-12">
-                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-45"></div>
-                        <div class="absolute inset-1 bg-black rounded-lg flex items-center justify-center">
-                            <span class="orbitron font-black text-2xl text-cyan-400">∞</span>
+        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
+            <div class="p-6 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- UPDATED: Interactive Logo with Status -->
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform" @click="refreshAllData">
+                            <span class="orbitron font-bold text-white">∞</span>
+                            <div v-if="systemStatus === 'active'" class="status-dot status-active absolute -top-1 -right-1"></div>
+                            <div v-if="systemStatus === 'degraded'" class="status-dot status-pending absolute -top-1 -right-1"></div>
                         </div>
-                        <div class="absolute -inset-1 border border-cyan-500/30 rounded-xl animate-spin-slow"></div>
                     </div>
                     <div>
-                        <h1 class="orbitron font-black text-2xl tracking-tight bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">EXNESFLY</h1>
-                        <p class="text-[10px] text-slate-500 uppercase tracking-[3px] mt-1">NEXUS 4.0</p>
+                        <h1 class="orbitron font-bold text-lg tracking-tighter text-cyan-400">EXNESFLY</h1>
+                        <p class="text-[9px] text-slate-500">{{ systemStatus.toUpperCase() }} SYSTEM</p>
                     </div>
                 </div>
-                <button @click="menuOpen = false" class="md:hidden text-slate-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
+                <!-- NEW: Refresh Button -->
+                <button @click="refreshAllData" class="text-slate-400 hover:text-cyan-400 transition p-2 rounded-lg hover:bg-slate-800/50" title="Refresh Data">
+                    <i class="fas fa-sync-alt" :class="{'animate-spin': refreshing}"></i>
                 </button>
             </div>
 
-            <!-- USER PROFILE -->
-            <div class="p-6 border-b border-slate-800/50">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center pulse-ring">
-                        <span class="text-xl font-bold">B</span>
+            <!-- NEW: Quick Stats Bar -->
+            <div class="px-6 py-3 border-y border-slate-800/50">
+                <div class="flex items-center justify-between">
+                    <div class="text-center">
+                        <p class="text-[9px] text-slate-500">BTC</p>
+                        <p class="orbitron text-xs font-bold" :class="{'text-green-400': btcChange > 0, 'text-red-400': btcChange < 0}">
+                            ${{ formatNumber(cryptoPrices.BTC) }}
+                            <span v-if="btcChange !== 0" class="text-[8px]">({{ btcChange > 0 ? '+' : '' }}{{ btcChange.toFixed(2) }}%)</span>
+                        </p>
                     </div>
-                    <div>
-                        <p class="font-bold text-white">Baraka SuperTrades</p>
-                        <p class="text-[10px] text-slate-500">Diamond Tier Member</p>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded">15,842 XP</span>
-                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">$1.2M+</span>
-                        </div>
+                    <div class="text-center">
+                        <p class="text-[9px] text-slate-500">USDC</p>
+                        <p class="orbitron text-xs font-bold">$1.00</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-[9px] text-slate-500">SACCO</p>
+                        <p class="orbitron text-xs font-bold text-green-400">+{{ saccoApy }}%</p>
                     </div>
                 </div>
             </div>
 
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar">
+            <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
                 <div v-for="(category, name) in navGroups" :key="name">
-                    <p class="text-[10px] uppercase tracking-[4px] text-slate-500 mb-4 mt-8 px-4">{{ name }}</p>
+                    <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p>
                     <div v-for="item in category" 
                          @click="selectView(item.id)" 
-                         :class="['flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all mb-2', view === item.id ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800/50']">
-                        <i :class="[item.icon, 'text-lg']"></i>
-                        <div class="flex-1">
-                            <span class="text-sm font-semibold">{{ item.label }}</span>
-                            <p v-if="item.subtitle" class="text-[10px] text-slate-500 mt-1">{{ item.subtitle }}</p>
+                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all relative', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
+                        <i :class="item.icon"></i>
+                        <span class="text-sm font-medium">{{ item.label }}</span>
+                        <!-- NEW: Notification Badges -->
+                        <div v-if="item.notifications && item.notifications > 0" class="notification-badge">
+                            {{ item.notifications > 9 ? '9+' : item.notifications }}
                         </div>
-                        <i v-if="item.badge" class="fas fa-bolt text-yellow-400 text-xs animate-pulse"></i>
+                        <!-- NEW: Live Indicator -->
+                        <div v-if="item.live" class="status-dot status-active ml-auto"></div>
                     </div>
                 </div>
             </nav>
 
-            <!-- CRYPTO BALANCE -->
-            <div class="p-6 border-t border-slate-800/50">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-sm font-bold">Crypto Balance</span>
-                    <i class="fas fa-wallet text-cyan-400"></i>
-                </div>
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="text-slate-400">BTC</span>
-                        <span class="font-bold">0.42</span>
+            <div class="p-4 border-t border-slate-800">
+                <!-- UPDATED: Crypto Balance Display -->
+                <div class="mb-4 p-3 bg-slate-900/50 rounded-xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">Crypto Balance</span>
+                        <button @click="toggleBalanceVisibility" class="text-xs text-cyan-400 hover:text-cyan-300">
+                            <i :class="balanceVisible ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                        </button>
                     </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="text-slate-400">USDC</span>
-                        <span class="font-bold text-green-400">15,842</span>
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs">BTC</span>
+                            <span class="orbitron text-sm font-bold" :class="balanceChangeClass('BTC')">
+                                {{ balanceVisible ? cryptoBalances.BTC.toFixed(4) : '****' }}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs">USDC</span>
+                            <span class="orbitron text-sm font-bold text-green-400">
+                                {{ balanceVisible ? formatNumber(cryptoBalances.USDC) : '****' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
+                
                 <button @click="showCrypto = true; menuOpen = false" 
-                        class="w-full mt-6 py-4 rounded-2xl cyber-btn orbitron text-sm font-black shadow-xl shadow-cyan-500/20">
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron shadow-lg shadow-cyan-500/20 interactive-btn">
                     <i class="fab fa-bitcoin mr-2"></i> DONATE CRYPTO
+                    <span v-if="unreadDonations > 0" class="notification-badge top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+                        {{ unreadDonations }}
+                    </span>
                 </button>
+                
+                <!-- NEW: Quick Actions -->
+                <div class="flex gap-2 mt-3">
+                    <button @click="quickAction('support')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs transition">
+                        Support
+                    </button>
+                    <button @click="quickAction('docs')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs transition">
+                        Docs
+                    </button>
+                </div>
             </div>
         </aside>
     </transition>
 
-    <!-- MOBILE HEADER -->
-    <header class="md:hidden flex items-center justify-between p-6 glass z-[90] border-b border-slate-800/50">
-        <button @click="menuOpen = true" class="text-cyan-400 text-2xl">
-            <i class="fas fa-bars-staggered"></i>
-        </button>
-        <h2 class="orbitron text-lg font-bold tracking-tight text-center flex-1">
-            <span class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">{{ viewTitles[view] }}</span>
-        </h2>
-        <button @click="showNotifications = !showNotifications" class="text-cyan-400 text-xl relative">
-            <i class="fas fa-bell"></i>
-            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+    <!-- UPDATED: Mobile Header with Status -->
+    <header class="md:hidden flex items-center justify-between p-4 glass z-[90]">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                <span class="orbitron font-bold text-white">∞</span>
+            </div>
+            <div>
+                <h2 class="orbitron text-xs font-bold tracking-widest">{{ viewTitles[view] }}</h2>
+                <p class="text-[8px] text-slate-500">{{ getCurrentTime() }}</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <!-- NEW: Connection Status -->
+            <div class="relative" @click="checkConnection">
+                <i class="fas fa-wifi text-slate-400" :class="{'text-green-400': connectionActive}"></i>
+                <div v-if="!connectionActive" class="status-dot status-pending absolute -top-1 -right-1"></div>
+            </div>
+            
+            <!-- NEW: Notification Bell -->
+            <button @click="showNotifications = !showNotifications" class="relative text-slate-400 hover:text-cyan-400">
+                <i class="fas fa-bell"></i>
+                <div v-if="totalNotifications > 0" class="notification-badge">
+                    {{ totalNotifications > 9 ? '9+' : totalNotifications }}
+                </div>
+            </button>
+            
+            <button @click="menuOpen = true" class="text-cyan-400 text-xl">
+                <i class="fas fa-bars-staggered"></i>
+            </button>
+        </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-32 md:pb-8">
-        <!-- ANIMATED BACKGROUND ELEMENTS -->
-        <div class="fixed top-1/4 right-1/4 w-96 h-96 bg-cyan-500/5 blur-[120px] rounded-full -z-10"></div>
-        <div class="fixed bottom-1/4 left-1/4 w-96 h-96 bg-purple-500/5 blur-[120px] rounded-full -z-10"></div>
-
-        <div class="max-w-7xl mx-auto p-6 md:p-10 space-y-12">
-            
-            <!-- EaaS DASHBOARD -->
-            <div v-if="view === 'eaas'" class="space-y-10">
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div>
-                        <h2 class="text-5xl md:text-7xl font-black orbitron mb-4">
-                            <span class="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Everything</span>
-                            <br>
-                            <span class="text-white">as a Service</span>
-                        </h2>
-                        <p class="text-slate-400 max-w-2xl text-lg">
-                            The world's first complete business ecosystem. AI, construction, finance, and global trade in one unified platform.
-                        </p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="cyber-card p-6 text-center min-w-[140px]">
-                            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Active Services</p>
-                            <p class="orbitron text-3xl font-bold mt-2 text-cyan-400">24</p>
-                        </div>
-                        <div class="cyber-card p-6 text-center min-w-[140px]">
-                            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Revenue/Month</p>
-                            <p class="orbitron text-3xl font-bold mt-2 text-green-400">$287K</p>
+    <!-- NEW: Notification Panel -->
+    <transition name="slide">
+        <div v-if="showNotifications" class="fixed inset-0 z-[1000] md:hidden">
+            <div class="absolute inset-0 bg-black/50" @click="showNotifications = false"></div>
+            <div class="absolute top-16 right-4 w-72 glass rounded-2xl p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="orbitron font-bold">Notifications</h3>
+                    <button @click="clearNotifications" class="text-xs text-slate-400 hover:text-white">
+                        Clear All
+                    </button>
+                </div>
+                <div class="space-y-3 max-h-64 overflow-y-auto">
+                    <div v-for="notification in notifications" 
+                         :class="['p-3 rounded-lg', notification.read ? 'bg-slate-800/50' : 'bg-cyan-500/10']"
+                         @click="markAsRead(notification.id)">
+                        <div class="flex items-start gap-2">
+                            <i :class="['text-xs mt-1', notification.icon, notification.type === 'success' ? 'text-green-400' : 'text-cyan-400']"></i>
+                            <div>
+                                <p class="text-xs font-semibold">{{ notification.title }}</p>
+                                <p class="text-[10px] text-slate-400 mt-1">{{ notification.message }}</p>
+                                <p class="text-[9px] text-slate-500 mt-2">{{ notification.time }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </transition>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div v-for="s in services" class="cyber-card p-8 group cursor-pointer" @click="selectService(s.id)">
-                        <div class="flex items-start justify-between mb-6">
-                            <i :class="[s.icon, 'text-3xl', s.color]"></i>
-                            <span class="text-[10px] bg-black/40 text-slate-400 px-3 py-1 rounded-full">{{ s.category }}</span>
+    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
+        
+        <div class="fixed top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[120px] rounded-full -z-10"></div>
+        <div class="fixed bottom-0 left-0 w-96 h-96 bg-fuchsia-500/5 blur-[150px] rounded-full -z-10"></div>
+
+        <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
+
+            <!-- UPDATED: EaaS Dashboard with Live Updates -->
+            <div v-if="view === 'eaas'" class="space-y-8">
+                <div class="text-center md:text-left">
+                    <h2 class="text-4xl md:text-6xl font-black orbitron mb-4">EaaS <span class="text-cyan-400">3.0</span></h2>
+                    <p class="text-slate-400 max-w-2xl">The modular gateway to AI, Logistics, and Global Trade infrastructure.</p>
+                    
+                    <!-- NEW: System Status Bar -->
+                    <div class="flex items-center gap-4 mt-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <div :class="['status-dot', systemStatus === 'active' ? 'status-active' : 'status-pending']"></div>
+                            <span class="text-sm">System: {{ systemStatus }}</span>
                         </div>
-                        <h3 class="orbitron font-bold text-xl mb-4">{{ s.title }}</h3>
-                        <p class="text-sm text-slate-400 mb-8 leading-relaxed">{{ s.desc }}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="orbitron font-bold text-lg text-cyan-400">{{ s.price }}</span>
-                            <button class="text-xs orbitron font-bold bg-slate-800 hover:bg-cyan-500 hover:text-black px-4 py-2 rounded-full transition">
-                                ACTIVATE
-                            </button>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-users text-slate-400"></i>
+                            <span class="text-sm">{{ activeUsers }} active users</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-bolt text-yellow-400"></i>
+                            <span class="text-sm">API Latency: {{ apiLatency }}ms</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- LIVE STATS -->
-                <div class="cyber-card p-8">
-                    <h3 class="orbitron text-2xl font-bold mb-6">Live Ecosystem Stats</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div v-for="stat in stats" class="text-center p-6 bg-black/30 rounded-2xl">
-                            <p class="text-[10px] text-slate-500 uppercase tracking-widest mb-2">{{ stat.label }}</p>
-                            <p class="orbitron text-3xl font-bold" :class="stat.color">{{ stat.value }}</p>
-                            <p class="text-xs text-slate-400 mt-2">{{ stat.change }}</p>
+                <!-- UPDATED: Services with Live Status -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div v-for="s in services" 
+                         :class="['section-card p-6 group hover:border-cyan-400 transition-all cursor-pointer relative', s.status === 'down' ? 'opacity-60' : '']"
+                         @click="activateService(s.id)">
+                        
+                        <!-- NEW: Service Status Indicator -->
+                        <div class="absolute top-4 right-4">
+                            <div :class="['status-dot', s.status === 'active' ? 'status-active' : s.status === 'degraded' ? 'status-pending' : 'status-inactive']"></div>
+                        </div>
+                        
+                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
+                        <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
+                        
+                        <!-- NEW: Service Metrics -->
+                        <div class="flex items-center justify-between mb-4 text-xs">
+                            <span class="text-slate-500">Uptime: {{ s.uptime }}</span>
+                            <span class="text-slate-500">Users: {{ s.users }}</span>
+                        </div>
+                        
+                        <button @click.stop="activateService(s.id)" 
+                                :class="['w-full py-2 rounded-lg text-[10px] font-bold tracking-widest transition interactive-btn', 
+                                         s.status === 'active' ? 'bg-cyan-500 text-black hover:bg-cyan-600' : 'bg-slate-800 hover:bg-slate-700']">
+                            {{ s.status === 'active' ? 'MANAGE MODULE' : 'ACTIVATE MODULE' }}
+                            <span v-if="s.pendingUpdates" class="notification-badge top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+                                {{ s.pendingUpdates }}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- NEW: Live Activity Feed -->
+                <div class="section-card p-6">
+                    <h3 class="orbitron font-bold text-lg mb-4">Live Activity</h3>
+                    <div class="space-y-3">
+                        <div v-for="activity in liveActivities" class="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg">
+                            <i :class="['text-cyan-400', activity.icon]"></i>
+                            <div class="flex-1">
+                                <p class="text-sm">{{ activity.message }}</p>
+                                <p class="text-[10px] text-slate-500">{{ activity.time }}</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded-full" 
+                                  :class="activity.type === 'trade' ? 'bg-green-500/20 text-green-400' : 
+                                          activity.type === 'service' ? 'bg-cyan-500/20 text-cyan-400' :
+                                          'bg-purple-500/20 text-purple-400'">
+                                {{ activity.type }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TRADING HUB -->
-            <div v-if="view === 'trading'" class="space-y-8">
-                <div class="cyber-card p-8 border-l-8 border-green-500">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <!-- UPDATED: SACCO with Live Updates -->
+            <div v-if="view === 'sacco'" class="space-y-6">
+                <div class="section-card p-8 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/5 to-transparent">
+                    <div class="flex items-center justify-between mb-4">
                         <div>
-                            <h2 class="orbitron text-4xl font-bold mb-2">QUANTA SIGNALS</h2>
-                            <p class="text-slate-400">AI-Powered Trading Intelligence Platform</p>
+                            <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
+                            <p class="text-sm text-yellow-500 mb-6 uppercase tracking-widest font-bold italic">Decentralized Community Finance</p>
                         </div>
-                        <div class="flex gap-4">
-                            <div class="text-center p-4 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">Win Rate</p>
-                                <p class="orbitron text-2xl text-green-400 font-bold">87.4%</p>
-                            </div>
-                            <div class="text-center p-4 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">ROI/Month</p>
-                                <p class="orbitron text-2xl text-cyan-400 font-bold">+42.8%</p>
-                            </div>
+                        <!-- NEW: SACCO Performance -->
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500">Last Distribution</p>
+                            <p class="orbitron text-lg text-green-400">+{{ lastDistribution }}%</p>
                         </div>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="cyber-card p-6 lg:col-span-2">
-                        <h3 class="orbitron text-xl font-bold mb-6">Live Market Signals</h3>
-                        <div class="space-y-4">
-                            <div v-for="signal in signals" class="p-4 bg-black/30 rounded-xl border-l-4" :class="signal.profit ? 'border-green-500' : 'border-red-500'">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="orbitron font-bold">{{ signal.pair }}</span>
-                                    <span :class="['text-xs font-bold', signal.profit ? 'text-green-400' : 'text-red-400']">
-                                        {{ signal.change }}
-                                    </span>
+                    
+                    <!-- UPDATED: Stats with Live Updates -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="p-4 bg-black/40 rounded-2xl">
+                            <span class="text-[10px] text-slate-500 block uppercase">Global Pool</span>
+                            <span class="orbitron text-xl text-white font-bold">${{ formatNumber(saccoPool) }}</span>
+                            <div v-if="poolChange !== 0" class="text-[10px] mt-1" 
+                                 :class="poolChange > 0 ? 'text-green-400' : 'text-red-400'">
+                                {{ poolChange > 0 ? '↑' : '↓' }} ${{ formatNumber(Math.abs(poolChange)) }}
+                            </div>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-2xl">
+                            <span class="text-[10px] text-slate-500 block uppercase">APY Return</span>
+                            <span class="orbitron text-xl text-green-400 font-bold">{{ saccoApy }}%</span>
+                            <div class="text-[10px] text-slate-500 mt-1">Next update: {{ nextDistribution }}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Investment Calculator -->
+                    <div class="mb-8 p-4 bg-slate-900/50 rounded-xl">
+                        <p class="text-sm font-semibold mb-3">Investment Calculator</p>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs text-slate-500 block mb-1">Amount to Invest ($)</label>
+                                <input type="range" v-model="investmentAmount" min="100" max="100000" step="100" 
+                                       class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                <div class="flex justify-between text-xs text-slate-400 mt-1">
+                                    <span>$100</span>
+                                    <span>${{ formatNumber(investmentAmount) }}</span>
+                                    <span>$100k</span>
                                 </div>
-                                <p class="text-sm text-slate-400">{{ signal.action }}</p>
-                                <div class="flex items-center justify-between mt-4">
-                                    <span class="text-xs text-slate-500">{{ signal.time }}</span>
-                                    <button class="text-xs orbitron font-bold bg-slate-800 hover:bg-green-500 hover:text-black px-3 py-1 rounded">
-                                        EXECUTE
-                                    </button>
-                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-black/40 rounded-lg">
+                                <span class="text-sm">Projected Return (1 Year)</span>
+                                <span class="orbitron text-lg text-green-400">
+                                    ${{ formatNumber(calculateProjectedReturn(investmentAmount)) }}
+                                </span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="cyber-card p-6">
-                        <h3 class="orbitron text-xl font-bold mb-6">VIP Membership</h3>
-                        <div class="space-y-6">
-                            <div class="p-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl">
-                                <p class="text-sm font-bold mb-2">Diamond Tier</p>
-                                <p class="text-xs text-slate-400 mb-4">Full access to all signals + AI tools</p>
-                                <p class="orbitron text-2xl font-bold text-cyan-400">$999<span class="text-sm text-slate-400">/month</span></p>
+                    <button @click="joinSacco" 
+                            :class="['w-full py-4 text-black font-black orbitron rounded-2xl shadow-xl shadow-yellow-500/20 interactive-btn', 
+                                     joiningSacco ? 'bg-yellow-600' : 'bg-yellow-500']"
+                            :disabled="joiningSacco">
+                        <template v-if="!joiningSacco">
+                            JOIN THE SACCO
+                        </template>
+                        <template v-else>
+                            PROCESSING<span class="loading-dots"></span>
+                        </template>
+                    </button>
+                </div>
+            </div>
+
+            <!-- UPDATED: DevSecOps with Interactive Features -->
+            <div v-if="view === 'devsecops'" class="space-y-6">
+                <div class="section-card p-6 md:p-10 border-t-2 border-cyan-500">
+                    <div class="flex flex-col md:flex-row gap-10">
+                        <div class="flex-1">
+                            <h2 class="orbitron text-2xl md:text-4xl font-bold mb-4">BARAKA DEVSECOPS</h2>
+                            <p class="text-slate-400 mb-8 font-mono text-sm leading-relaxed">
+                                <span class="text-cyan-500">></span> Mastering the Fullstack Lifecycle.<br>
+                                <span class="text-cyan-500">></span> Secure CI/CD Engineering.<br>
+                                <span class="text-cyan-500">></span> Knowledge Transfer Protocol Active.
+                            </p>
+                            
+                            <!-- NEW: Progress Tracker -->
+                            <div class="mb-8">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm font-semibold">Course Progress</span>
+                                    <span class="text-xs text-cyan-400">{{ courseProgress }}%</span>
+                                </div>
+                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500" 
+                                         :style="{width: courseProgress + '%'}"></div>
+                                </div>
                             </div>
-                            <button @click="contact('Trading VIP Access')" class="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-black font-black orbitron rounded-2xl">
-                                UPGRADE NOW
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4 p-4 glass rounded-xl hover:bg-slate-800/50 cursor-pointer transition"
+                                     @click="selectCourse('fullstack')">
+                                    <i class="fas fa-code text-blue-400"></i>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-bold">End-to-End Fullstack</p>
+                                        <p class="text-[10px] text-slate-500">Go, Python, Vue 3, Docker</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                </div>
+                                <div class="flex items-center gap-4 p-4 glass rounded-xl hover:bg-slate-800/50 cursor-pointer transition"
+                                     @click="selectCourse('security')">
+                                    <i class="fas fa-shield-halved text-emerald-400"></i>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-bold">Pentesting & Security</p>
+                                        <p class="text-[10px] text-slate-500">Secure Architecture Deployment</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- UPDATED: Interactive Button -->
+                        <button @click="startCourse" 
+                                :class="['md:hidden py-4 text-black font-black orbitron rounded-xl interactive-btn w-full', 
+                                         startingCourse ? 'bg-white/90' : 'bg-white']"
+                                :disabled="startingCourse">
+                            <template v-if="!startingCourse">
+                                VIEW CURRICULUM
+                            </template>
+                            <template v-else>
+                                LOADING<span class="loading-dots"></span>
+                            </template>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- NEW: Course Modules -->
+                <div v-if="selectedCourse" class="section-card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="orbitron text-xl font-bold">{{ selectedCourse.title }}</h3>
+                        <button @click="selectedCourse = null" class="text-slate-400 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div v-for="module in selectedCourse.modules" 
+                             class="p-4 bg-slate-900/50 rounded-xl">
+                            <div class="flex items-center gap-3 mb-3">
+                                <i :class="[module.icon, 'text-cyan-400']"></i>
+                                <span class="text-sm font-semibold">{{ module.name }}</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-4">{{ module.description }}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-500">{{ module.duration }}</span>
+                                <button @click="startModule(module.id)" 
+                                        class="text-xs px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30">
+                                    Start
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPDATED: BoyzInTheHood with Interactive Portfolio -->
+            <div v-if="view === 'boyz'" class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="orbitron text-2xl font-bold border-b border-slate-800 pb-4">Industrial Builds</h2>
+                    <!-- NEW: Filter Options -->
+                    <div class="flex gap-2">
+                        <button v-for="filter in portfolioFilters" 
+                                @click="activeFilter = filter"
+                                :class="['px-3 py-1 text-xs rounded-full transition', 
+                                         activeFilter === filter ? 'bg-cyan-500 text-black' : 'bg-slate-800 text-slate-400']">
+                            {{ filter }}
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div v-for="p in filteredPortfolio" 
+                         class="section-card overflow-hidden group hover:transform hover:scale-[1.02] transition-transform duration-300">
+                        <div class="h-48 overflow-hidden relative">
+                            <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-70">
+                            <!-- NEW: Project Status -->
+                            <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs" 
+                                 :class="p.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                                         p.status === 'ongoing' ? 'bg-yellow-500/20 text-yellow-400' :
+                                         'bg-blue-500/20 text-blue-400'">
+                                {{ p.status }}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="orbitron font-bold text-lg mb-2">{{ p.title }}</h3>
+                                    <p class="text-xs text-slate-400">{{ p.desc }}</p>
+                                </div>
+                                <!-- NEW: Quick Actions -->
+                                <div class="flex gap-2">
+                                    <button @click="viewProjectDetails(p.id)" 
+                                            class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition">
+                                        <i class="fas fa-eye text-xs"></i>
+                                    </button>
+                                    <button @click="contact('Construction Inquiry: ' + p.title)" 
+                                            class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center hover:bg-cyan-600 transition">
+                                        <i class="fas fa-envelope text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- NEW: Project Metrics -->
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500">Budget</p>
+                                    <p class="orbitron text-sm">{{ p.budget }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500">Timeline</p>
+                                    <p class="orbitron text-sm">{{ p.timeline }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500">Progress</p>
+                                    <p class="orbitron text-sm">{{ p.progress }}%</p>
+                                </div>
+                            </div>
+                            
+                            <button @click="requestSpecs(p)" 
+                                    class="w-full py-2 border border-slate-700 rounded-lg text-[10px] orbitron font-bold hover:bg-white hover:text-black transition interactive-btn">
+                                <template v-if="!p.loadingSpecs">
+                                    REQUEST SPECS
+                                </template>
+                                <template v-else>
+                                    SENDING<span class="loading-dots"></span>
+                                </template>
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- DEVSECOPS ACADEMY -->
-            <div v-if="view === 'devsecops'" class="space-y-8">
-                <div class="cyber-card p-8 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-l-8 border-blue-500">
-                    <div class="flex flex-col md:flex-row gap-10 items-center">
-                        <div class="flex-1">
-                            <h2 class="orbitron text-4xl md:text-5xl font-bold mb-4">BARAKA DEVSECOPS</h2>
-                            <p class="text-lg text-slate-300 mb-8">
-                                Master the Fullstack Lifecycle with Security-First Engineering
-                            </p>
-                            <div class="grid grid-cols-2 gap-4 mb-8">
-                                <div class="p-4 bg-black/40 rounded-2xl">
-                                    <p class="text-[10px] text-slate-500">Students Trained</p>
-                                    <p class="orbitron text-2xl text-white font-bold">5,239</p>
-                                </div>
-                                <div class="p-4 bg-black/40 rounded-2xl">
-                                    <p class="text-[10px] text-slate-500">Certification Rate</p>
-                                    <p class="orbitron text-2xl text-green-400 font-bold">94.2%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button @click="contact('DevSecOps Course Enrollment')" class="cyber-btn px-12 py-4 orbitron text-lg">
-                            VIEW CURRICULUM
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div v-for="course in courses" class="cyber-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <i :class="[course.icon, 'text-3xl', course.color]"></i>
-                            <span class="text-xs bg-black/40 text-slate-400 px-3 py-1 rounded-full">{{ course.duration }}</span>
-                        </div>
-                        <h3 class="orbitron text-xl font-bold mb-4">{{ course.title }}</h3>
-                        <p class="text-sm text-slate-400 mb-6">{{ course.desc }}</p>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="orbitron font-bold text-xl text-cyan-400">{{ course.price }}</span>
-                                <button class="text-xs orbitron font-bold bg-slate-800 hover:bg-blue-500 hover:text-black px-4 py-2 rounded-full">
-                                    ENROLL
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DIGITAL SACCO -->
-            <div v-if="view === 'sacco'" class="space-y-8">
-                <div class="cyber-card p-8 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/10 to-orange-500/10">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                
+                <!-- NEW: Materials Calculator -->
+                <div class="section-card p-6">
+                    <h3 class="orbitron font-bold text-lg mb-4">Construction Calculator</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <h2 class="orbitron text-4xl font-bold mb-2">SMART SACCO</h2>
-                            <p class="text-yellow-500 uppercase tracking-widest font-bold">Decentralized Community Finance</p>
+                            <label class="text-sm font-semibold mb-2 block">Project Type</label>
+                            <select v-model="projectType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3">
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="industrial">Industrial</option>
+                            </select>
                         </div>
-                        <div class="flex gap-4">
-                            <div class="text-center p-6 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">Global Pool</p>
-                                <p class="orbitron text-3xl text-white font-bold">$1.2M+</p>
-                            </div>
-                            <div class="text-center p-6 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">APY Return</p>
-                                <p class="orbitron text-3xl text-green-400 font-bold">18.4%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="cyber-card p-8">
-                        <h3 class="orbitron text-2xl font-bold mb-6">Membership Tiers</h3>
-                        <div class="space-y-6">
-                            <div v-for="tier in saccoTiers" class="p-6 bg-black/30 rounded-2xl">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="orbitron font-bold text-lg">{{ tier.name }}</span>
-                                    <span :class="['text-xs px-3 py-1 rounded-full', tier.badgeColor]">{{ tier.min }}</span>
-                                </div>
-                                <p class="text-sm text-slate-400 mb-4">{{ tier.desc }}</p>
-                                <p class="orbitron text-xl font-bold text-yellow-400">{{ tier.apy }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="cyber-card p-8 lg:col-span-2">
-                        <h3 class="orbitron text-2xl font-bold mb-6">Investment Portfolio</h3>
-                        <div class="space-y-4">
-                            <div v-for="inv in investments" class="p-6 bg-black/30 rounded-2xl">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="orbitron font-bold">{{ inv.name }}</p>
-                                        <p class="text-sm text-slate-500">{{ inv.type }}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="orbitron text-xl font-bold text-green-400">{{ inv.return }}</p>
-                                        <p class="text-xs text-slate-500">{{ inv.duration }}</p>
-                                    </div>
-                                </div>
-                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-green-500 to-cyan-500" :style="{width: inv.progress}"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button @click="contact('SACCO Membership Inquiry')" class="w-full mt-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black orbitron rounded-2xl">
-                            JOIN THE SACCO
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BOYZ IN THE HOOD -->
-            <div v-if="view === 'boyz'" class="space-y-8">
-                <div class="cyber-card p-8 border-l-8 border-red-500 bg-gradient-to-br from-red-500/10 to-orange-500/10">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                         <div>
-                            <h2 class="orbitron text-4xl font-bold mb-2">BOYZ IN THE HOOD</h2>
-                            <p class="text-red-500 uppercase tracking-widest font-bold">Complete Construction & Business Solutions</p>
+                            <label class="text-sm font-semibold mb-2 block">Area (sq ft)</label>
+                            <input type="number" v-model="projectArea" 
+                                   class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3">
                         </div>
-                        <div class="flex gap-4">
-                            <div class="text-center p-6 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">Projects</p>
-                                <p class="orbitron text-3xl text-white font-bold">412</p>
-                            </div>
-                            <div class="text-center p-6 bg-black/40 rounded-2xl">
-                                <p class="text-[10px] text-slate-500">Materials</p>
-                                <p class="orbitron text-3xl text-cyan-400 font-bold">150+</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div v-for="p in portfolio" class="cyber-card overflow-hidden group cursor-pointer" @click="contact('Construction Inquiry: ' + p.title)">
-                        <div class="h-64 overflow-hidden">
-                            <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="orbitron text-2xl font-bold">{{ p.title }}</h3>
-                                <span class="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-full">{{ p.category }}</span>
-                            </div>
-                            <p class="text-slate-400 mb-6">{{ p.desc }}</p>
-                            <div class="flex items-center justify-between">
-                                <span class="orbitron font-bold text-xl text-cyan-400">{{ p.price }}</span>
-                                <button class="text-xs orbitron font-bold bg-slate-800 hover:bg-red-500 hover:text-black px-4 py-2 rounded-full">
-                                    REQUEST SPECS
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cyber-card p-8">
-                    <h3 class="orbitron text-2xl font-bold mb-6">Construction Materials</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div v-for="material in materials" class="p-6 bg-black/30 rounded-2xl text-center">
-                            <i :class="[material.icon, 'text-2xl text-red-400 mb-4']"></i>
-                            <p class="orbitron font-bold">{{ material.name }}</p>
-                            <p class="text-xs text-slate-500 mt-2">{{ material.desc }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- MOBILE BOTTOM NAV -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-20 flex items-center justify-around z-[100] border-t border-slate-800/50">
-        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-2 p-4 rounded-2xl transition-all', view === 'eaas' ? 'active-glow bg-cyan-500/10' : 'text-slate-500']">
-            <i class="fas fa-th-large text-xl"></i>
-            <span class="text-[9px] orbitron font-bold">EAAS</span>
-        </div>
-        <div @click="selectView('trading')" :class="['flex flex-col items-center gap-2 p-4 rounded-2xl transition-all', view === 'trading' ? 'active-glow bg-green-500/10' : 'text-slate-500']">
-            <i class="fas fa-chart-line text-xl"></i>
-            <span class="text-[9px] orbitron font-bold">TRADE</span>
-        </div>
-        <div @click="selectView('sacco')" :class="['flex flex-col items-center gap-2 p-4 rounded-2xl transition-all', view === 'sacco' ? 'active-glow bg-yellow-500/10' : 'text-slate-500']">
-            <i class="fas fa-vault text-xl"></i>
-            <span class="text-[9px] orbitron font-bold">SACCO</span>
-        </div>
-        <div @click="selectView('devsecops')" :class="['flex flex-col items-center gap-2 p-4 rounded-2xl transition-all', view === 'devsecops' ? 'active-glow bg-blue-500/10' : 'text-slate-500']">
-            <i class="fas fa-brain text-xl"></i>
-            <span class="text-[9px] orbitron font-bold">ACADEMY</span>
-        </div>
-    </nav>
-
-    <!-- CRYPTO DONATION MODAL -->
-    <div v-if="showCrypto" class="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showCrypto = false"></div>
-        <div class="glass w-full max-w-md p-10 rounded-3xl text-center relative animate-in zoom-in-95 border border-cyan-500/30">
-            <button @click="showCrypto = false" class="absolute top-6 right-6 text-slate-400 hover:text-white">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-            
-            <h2 class="orbitron text-2xl mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">SUPPORT OUR ECOSYSTEM</h2>
-            <p class="text-sm text-slate-400 mb-8">Your crypto fuels innovation and community growth</p>
-            
-            <div class="flex gap-2 mb-8 p-1 bg-black/40 rounded-full">
-                <button @click="activeCoin = 0" :class="['flex-1 py-3 rounded-full text-sm font-bold orbitron transition-all', activeCoin === 0 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' : 'text-slate-400']">
-                    <i class="fab fa-btc mr-2"></i> BITCOIN
-                </button>
-                <button @click="activeCoin = 1" :class="['flex-1 py-3 rounded-full text-sm font-bold orbitron transition-all', activeCoin === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-black' : 'text-slate-400']">
-                    <i class="fas fa-coins mr-2"></i> USDC
-                </button>
-            </div>
-            
-            <div class="qr-scan-effect mb-8">
-                <img :src="coins[activeCoin].qr" class="w-64 h-64 mx-auto rounded-2xl border-8 border-white/10 shadow-2xl">
-            </div>
-            
-            <div class="bg-black/50 p-6 rounded-2xl font-mono text-sm break-all mb-6 text-cyan-400">
-                {{ coins[activeCoin].addr }}
-                <button @click="copyAddress(coins[activeCoin].addr)" class="ml-4 text-xs bg-cyan-500/20 hover:bg-cyan-500 hover:text-black px-3 py-1 rounded">
-                    COPY
-                </button>
-            </div>
-            
-            <p class="text-xs text-red-400 uppercase tracking-widest mb-2">⚠️ IMPORTANT</p>
-            <p class="text-xs text-slate-400 mb-8">Only send {{ coins[activeCoin].net }} assets to this address</p>
-            
-            <div class="flex gap-4">
-                <button @click="showCrypto = false" class="flex-1 py-3 border border-slate-700 text-slate-400 rounded-xl hover:bg-slate-800 transition">
-                    CLOSE
-                </button>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-    const { createApp } = Vue;
-    
-    createApp({
-        data() {
-            return {
-                view: 'eaas',
-                menuOpen: false,
-                showCrypto: false,
-                showNotifications: false,
-                activeCoin: 0,
-                isMobile: window.innerWidth < 768,
-                
-                navGroups: {
-                    'ECOSYSTEM': [
-                        { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th-large', subtitle: 'Everything Platform' },
-                        { id: 'trading', label: 'Trading Hub', icon: 'fas fa-chart-line', subtitle: 'AI Signals', badge: true },
-                        { id: 'commerce', label: 'Global Commerce', icon: 'fas fa-globe', subtitle: 'Import/Export' }
-                    ],
-                    'DEVELOPMENT': [
-                        { id: 'devsecops', label: 'DevSecOps Academy', icon: 'fas fa-user-shield', subtitle: 'Fullstack Mastery' },
-                        { id: 'ai', label: 'AI Integration', icon: 'fas fa-robot', subtitle: 'Custom Models' }
-                    ],
-                    'COMMUNITY & REAL WORLD': [
-                        { id: 'sacco', label: 'Digital SACCO', icon: 'fas fa-vault', subtitle: 'Community Finance' },
-                        { id: 'boyz', label: 'BoyzInTheHood', icon: 'fas fa-city', subtitle: 'Construction & Logistics' },
-                        { id: 'merch', label: 'Merchandise', icon: 'fas fa-tshirt', subtitle: 'Branded Apparel' }
-                    ]
-                },
-                
-                viewTitles: {
-                    eaas: 'EVERYTHING AS A SERVICE',
-                    trading: 'QUANTA TRADING HUB',
-                    devsecops: 'BARAKA DEVSECOPS',
-                    sacco: 'SMART DIGITAL SACCO',
-                    boyz: 'BOYZ IN THE HOOD',
-                    ai: 'AI INTEGRATION LAB',
-                    commerce: 'GLOBAL COMMERCE',
-                    merch: 'MERCHANDISE STORE'
-                },
-                
-                services: [
-                    { id: 'ai', title: 'AI Integration', icon: 'fas fa-brain', color: 'text-purple-400', category: 'TECH', desc: 'Custom LLM training, automation workflows, and AI-powered business solutions.', price: '$999/mo' },
-                    { id: 'signals', title: 'Premium Signals', icon: 'fas fa-wifi', color: 'text-green-400', category: 'TRADING', desc: 'HFX & Crypto signals with 87.4% win rate, delivered via encrypted channels.', price: '$299/mo' },
-                    { id: 'education', title: 'Course Library', icon: 'fas fa-graduation-cap', color: 'text-blue-400', category: 'EDUCATION', desc: 'Proprietary knowledge on dropshipping, fintech, and business automation.', price: '$199/mo' },
-                    { id: 'energy', title: 'Energy IOT', icon: 'fas fa-bolt', color: 'text-yellow-400', category: 'IOT', desc: 'Smart energy meters and IOT solutions for modern energy management.', price: 'Custom' }
-                ],
-                
-                stats: [
-                    { label: 'Active Members', value: '15,842', color: 'text-cyan-400', change: '+12% this month' },
-                    { label: 'Monthly Revenue', value: '$287K', color: 'text-green-400', change: '+24% growth' },
-                    { label: 'Projects Live', value: '412', color: 'text-purple-400', change: '28 ongoing' },
-                    { label: 'Countries', value: '28', color: 'text-blue-400', change: 'Across Africa' }
-                ],
-                
-                signals: [
-                    { pair: 'BTC/USDT', action: 'LONG ENTRY @ 61,200', change: '+3.2%', profit: true, time: '2 min ago' },
-                    { pair: 'ETH/USDT', action: 'SHORT ENTRY @ 3,450', change: '-1.8%', profit: true, time: '5 min ago' },
-                    { pair: 'SOL/USDT', action: 'LONG ENTRY @ 142.5', change: '+5.7%', profit: true, time: '12 min ago' }
-                ],
-                
-                courses: [
-                    { title: 'Fullstack DevSecOps', icon: 'fas fa-shield-halved', color: 'text-blue-400', duration: '12 Weeks', desc: 'Master secure software development, CI/CD, and cloud deployment.', price: '$1,499' },
-                    { title: 'AI Engineering', icon: 'fas fa-robot', color: 'text-purple-400', duration: '16 Weeks', desc: 'Build and deploy custom AI models for business applications.', price: '$2,199' },
-                    { title: 'Trading Algorithms', icon: 'fas fa-chart-line', color: 'text-green-400', duration: '8 Weeks', desc: 'Create automated trading systems with Python and ML.', price: '$999' }
-                ],
-                
-                saccoTiers: [
-                    { name: 'Bronze', min: '$100 Min', apy: '8.4% APY', desc: 'Basic membership with community access', badgeColor: 'bg-yellow-500/20 text-yellow-400' },
-                    { name: 'Silver', min: '$1,000 Min', apy: '12.7% APY', desc: 'Enhanced returns with voting rights', badgeColor: 'bg-slate-500/20 text-slate-400' },
-                    { name: 'Gold', min: '$5,000 Min', apy: '15.9% APY', desc: 'Premium tier with exclusive opportunities', badgeColor: 'bg-yellow-500/20 text-yellow-400' },
-                    { name: 'Diamond', min: '$25,000 Min', apy: '18.4% APY', desc: 'VIP access with profit sharing', badgeColor: 'bg-cyan-500/20 text-cyan-400' }
-                ],
-                
-                investments: [
-                    { name: 'Real Estate Pool', type: 'Property Development', return: '+24.2%', duration: '18 Months', progress: '85%' },
-                    { name: 'Tech Startups', type: 'Early Stage Funding', return: '+42.8%', duration: '24 Months', progress: '60%' },
-                    { name: 'Agriculture', type: 'Sustainable Farming', return: '+18.6%', duration: '12 Months', progress: '92%' }
-                ],
-                
-                portfolio: [
-                    { title: 'Alpha Tech Complex', desc: 'IOT-Integrated smart residential development with AI management systems.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200', category: 'RESIDENTIAL', price: '$2.4M' },
-                    { title: 'Logistics One Hub', desc: 'Automated supply chain warehouse with robotics and real-time tracking.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200', category: 'COMMERCIAL', price: '$3.8M' }
-                ],
-                
-                materials: [
-                    { name: 'Cement', icon: 'fas fa-cube', desc: 'Premium grade, all types' },
-                    { name: 'Steel & Iron', icon: 'fas fa-weight-hanging', desc: 'Reinforcement bars' },
-                    { name: 'Roofing', icon: 'fas fa-home', desc: 'Complete roofing solutions' },
-                    { name: 'Plumbing', icon: 'fas fa-faucet', desc: 'Pipes & fittings' }
-                ],
-                
-                coins: [
-                    { 
-                        net: 'Bitcoin Network (Taproot)', 
-                        addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', 
-                        qr: 'image1.jpeg' 
-                    },
-                    { 
-                        net: 'Avalanche C-Chain', 
-                        addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', 
-                        qr: 'image0.jpeg' 
-                    }
-                ]
-            }
-        },
-        
-        methods: {
-            selectView(id) {
-                this.view = id;
-                this.menuOpen = false;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-            
-            selectService(id) {
-                this.view = id;
-                this.menuOpen = false;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-            
-            contact(subject) {
-                window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY NEXUS: ${subject}`;
-            },
-            
-            copyAddress(address) {
-                navigator.clipboard.writeText(address).then(() => {
-                    alert('Address copied to clipboard!');
-                });
-            }
-        },
-        
-        mounted() {
-            window.addEventListener('resize', () => {
-                this.isMobile = window.innerWidth < 768;
-                if (!this.isMobile) this.menuOpen = true;
-            });
-            
-            if (!this.isMobile) this.menuOpen = true;
-            
-            // Custom cursor
-            const cursor = document.querySelector('.custom-cursor');
-            const cursorFollower = document.querySelector('.custom-cursor-follower');
-            
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-                
-                setTimeout(() => {
-                    cursorFollower.style.left = e.clientX + 'px';
-                    cursorFollower.style.top = e.clientY + 'px';
-                }, 100);
-            });
-            
-            document.addEventListener('mousedown', () => {
-                cursor.style.transform = 'scale(0.8)';
-                cursorFollower.style.transform = 'scale(1.2)';
-            });
-            
-            document.addEventListener('mouseup', () => {
-                cursor.style.transform = 'scale(1)';
-                cursorFollower.style.transform = 'scale(1)';
-            });
-            
-            // Animate stats
-            setTimeout(() => {
-                this.stats.forEach((stat, index) => {
-                    if (stat.value.includes('$')) {
-                        const value = parseInt(stat.value.replace(/[$,]/g, ''));
-                        this.animateNumber(`stat${index}`, 0, value, 2000);
-                    }
-                });
-            }, 1000);
-        }
-    }).mount('#app');
-</script>
-</body>
-</html>
+                        <div>
+                            <label class="text-sm font-semibold mb-2 block">Estimated Cost</label>
+                            <div class="p-3 bg-black/40 rounded-lg">
+                                <p class="orbitron text-xl text-cyan-400">${{ calculateProjectCost }}</p>
