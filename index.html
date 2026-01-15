@@ -3,540 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY NEXUS 4.0 | Ultimate Everything Ecosystem</title>
+    <title>EXNESFLY NEXUS 3.0 | Everything Ecosystem</title>
     
-    <!-- Upgraded with Vue Router, Pinia for state management, Axios for API calls, Chart.js for visualizations, GSAP for advanced animations, Web3.js for crypto interactions, and Three.js for 3D immersive elements -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/vue-router@4"></script>
-    <script src="https://unpkg.com/pinia@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- PWA Manifest for progressive web app capabilities -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#020617">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
+
     <style>
         :root {
             --neon-blue: #00f5ff;
             --deep-dark: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.8);
-            --neon-purple: #d946ef;
-            --neon-green: #22c55e;
+            --glass-bg: rgba(15, 23, 42, 0.9);
         }
         body {
             background-color: var(--deep-dark);
             color: #f8fafc;
             font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation; /* Enhanced touch interactions */
         }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         .glass { backdrop-filter: blur(15px); background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); }
         
-        /* Advanced Slide and Fade Animations with GSAP */
-        .slide-enter-active, .slide-leave-active { transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-        .slide-enter-from, .slide-leave-to { transform: translateX(-100%); opacity: 0; }
-        
-        /* Hide Scrollbar with smooth scrolling */
+        /* Mobile Slide Animation */
+        .slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
+        .slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        html { scroll-behavior: smooth; }
         
         .section-card {
             background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
             border-radius: 24px;
             border: 1px solid rgba(0, 245, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .section-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 245, 255, 0.2); }
         
-        /* Neon Pulse with GSAP Animation */
         .active-glow {
-            animation: neonPulse 1.5s infinite alternate;
             filter: drop-shadow(0 0 8px var(--neon-blue));
             color: var(--neon-blue) !important;
         }
-        @keyframes neonPulse {
-            from { filter: drop-shadow(0 0 4px var(--neon-blue)); }
-            to { filter: drop-shadow(0 0 12px var(--neon-blue)); }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(100%); opacity: 0; }
         }
-        
-        /* 3D Canvas Styles */
-        .three-canvas { border-radius: 24px; overflow: hidden; }
-        
-        /* Haptic Feedback Placeholder (use Vibration API in JS) */
-        .haptic-btn:active { /* JS will handle vibration */ }
+        .scanner-line {
+            height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            animation: scan 3s linear infinite;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
+
 <div id="app" class="h-screen w-screen flex flex-col md:flex-row">
+
     <transition name="slide">
-        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-80 z-[100] glass flex flex-col md:relative md:flex"> <!-- Widened for more content -->
+        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
             <div class="p-6 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <img src="LOGO.png" class="w-12 h-12" alt="Logo"> <!-- Larger logo -->
-                    <h1 class="orbitron font-bold text-xl tracking-tighter text-cyan-400">EXNESFLY 4.0</h1> <!-- Version upgrade -->
+                    <img src="LOGO.png" class="w-10 h-10" alt="Logo">
+                    <h1 class="orbitron font-bold text-lg tracking-tighter text-cyan-400">EXNESFLY</h1>
                 </div>
-                <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times text-xl"></i></button>
+                <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
             </div>
+
             <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
                 <div v-for="(category, name) in navGroups" :key="name">
-                    <p class="text-xs uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p> <!-- Slightly larger text -->
-                    <div v-for="item in category"
-                         @click="navigateTo(item.id)"
-                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', $route.params.view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400 active-glow' : 'text-slate-400 hover:bg-slate-800']">
-                        <i :class="[item.icon, 'text-lg']"></i> <!-- Larger icons -->
+                    <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p>
+                    <div v-for="item in category" 
+                         @click="selectView(item.id)" 
+                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
+                        <i :class="item.icon"></i>
                         <span class="text-sm font-medium">{{ item.label }}</span>
                     </div>
                 </div>
             </nav>
-            <div class="p-4 border-t border-slate-800 space-y-4"> <!-- Added more buttons -->
-                <button @click="showCrypto = true; menuOpen = false" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-sm orbitron shadow-lg shadow-cyan-500/20">
-                    <i class="fab fa-bitcoin mr-2"></i> DONATE CRYPTO
-                </button>
-                <button @click="toggleDarkMode" class="w-full py-3 rounded-xl bg-slate-800 text-cyan-400 font-black text-sm orbitron">
-                    <i class="fas fa-moon mr-2"></i> TOGGLE THEME
+
+            <div class="p-4 border-t border-slate-800">
+                <button @click="showCrypto = true; menuOpen = false" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron shadow-lg shadow-cyan-500/20">
+                    <i class="fab fa-bitcoin mr-2"></i> DONATE
                 </button>
             </div>
         </aside>
     </transition>
+
     <header class="md:hidden flex items-center justify-between p-4 glass z-[90]">
-        <img src="LOGO.png" class="w-10 h-10" alt="Logo">
-        <h2 class="orbitron text-sm font-bold tracking-widest">{{ viewTitles[$route.params.view] }}</h2>
-        <button @click="menuOpen = true" class="text-cyan-400 text-2xl"><i class="fas fa-bars-staggered"></i></button>
+        <img src="LOGO.png" class="w-8 h-8" alt="Logo">
+        <h2 class="orbitron text-[10px] font-bold tracking-widest">{{ viewTitles[view] }}</h2>
+        <button @click="menuOpen = true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
     </header>
-    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-28 md:pb-10"> <!-- Increased padding for more content -->
+
+    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
         
-        <!-- Enhanced Background Effects with Three.js Orb -->
-        <div id="three-bg" class="fixed inset-0 -z-20"></div>
-        
-        <div class="fixed top-0 right-0 w-72 h-72 bg-cyan-500/10 blur-[140px] rounded-full -z-10"></div>
-        <div class="fixed bottom-0 left-0 w-108 h-108 bg-fuchsia-500/10 blur-[170px] rounded-full -z-10"></div>
-        <div class="fixed top-1/2 left-1/2 w-96 h-96 bg-neon-green/5 blur-[200px] rounded-full -z-10 transform -translate-x-1/2 -translate-y-1/2"></div> <!-- Added more gradients -->
-        
-        <div class="max-w-7xl mx-auto p-6 md:p-12 space-y-12"> <!-- Wider container -->
-            <router-view></router-view> <!-- Using Vue Router for views -->
-        </div>
-    </main>
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-20 flex items-center justify-around z-[100] border-t border-slate-800"> <!-- Taller nav -->
-        <div @click="navigateTo('eaas')" :class="['flex flex-col items-center gap-1 p-2', $route.params.view === 'eaas' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-home text-xl"></i><span class="text-[9px] font-bold orbitron">HOME</span>
-        </div>
-        <div @click="navigateTo('trading')" :class="['flex flex-col items-center gap-1 p-2', $route.params.view === 'trading' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-bolt text-xl"></i><span class="text-[9px] font-bold orbitron">SIGNALS</span>
-        </div>
-        <div @click="navigateTo('sacco')" :class="['flex flex-col items-center gap-1 p-2', $route.params.view === 'sacco' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-vault text-xl"></i><span class="text-[9px] font-bold orbitron">SACCO</span>
-        </div>
-        <div @click="navigateTo('devsecops')" :class="['flex flex-col items-center gap-1 p-2', $route.params.view === 'devsecops' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-brain text-xl"></i><span class="text-[9px] font-bold orbitron">COURSES</span>
-        </div>
-        <div @click="navigateTo('boyz')" :class="['flex flex-col items-center gap-1 p-2', $route.params.view === 'boyz' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-city text-xl"></i><span class="text-[9px] font-bold orbitron">BUILDS</span>
-        </div> <!-- Added more nav items -->
-    </nav>
-    
-    <!-- Upgraded Crypto Donate Modal with Web3 Integration -->
-    <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto = false"></div>
-        <div class="glass w-full max-w-md p-8 rounded-[40px] text-center relative animate-in zoom-in-95"> <!-- Wider modal -->
-            <h2 class="orbitron text-2xl mb-6">DONATE ASSET</h2>
-            <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full">
-                <button @click="activeCoin = 0" :class="['flex-1 py-2 rounded-full text-sm font-bold orbitron transition', activeCoin === 0 ? 'bg-cyan-500 text-black' : 'text-slate-400']">BTC</button>
-                <button @click="activeCoin = 1" :class="['flex-1 py-2 rounded-full text-sm font-bold orbitron transition', activeCoin === 1 ? 'bg-cyan-500 text-black' : 'text-slate-400']">USDC</button>
-                <button @click="activeCoin = 2" :class="['flex-1 py-2 rounded-full text-sm font-bold orbitron transition', activeCoin === 2 ? 'bg-cyan-500 text-black' : 'text-slate-400']">ETH</button> <!-- Added ETH -->
-            </div>
-            <img :src="coins[activeCoin].qr" class="w-52 h-52 mx-auto mb-6 rounded-2xl border-4 border-white shadow-2xl shadow-white/10"> <!-- Larger QR -->
-            <div class="bg-black/50 p-4 rounded-xl mono text-xs break-all mb-4 text-cyan-400">{{ coins[activeCoin].addr }}</div>
-            <p class="text-xs text-slate-500 uppercase tracking-widest mb-8">Network: {{ coins[activeCoin].net }}</p>
-            <button @click="connectWalletAndDonate" class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-black text-sm orbitron mb-4">CONNECT WALLET & DONATE</button> <!-- Web3 integration -->
-            <button @click="showCrypto = false" class="text-fuchsia-500 orbitron text-sm font-bold">CLOSE</button>
-        </div>
-    </div>
-    
-    <!-- Global Notification System -->
-    <div v-if="notification" class="fixed top-4 right-4 z-[1100] glass p-4 rounded-xl shadow-lg">
-        <p class="text-sm">{{ notification }}</p>
-    </div>
-</div>
+        <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
 
-<!-- Vue Router Views Templates -->
-<template id="eaas-template">
-    <div class="space-y-10">
-        <div class="text-center md:text-left">
-            <h2 class="text-5xl md:text-7xl font-black orbitron mb-4">EaaS <span class="text-cyan-400">4.0</span></h2> <!-- Upgraded version -->
-            <p class="text-slate-400 max-w-3xl text-lg">Advanced modular gateway to AI, Logistics, Global Trade, and Blockchain infrastructure with real-time interactions.</p> <!-- Enhanced desc -->
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> <!-- More columns -->
-            <div v-for="s in services" :key="s.title" class="section-card p-8 group hover:border-cyan-400 transition-all cursor-pointer">
-                <i :class="[s.icon, 'text-4xl text-cyan-400 mb-4']"></i>
-                <h3 class="orbitron font-bold text-xl mb-2">{{ s.title }}</h3>
-                <p class="text-sm text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
-                <button @click="initModule(s.title)" class="w-full py-3 bg-slate-800 rounded-lg text-sm font-bold tracking-widest hover:bg-cyan-500 hover:text-black transition haptic-btn">INITIALIZE MODULE</button>
-            </div>
-        </div>
-        <!-- Added 3D Interactive Model for EaaS -->
-        <div class="section-card p-6">
-            <h3 class="orbitron font-bold text-xl mb-4">Interactive Ecosystem Model</h3>
-            <div id="three-eaas" class="three-canvas h-96"></div>
-        </div>
-    </div>
-</template>
+            <div v-if="view === 'trading'" class="space-y-6">
+                <div class="section-card p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 scanner-line opacity-20"></div>
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="orbitron text-xl font-bold">LIVE SIGNAL TICKER</h2>
+                        <span class="text-[10px] text-green-400 font-mono animate-pulse">● LIVE_DATA_CONNECTED</span>
+                    </div>
 
-<template id="trading-template">
-    <div class="space-y-10">
-        <div class="text-center md:text-left">
-            <h2 class="text-5xl md:text-7xl font-black orbitron mb-4">Trading <span class="text-neon-green">Hub 4.0</span></h2>
-            <p class="text-slate-400 max-w-3xl text-lg">Real-time HFX & Crypto signals with live charts, AI predictions, and automated alerts.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="section-card p-6">
-                <h3 class="orbitron font-bold text-xl mb-4">Live Crypto Prices</h3>
-                <canvas id="crypto-chart" class="w-full h-64"></canvas> <!-- Chart.js integration -->
-            </div>
-            <div class="section-card p-6">
-                <h3 class="orbitron font-bold text-xl mb-4">AI Signals</h3>
-                <ul class="space-y-4">
-                    <li v-for="signal in tradingSignals" :key="signal.id" class="p-4 glass rounded-xl flex justify-between items-center">
-                        <span>{{ signal.asset }}: {{ signal.action }}</span>
-                        <span :class="signal.confidence > 80 ? 'text-green-400' : 'text-yellow-400'">{{ signal.confidence }}% Confidence</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <button @click="subscribeSignals" class="w-full md:w-auto py-4 px-8 bg-neon-green text-black font-black orbitron rounded-2xl shadow-xl shadow-green-500/20 haptic-btn">SUBSCRIBE TO SIGNALS</button>
-    </div>
-</template>
-
-<template id="sacco-template">
-    <div class="space-y-8">
-        <div class="section-card p-10 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/10 to-transparent">
-            <h2 class="orbitron text-4xl font-bold mb-2">SMART SACCO 4.0</h2>
-            <p class="text-sm text-yellow-500 mb-6 uppercase tracking-widest font-bold italic">Decentralized Community Finance with Blockchain Integration</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="p-4 bg-black/40 rounded-2xl">
-                    <span class="text-xs text-slate-500 block uppercase">Global Pool</span>
-                    <span class="orbitron text-2xl text-white font-bold">$2.5M+</span> <!-- Updated stats -->
-                </div>
-                <div class="p-4 bg-black/40 rounded-2xl">
-                    <span class="text-xs text-slate-500 block uppercase">APY Return</span>
-                    <span class="orbitron text-2xl text-green-400 font-bold">22.7%</span>
-                </div>
-                <div class="p-4 bg-black/40 rounded-2xl">
-                    <span class="text-xs text-slate-500 block uppercase">Members</span>
-                    <span class="orbitron text-2xl text-white font-bold">15K+</span>
-                </div>
-                <div class="p-4 bg-black/40 rounded-2xl">
-                    <span class="text-xs text-slate-500 block uppercase">Yield Farms</span>
-                    <span class="orbitron text-2xl text-purple-400 font-bold">Active</span>
-                </div>
-            </div>
-            <button @click="showSaccoForm = true" class="w-full py-4 bg-yellow-500 text-black font-black orbitron rounded-2xl shadow-xl shadow-yellow-500/20 haptic-btn">JOIN THE SACCO</button>
-        </div>
-        <!-- SACCO Join Form with Google Sheets Integration -->
-        <div v-if="showSaccoForm" class="glass p-8 rounded-2xl">
-            <h3 class="orbitron text-xl mb-4">Membership Application</h3>
-            <form @submit.prevent="submitToGoogle">
-                <input v-model="saccoForm.name" type="text" placeholder="Full Name" class="w-full p-3 mb-4 bg-slate-900 rounded-lg text-white">
-                <input v-model="saccoForm.email" type="email" placeholder="Email" class="w-full p-3 mb-4 bg-slate-900 rounded-lg text-white">
-                <input v-model="saccoForm.amount" type="number" placeholder="Initial Deposit ($)" class="w-full p-3 mb-4 bg-slate-900 rounded-lg text-white">
-                <button type="submit" class="w-full py-3 bg-cyan-500 text-black font-black text-sm orbitron">SUBMIT & JOIN</button>
-            </form>
-            <p class="text-xs text-slate-500 mt-4">Data will be written to our Google Sheet for processing.</p>
-        </div>
-    </div>
-</template>
-
-<template id="devsecops-template">
-    <div class="space-y-8">
-        <div class="section-card p-8 md:p-12 border-t-4 border-cyan-500">
-            <div class="flex flex-col md:flex-row gap-12">
-                <div class="flex-1">
-                    <h2 class="orbitron text-3xl md:text-5xl font-bold mb-4">BARAKA DEVSECOPS 4.0</h2>
-                    <p class="text-slate-400 mb-8 font-mono text-base leading-relaxed">
-                        <span class="text-cyan-500">></span> Advanced Fullstack Mastery with AI Assistance.<br>
-                        <span class="text-cyan-500">></span> Secure CI/CD Pipelines with Blockchain Auditing.<br>
-                        <span class="text-cyan-500">></span> Interactive Knowledge Transfer with VR Simulations.
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-4 p-4 glass rounded-xl">
-                            <i class="fas fa-code text-blue-400 text-2xl"></i>
-                            <div><p class="text-base font-bold">End-to-End Fullstack</p><p class="text-sm text-slate-500">Go, Python, Vue 3, Docker, Kubernetes</p></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div v-for="signal in signals" class="glass p-4 rounded-xl border-l-4" :class="signal.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="orbitron font-bold text-sm">{{ signal.pair }}</span>
+                                <span class="text-[10px] font-mono px-2 py-1 rounded" :class="signal.type === 'BUY' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'">{{ signal.type }}</span>
+                            </div>
+                            <div class="flex justify-between text-xs font-mono text-slate-400">
+                                <span>Entry: {{ signal.entry }}</span>
+                                <span>TP: {{ signal.tp }}</span>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-4 p-4 glass rounded-xl">
-                            <i class="fas fa-shield-halved text-emerald-400 text-2xl"></i>
-                            <div><p class="text-base font-bold">Pentesting & Security</p><p class="text-sm text-slate-500">OWASP Compliance, Zero-Trust Architecture</p></div>
-                        </div>
-                        <div class="flex items-center gap-4 p-4 glass rounded-xl">
-                            <i class="fas fa-robot text-purple-400 text-2xl"></i>
-                            <div><p class="text-base font-bold">AI-Enhanced DevOps</p><p class="text-sm text-slate-500">Automated Code Reviews & Threat Modeling</p></div>
-                        </div>
+                    </div>
+
+                    <button @click="contact('Premium Signal Access')" class="w-full mt-8 py-4 bg-cyan-500 text-black font-black orbitron rounded-xl hover:scale-[1.02] transition">BUY LIFETIME ACCESS</button>
+                </div>
+            </div>
+
+            <div v-if="view === 'eaas'" class="space-y-8 text-center md:text-left">
+                <h2 class="text-4xl md:text-6xl font-black orbitron">EaaS <span class="text-cyan-400">3.0</span></h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div v-for="s in services" class="section-card p-6 group hover:border-cyan-400 transition-all cursor-pointer">
+                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
+                        <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
+                        <button @click="contact(s.title)" class="w-full py-2 bg-slate-800 rounded-lg text-[10px] font-bold tracking-widest hover:bg-cyan-500 hover:text-black transition">INITIALIZE</button>
                     </div>
                 </div>
             </div>
-            <button @click="viewCurriculum" class="py-4 bg-white text-black font-black orbitron rounded-xl mt-6 haptic-btn">VIEW INTERACTIVE CURRICULUM</button>
-        </div>
-        <!-- Added Curriculum Section -->
-        <div v-if="showCurriculum" class="section-card p-8">
-            <h3 class="orbitron text-xl mb-4">Curriculum Modules</h3>
-            <ul class="space-y-4">
-                <li v-for="module in curriculumModules" :key="module.title" class="p-4 glass rounded-xl">
-                    <h4 class="font-bold">{{ module.title }}</h4>
-                    <p class="text-sm text-slate-400">{{ module.desc }}</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-</template>
 
-<template id="boyz-template">
-    <div class="space-y-8">
-        <h2 class="orbitron text-3xl font-bold border-b border-slate-800 pb-4">Industrial Builds 4.0</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> <!-- More columns -->
-            <div v-for="p in portfolio" :key="p.title" class="section-card overflow-hidden group">
-                <div class="h-56 overflow-hidden"> <!-- Taller images -->
-                    <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-80">
-                </div>
-                <div class="p-6">
-                    <h3 class="orbitron font-bold text-xl mb-2">{{ p.title }}</h3>
-                    <p class="text-sm text-slate-400 mb-6">{{ p.desc }}</p>
-                    <button @click="requestSpecs(p.title)" class="w-full py-3 border border-slate-700 rounded-lg text-sm orbitron font-bold hover:bg-white hover:text-black transition haptic-btn">REQUEST SPECS</button>
+            <div v-if="view === 'sacco'" class="space-y-6">
+                <div class="section-card p-8 border-l-8 border-yellow-500">
+                    <h2 class="orbitron text-2xl font-bold mb-6 text-yellow-500">SMART SACCO SYSTEM</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="p-4 bg-black/40 rounded-2xl border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase">Pool Balance</span>
+                            <span class="orbitron text-xl text-white block">$1,240,500</span>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-2xl border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase">Member Count</span>
+                            <span class="orbitron text-xl text-cyan-400 block">4,209 Active</span>
+                        </div>
+                    </div>
+                    <button @click="contact('SACCO Onboarding')" class="w-full py-4 bg-yellow-500 text-black font-black orbitron rounded-xl">INVEST IN THE SACCO</button>
                 </div>
             </div>
+
+            <div v-if="view === 'devsecops'" class="space-y-6">
+                <div class="section-card p-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+                    <h2 class="orbitron text-3xl font-bold text-cyan-400 mb-4">BARAKA DEVSECOPS ACADEMY</h2>
+                    <p class="text-sm font-mono text-slate-400 mb-10">End-to-End Fullstack Engineering with Security-First Architectures.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-terminal mb-2 text-blue-400"></i><p class="text-xs">Fullstack Dev</p></div>
+                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-user-secret mb-2 text-red-400"></i><p class="text-xs">Security Ops</p></div>
+                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-cloud mb-2 text-emerald-400"></i><p class="text-xs">Cloud Scaling</p></div>
+                    </div>
+                    <button @click="contact('Enroll DevSecOps')" class="w-full mt-10 py-4 border border-cyan-400 text-cyan-400 orbitron rounded-xl hover:bg-cyan-400 hover:text-black transition">ENROLL NOW</button>
+                </div>
+            </div>
+
         </div>
-        <!-- Added 3D Model Viewer for Builds -->
-        <div class="section-card p-6">
-            <h3 class="orbitron font-bold text-xl mb-4">3D Build Explorer</h3>
-            <div id="three-boyz" class="three-canvas h-96"></div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-16 flex items-center justify-around z-[100] border-t border-slate-800 px-2">
+        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-1', view === 'eaas' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-home"></i><span class="text-[8px] orbitron">EAAS</span>
+        </div>
+        <div @click="selectView('trading')" :class="['flex flex-col items-center gap-1', view === 'trading' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-chart-line"></i><span class="text-[8px] orbitron">SIGNALS</span>
+        </div>
+        <div @click="selectView('sacco')" :class="['flex flex-col items-center gap-1', view === 'sacco' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-vault"></i><span class="text-[8px] orbitron">SACCO</span>
+        </div>
+        <div @click="selectView('devsecops')" :class="['flex flex-col items-center gap-1', view === 'devsecops' ? 'active-glow' : 'text-slate-500']">
+            <i class="fas fa-graduation-cap"></i><span class="text-[8px] orbitron">ACADEMY</span>
+        </div>
+    </nav>
+
+    <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto = false"></div>
+        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative border-cyan-500/50 border">
+            <h2 class="orbitron text-xl mb-6">TERMINAL: SUPPORT</h2>
+            <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full border border-slate-800">
+                <button @click="activeCoin = 0" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 0 ? 'bg-cyan-500 text-black' : 'text-slate-400']">BITCOIN</button>
+                <button @click="activeCoin = 1" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 1 ? 'bg-cyan-500 text-black' : 'text-slate-400']">USDC</button>
+            </div>
+            
+            <img :src="coins[activeCoin].qr" class="w-48 h-48 mx-auto mb-6 rounded-2xl border-4 border-white shadow-xl">
+            
+            <div class="bg-black/50 p-4 rounded-xl mono text-[9px] break-all mb-4 text-cyan-400 border border-slate-800 select-all">
+                {{ coins[activeCoin].addr }}
+            </div>
+            
+            <p class="text-[9px] text-slate-500 uppercase tracking-widest mb-4">Network: <span class="text-white">{{ coins[activeCoin].net }}</span></p>
+            <p class="text-[9px] text-red-500 italic mb-8">Send only {{ coins[activeCoin].name }} to this address.</p>
+
+            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-500 hover:text-white transition">DISMISS TERMINAL</button>
         </div>
     </div>
-</template>
+
+</div>
 
 <script>
     const { createApp } = Vue;
-    const { createRouter, createWebHistory } = VueRouter;
-    const { createPinia } = Pinia;
-
-    // Define Routes
-    const routes = [
-        { path: '/:view?', component: { template: '#eaas-template' }, name: 'eaas' },
-        { path: '/trading', component: { template: '#trading-template' } },
-        { path: '/sacco', component: { template: '#sacco-template' } },
-        { path: '/devsecops', component: { template: '#devsecops-template' } },
-        { path: '/boyz', component: { template: '#boyz-template' } }
-    ];
-
-    const router = createRouter({
-        history: createWebHistory(),
-        routes
-    });
-
-    // Pinia Store for Global State
-    const pinia = createPinia();
-    const useAppStore = defineStore('app', {
-        state: () => ({
-            darkMode: true,
-            user: { name: '', wallet: null },
-            tradingData: [] // For real-time data
-        }),
-        actions: {
-            toggleDark() { this.darkMode = !this.darkMode; document.body.classList.toggle('light-mode', !this.darkMode); }
-        }
-    });
-
-    const app = createApp({
+    createApp({
         data() {
             return {
+                view: 'eaas',
                 menuOpen: false,
                 showCrypto: false,
                 activeCoin: 0,
                 isMobile: window.innerWidth < 768,
-                showSaccoForm: false,
-                saccoForm: { name: '', email: '', amount: 0 },
-                showCurriculum: false,
-                notification: '',
                 navGroups: {
-                    'Core Operations': [ // Expanded groups
-                        { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th-large' },
-                        { id: 'trading', label: 'Trading Hub', icon: 'fas fa-chart-line' },
-                        { id: 'devsecops', label: 'DevSecOps Academy', icon: 'fas fa-user-shield' }
+                    'CORE': [
+                        { id: 'eaas', label: 'EaaS Ecosystem', icon: 'fas fa-th-large' },
+                        { id: 'trading', label: 'Quanta Signals', icon: 'fas fa-chart-line' },
+                        { id: 'devsecops', label: 'Baraka Academy', icon: 'fas fa-user-shield' }
                     ],
-                    'Finance & Assets': [
-                        { id: 'sacco', label: 'Digital SACCO', icon: 'fas fa-vault' },
-                        { id: 'boyz', label: 'BoyzInTheHood Builds', icon: 'fas fa-city' }
-                    ],
-                    'Advanced Tools': [ // New group
-                        { id: 'ai-tools', label: 'AI Toolkit', icon: 'fas fa-robot' },
-                        { id: 'blockchain', label: 'Blockchain Explorer', icon: 'fas fa-link' }
+                    'PHYSICAL': [
+                        { id: 'sacco', label: 'Smart SACCO', icon: 'fas fa-vault' },
+                        { id: 'boyz', label: 'BoyzInTheHood', icon: 'fas fa-city' }
                     ]
                 },
-                viewTitles: {
-                    eaas: 'GLOBAL EAAS 4.0',
-                    trading: 'QUANTA SIGNALS PRO',
-                    devsecops: 'BARAKA ACADEMY ELITE',
-                    sacco: 'SMART SACCO NETWORK',
-                    boyz: 'URBAN INDUSTRIAL PORTFOLIO'
-                },
-                services: [ // Expanded services
-                    { title: 'AI Integration Pro', icon: 'fas fa-brain', desc: 'Custom LLM training, workflow automation, and predictive analytics.' },
-                    { title: 'Signal Selling Elite', icon: 'fas fa-wifi', desc: 'Premium HFX & Crypto signals with AI backtesting via encrypted channels.' },
-                    { title: 'Course Library Expanded', icon: 'fas fa-graduation-cap', desc: 'Proprietary knowledge on dropshipping, fintech, and blockchain dev.' },
-                    { title: 'Energy Meters Smart', icon: 'fas fa-bolt', desc: 'IoT evolution with AI monitoring for energy management.' },
-                    { title: 'Logistics AI', icon: 'fas fa-truck', desc: 'Global supply chain optimization with real-time tracking.' },
-                    { title: 'Trade Analytics', icon: 'fas fa-chart-bar', desc: 'Data-driven insights for international trade.' }
+                viewTitles: { eaas: 'EAAS 3.0', trading: 'QUANTA SIGNALS', devsecops: 'ACADEMY', sacco: 'SMART SACCO', boyz: 'URBAN BUILDS' },
+                signals: [
+                    { pair: 'BTC/USDT', type: 'BUY', entry: '42,500', tp: '44,800' },
+                    { pair: 'XAU/USD', type: 'SELL', entry: '2024', tp: '1998' },
+                    { pair: 'ETH/USDT', type: 'BUY', entry: '2,250', tp: '2,400' },
+                    { pair: 'EUR/USD', type: 'BUY', entry: '1.0850', tp: '1.0920' }
                 ],
-                portfolio: [ // Expanded portfolio
-                    { title: 'Alpha Complex V2', desc: 'IOT-Integrated residential builds with smart home AI.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80' },
-                    { title: 'Logistics One Hub', desc: 'Supply chain automation warehouse with drone integration.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80' },
-                    { title: 'Eco Tower', desc: 'Sustainable urban development with green tech.', img: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac3e?auto=format&fit=crop&q=80' },
-                    { title: 'Data Fortress', desc: 'Secure data centers with blockchain vaults.', img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80' }
+                services: [
+                    { title: 'AI Automation', icon: 'fas fa-brain', desc: 'Enterprise LLM and business flow bots.' },
+                    { title: 'Knowledge Transfer', icon: 'fas fa-book', desc: 'Selling trading courses and fintech secrets.' },
+                    { title: 'Global Sourcing', icon: 'fas fa-ship', desc: 'Autonomous dropshipping and logistics.' }
                 ],
-                coins: [ // Added more coins
-                    { net: 'Bitcoin Network', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
-                    { net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' },
-                    { net: 'Ethereum Mainnet', addr: '0x1234567890abcdef1234567890abcdef12345678', qr: 'image2.jpeg' }
+                portfolio: [
+                    { title: 'Alpha Complex', desc: 'IOT Residential Builds.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80' }
                 ],
-                tradingSignals: [ // Mock real signals, can fetch real
-                    { id: 1, asset: 'BTC/USD', action: 'BUY', confidence: 92 },
-                    { id: 2, asset: 'ETH/USD', action: 'SELL', confidence: 78 },
-                    { id: 3, asset: 'XAU/USD', action: 'HOLD', confidence: 85 }
-                ],
-                curriculumModules: [ // Added modules
-                    { title: 'Module 1: Fullstack Basics', desc: 'Intro to Go, Python, Vue with hands-on projects.' },
-                    { title: 'Module 2: Security Fundamentals', desc: 'Pentesting tools, secure coding practices.' },
-                    { title: 'Module 3: CI/CD Advanced', desc: 'Docker, Kubernetes, automated deployments.' },
-                    { title: 'Module 4: AI in DevOps', desc: 'Integrating ML for predictive maintenance.' }
+                coins: [
+                    { name: 'Bitcoin', net: 'Bitcoin Network - Taproot', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
+                    { name: 'USDC', net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
                 ]
             }
         },
         methods: {
-            navigateTo(id) {
-                this.$router.push({ path: `/${id}` });
+            selectView(id) {
+                this.view = id;
                 this.menuOpen = false;
-                gsap.to(window, { duration: 0.5, scrollTo: 0 }); // Smooth scroll with GSAP
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             },
-            initModule(title) {
-                this.notification = `Initializing ${title} Module...`;
-                setTimeout(() => this.notification = '', 3000);
-                // Haptic feedback
-                if (navigator.vibrate) navigator.vibrate(50);
-            },
-            connectWalletAndDonate() {
-                if (window.ethereum) {
-                    const web3 = new Web3(window.ethereum);
-                    web3.eth.requestAccounts().then(accounts => {
-                        this.notification = `Wallet Connected: ${accounts[0]}`;
-                        // Simulate donate tx
-                    }).catch(err => this.notification = 'Wallet Connection Failed');
-                } else {
-                    this.notification = 'No Web3 Provider Detected';
-                }
-            },
-            subscribeSignals() {
-                this.notification = 'Subscribed to Real-Time Signals!';
-                this.fetchTradingData();
-            },
-            fetchTradingData() {
-                // Fetch real data from Coingecko or similar (proxy via Axios)
-                axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd')
-                    .then(response => {
-                        this.tradingData = response.data;
-                        this.updateChart();
-                    })
-                    .catch(err => console.error(err));
-            },
-            updateChart() {
-                const ctx = document.getElementById('crypto-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['BTC', 'ETH'],
-                        datasets: [{
-                            label: 'Price (USD)',
-                            data: [this.tradingData?.bitcoin?.usd, this.tradingData?.ethereum?.usd],
-                            borderColor: 'cyan',
-                            tension: 0.1
-                        }]
-                    },
-                    options: { responsive: true }
-                });
-            },
-            submitToGoogle() {
-                const scriptURL = 'https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec'; // Placeholder: Replace with actual Google Apps Script Web App URL
-                axios.post(scriptURL, this.saccoForm)
-                    .then(() => {
-                        this.notification = 'Data Written to Google Sheet Successfully!';
-                        this.showSaccoForm = false;
-                        this.saccoForm = { name: '', email: '', amount: 0 };
-                    })
-                    .catch(err => {
-                        this.notification = 'Error Writing to Google Sheet';
-                        console.error(err);
-                    });
-            },
-            viewCurriculum() {
-                this.showCurriculum = !this.showCurriculum;
-                if (navigator.vibrate) navigator.vibrate(50);
-            },
-            requestSpecs(title) {
-                this.notification = `Requesting Specs for ${title}...`;
-                setTimeout(() => this.notification = '', 3000);
-            },
-            toggleDarkMode() {
-                this.$store.dispatch('toggleDark');
-            },
-            initThreeBg() {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true });
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                document.getElementById('three-bg').appendChild(renderer.domElement);
-                
-                const geometry = new THREE.SphereGeometry(5, 32, 32);
-                const material = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true });
-                const sphere = new THREE.Mesh(geometry, material);
-                scene.add(sphere);
-                
-                camera.position.z = 10;
-                
-                const animate = () => {
-                    requestAnimationFrame(animate);
-                    sphere.rotation.x += 0.001;
-                    sphere.rotation.y += 0.001;
-                    renderer.render(scene, camera);
-                };
-                animate();
-            },
-            initThreeEaas() {
-                // Similar setup for EaaS 3D model
-                // ... (Implement cube or complex model)
-            },
-            initThreeBoyz() {
-                // Similar for Boyz builds
-                // ... (Implement building model)
-            }
-        },
-        mounted() {
-            window.addEventListener('resize', () => { this.isMobile = window.innerWidth < 768 });
-            this.initThreeBg();
-            this.fetchTradingData(); // Initial fetch
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js'); // Assume sw.js for PWA
+            contact(subject) {
+                window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subject}`;
             }
         }
-    });
-
-    app.use(router);
-    app.use(pinia);
-    app.mount('#app');
+    }).mount('#app');
 </script>
 </body>
 </html>
