@@ -1,266 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY NEXUS 3.0 | Everything Ecosystem</title>
-    
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EXNESFLY NEXUS 3.0 | Everything Ecosystem</title>
 
-    <style>
-        :root {
-            --neon-blue: #00f5ff;
-            --deep-dark: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.9);
-        }
-        body {
-            background-color: var(--deep-dark);
-            color: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { backdrop-filter: blur(15px); background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); }
-        
-        /* Mobile Slide Animation */
-        .slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
-        .slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .section-card {
-            background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
-            border-radius: 24px;
-            border: 1px solid rgba(0, 245, 255, 0.1);
-        }
-        
-        .active-glow {
-            filter: drop-shadow(0 0 8px var(--neon-blue));
-            color: var(--neon-blue) !important;
-        }
+<!-- ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue3-apexcharts"></script>
+<!-- Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        @keyframes scan {
-            0% { transform: translateY(-100%); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(100%); opacity: 0; }
-        }
-        .scanner-line {
-            height: 2px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
-            animation: scan 3s linear infinite;
-        }
-    </style>
+<style>
+:root{
+  --neon-blue:#00f5ff;
+  --deep-dark:#020617;
+  --glass-bg: rgba(15,23,42,0.9);
+}
+body{
+  margin:0;
+  background:var(--deep-dark);
+  color:#f8fafc;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+}
+.orbitron{font-family:'Orbitron',sans-serif;}
+.glass{
+  backdrop-filter:blur(15px);
+  background:var(--glass-bg);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.section-card{
+  background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
+  border-radius:24px;
+  border:1px solid rgba(0,245,255,0.1);
+}
+.active-glow{
+  filter:drop-shadow(0 0 8px var(--neon-blue));
+  color: var(--neon-blue) !important;
+}
+.no-scrollbar::-webkit-scrollbar{display:none;}
+.scanner-line{
+  height:2px;
+  background: var(--neon-blue);
+  box-shadow:0 0 15px var(--neon-blue);
+  animation: scan 3s linear infinite;
+}
+@keyframes scan{
+  0%{transform:translateY(-100%);opacity:0;}
+  50%{opacity:0.5;}
+  100%{transform:translateY(100%);opacity:0;}
+}
+</style>
 </head>
-<body class="overflow-hidden">
+<body>
 
 <div id="app" class="h-screen w-screen flex flex-col md:flex-row">
-
-    <transition name="slide">
-        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
-            <div class="p-6 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="LOGO.png" class="w-10 h-10" alt="Logo">
-                    <h1 class="orbitron font-bold text-lg tracking-tighter text-cyan-400">EXNESFLY</h1>
-                </div>
-                <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
+    <!-- Sidebar -->
+    <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="LOGO.png" class="w-10 h-10" alt="Logo">
+                <h1 class="orbitron font-bold text-lg text-cyan-400">EXNESFLY</h1>
             </div>
-
-            <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
-                <div v-for="(category, name) in navGroups" :key="name">
-                    <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p>
-                    <div v-for="item in category" 
-                         @click="selectView(item.id)" 
-                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
-                        <i :class="item.icon"></i>
-                        <span class="text-sm font-medium">{{ item.label }}</span>
-                    </div>
+            <button @click="menuOpen=false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar">
+            <div v-for="(group, gName) in navStructure" :key="gName">
+                <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ gName }}</p>
+                <div v-for="item in group" @click="selectView(item.id)"
+                     :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view===item.id?'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400':'text-slate-400 hover:bg-slate-800']">
+                    <i :class="item.icon"></i><span class="text-sm font-medium">{{item.label}}</span>
                 </div>
-            </nav>
-
-            <div class="p-4 border-t border-slate-800">
-                <button @click="showCrypto = true; menuOpen = false" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron shadow-lg shadow-cyan-500/20">
-                    <i class="fab fa-bitcoin mr-2"></i> DONATE
-                </button>
             </div>
-        </aside>
-    </transition>
+        </nav>
+        <div class="p-4 border-t border-slate-800">
+            <button @click="showCrypto=true; menuOpen=false" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron">
+                SUPPORT ECOSYSTEM
+            </button>
+        </div>
+    </aside>
 
-    <header class="md:hidden flex items-center justify-between p-4 glass z-[90]">
-        <img src="LOGO.png" class="w-8 h-8" alt="Logo">
-        <h2 class="orbitron text-[10px] font-bold tracking-widest">{{ viewTitles[view] }}</h2>
-        <button @click="menuOpen = true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
-    </header>
-
+    <!-- Main -->
     <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
-        
+        <header class="md:hidden flex items-center justify-between p-4 glass sticky top-0 z-[90]">
+            <img src="LOGO.png" class="w-8 h-8">
+            <h2 class="orbitron text-[10px] font-bold tracking-widest text-cyan-400">{{ viewTitles[view] }}</h2>
+            <button @click="menuOpen=true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
+        </header>
+
         <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
 
-            <div v-if="view === 'trading'" class="space-y-6">
-                <div class="section-card p-6 relative overflow-hidden">
-                    <div class="absolute inset-0 scanner-line opacity-20"></div>
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="orbitron text-xl font-bold">LIVE SIGNAL TICKER</h2>
-                        <span class="text-[10px] text-green-400 font-mono animate-pulse">● LIVE_DATA_CONNECTED</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="signal in signals" class="glass p-4 rounded-xl border-l-4" :class="signal.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="orbitron font-bold text-sm">{{ signal.pair }}</span>
-                                <span class="text-[10px] font-mono px-2 py-1 rounded" :class="signal.type === 'BUY' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'">{{ signal.type }}</span>
-                            </div>
-                            <div class="flex justify-between text-xs font-mono text-slate-400">
-                                <span>Entry: {{ signal.entry }}</span>
-                                <span>TP: {{ signal.tp }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button @click="contact('Premium Signal Access')" class="w-full mt-8 py-4 bg-cyan-500 text-black font-black orbitron rounded-xl hover:scale-[1.02] transition">BUY LIFETIME ACCESS</button>
+            <!-- EAAS Section -->
+            <section v-if="view==='eaas'" class="space-y-8">
+                <div class="text-center md:text-left">
+                    <h2 class="text-5xl font-black orbitron mb-4">Everything <span class="text-cyan-400 text-3xl block md:inline">As-A-Service</span></h2>
+                    <p class="text-slate-400">The world's first complete business ecosystem.</p>
                 </div>
-            </div>
-
-            <div v-if="view === 'eaas'" class="space-y-8 text-center md:text-left">
-                <h2 class="text-4xl md:text-6xl font-black orbitron">EaaS <span class="text-cyan-400">3.0</span></h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="s in services" class="section-card p-6 group hover:border-cyan-400 transition-all cursor-pointer">
-                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
+                    <div v-for="s in services" class="section-card p-6 group">
+                        <i :class="[s.icon,'text-3xl text-cyan-400 mb-4']"></i>
                         <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
-                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
-                        <button @click="contact(s.title)" class="w-full py-2 bg-slate-800 rounded-lg text-[10px] font-bold tracking-widest hover:bg-cyan-500 hover:text-black transition">INITIALIZE</button>
+                        <p class="text-xs text-slate-400 mb-6">{{ s.desc }}</p>
+                        <button @click="contact(s.title)" class="w-full py-2 bg-slate-800 rounded-lg text-[10px] font-bold tracking-widest hover:bg-cyan-400 hover:text-black transition">INITIALIZE MODULE</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div v-if="view === 'sacco'" class="space-y-6">
-                <div class="section-card p-8 border-l-8 border-yellow-500">
-                    <h2 class="orbitron text-2xl font-bold mb-6 text-yellow-500">SMART SACCO SYSTEM</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                        <div class="p-4 bg-black/40 rounded-2xl border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase">Pool Balance</span>
-                            <span class="orbitron text-xl text-white block">$1,240,500</span>
-                        </div>
-                        <div class="p-4 bg-black/40 rounded-2xl border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase">Member Count</span>
-                            <span class="orbitron text-xl text-cyan-400 block">4,209 Active</span>
+            <!-- Trading / Signals -->
+            <section v-if="view==='trading'" class="space-y-6">
+                <div class="section-card p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 scanner-line opacity-10"></div>
+                    <h2 class="orbitron text-xl font-bold mb-6">QUANTA SIGNAL TERMINAL</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div v-for="sig in signals" class="glass p-4 rounded-xl border-l-4" :class="sig.type==='BUY'?'border-green-500':'border-red-500'">
+                            <div class="flex justify-between items-center">
+                                <span class="orbitron font-bold">{{ sig.pair }}</span>
+                                <span class="text-[10px] font-mono p-1 rounded bg-slate-900">{{ sig.type }}</span>
+                            </div>
+                            <div class="flex justify-between mt-2 text-xs font-mono text-slate-400">
+                                <span>Entry: {{ sig.entry }}</span>
+                                <span>TP: {{ sig.tp }}</span>
+                            </div>
                         </div>
                     </div>
-                    <button @click="contact('SACCO Onboarding')" class="w-full py-4 bg-yellow-500 text-black font-black orbitron rounded-xl">INVEST IN THE SACCO</button>
+                    <button @click="contact('Signal Subscription')" class="w-full mt-6 py-4 bg-cyan-500 text-black font-black orbitron rounded-xl">GET PREMIUM ACCESS</button>
                 </div>
-            </div>
+            </section>
 
-            <div v-if="view === 'devsecops'" class="space-y-6">
-                <div class="section-card p-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
-                    <h2 class="orbitron text-3xl font-bold text-cyan-400 mb-4">BARAKA DEVSECOPS ACADEMY</h2>
-                    <p class="text-sm font-mono text-slate-400 mb-10">End-to-End Fullstack Engineering with Security-First Architectures.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-terminal mb-2 text-blue-400"></i><p class="text-xs">Fullstack Dev</p></div>
-                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-user-secret mb-2 text-red-400"></i><p class="text-xs">Security Ops</p></div>
-                        <div class="p-4 glass rounded-xl text-center"><i class="fas fa-cloud mb-2 text-emerald-400"></i><p class="text-xs">Cloud Scaling</p></div>
-                    </div>
-                    <button @click="contact('Enroll DevSecOps')" class="w-full mt-10 py-4 border border-cyan-400 text-cyan-400 orbitron rounded-xl hover:bg-cyan-400 hover:text-black transition">ENROLL NOW</button>
-                </div>
-            </div>
+            <!-- SACCO, Portfolio, Mall, Metaverse, Music, Travel will follow the same pattern with dynamic content -->
 
         </div>
     </main>
 
+    <!-- Mobile Nav -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-16 flex items-center justify-around z-[100] border-t border-slate-800 px-2">
-        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-1', view === 'eaas' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-home"></i><span class="text-[8px] orbitron">EAAS</span>
-        </div>
-        <div @click="selectView('trading')" :class="['flex flex-col items-center gap-1', view === 'trading' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-chart-line"></i><span class="text-[8px] orbitron">SIGNALS</span>
-        </div>
-        <div @click="selectView('sacco')" :class="['flex flex-col items-center gap-1', view === 'sacco' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-vault"></i><span class="text-[8px] orbitron">SACCO</span>
-        </div>
-        <div @click="selectView('devsecops')" :class="['flex flex-col items-center gap-1', view === 'devsecops' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-graduation-cap"></i><span class="text-[8px] orbitron">ACADEMY</span>
-        </div>
+        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-1', view==='eaas'?'active-glow':'text-slate-500']"><i class="fas fa-home"></i><span class="text-[8px] orbitron">EAAS</span></div>
+        <div @click="selectView('trading')" :class="['flex flex-col items-center gap-1', view==='trading'?'active-glow':'text-slate-500']"><i class="fas fa-bolt"></i><span class="text-[8px] orbitron">SIGNALS</span></div>
     </nav>
 
+    <!-- Crypto Modal -->
     <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto = false"></div>
-        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative border-cyan-500/50 border">
-            <h2 class="orbitron text-xl mb-6">TERMINAL: SUPPORT</h2>
-            <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full border border-slate-800">
-                <button @click="activeCoin = 0" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 0 ? 'bg-cyan-500 text-black' : 'text-slate-400']">BITCOIN</button>
-                <button @click="activeCoin = 1" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 1 ? 'bg-cyan-500 text-black' : 'text-slate-400']">USDC</button>
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto=false"></div>
+        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative border border-cyan-500/30">
+            <h2 class="orbitron text-xl mb-6">SUPPORT THE MISSION</h2>
+            <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full">
+                <button @click="activeCoin=0" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron', activeCoin===0?'bg-cyan-500 text-black':'text-slate-400']">BITCOIN</button>
+                <button @click="activeCoin=1" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron', activeCoin===1?'bg-cyan-500 text-black':'text-slate-400']">USDC</button>
             </div>
-            
             <img :src="coins[activeCoin].qr" class="w-48 h-48 mx-auto mb-6 rounded-2xl border-4 border-white shadow-xl">
-            
-            <div class="bg-black/50 p-4 rounded-xl mono text-[9px] break-all mb-4 text-cyan-400 border border-slate-800 select-all">
-                {{ coins[activeCoin].addr }}
-            </div>
-            
-            <p class="text-[9px] text-slate-500 uppercase tracking-widest mb-4">Network: <span class="text-white">{{ coins[activeCoin].net }}</span></p>
-            <p class="text-[9px] text-red-500 italic mb-8">Send only {{ coins[activeCoin].name }} to this address.</p>
-
-            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-500 hover:text-white transition">DISMISS TERMINAL</button>
+            <div class="bg-black/50 p-4 rounded-xl mono text-[9px] break-all mb-4 text-cyan-400 border border-slate-800 select-all">{{ coins[activeCoin].addr }}</div>
+            <p class="text-[9px] text-slate-500 uppercase tracking-widest mb-8">Network: <span class="text-white">{{ coins[activeCoin].net }}</span></p>
+            <button @click="showCrypto=false" class="orbitron text-[10px] text-slate-600">DISMISS</button>
         </div>
     </div>
-
 </div>
 
 <script>
-    const { createApp } = Vue;
-    createApp({
-        data() {
-            return {
-                view: 'eaas',
-                menuOpen: false,
-                showCrypto: false,
-                activeCoin: 0,
-                isMobile: window.innerWidth < 768,
-                navGroups: {
-                    'CORE': [
-                        { id: 'eaas', label: 'EaaS Ecosystem', icon: 'fas fa-th-large' },
-                        { id: 'trading', label: 'Quanta Signals', icon: 'fas fa-chart-line' },
-                        { id: 'devsecops', label: 'Baraka Academy', icon: 'fas fa-user-shield' }
-                    ],
-                    'PHYSICAL': [
-                        { id: 'sacco', label: 'Smart SACCO', icon: 'fas fa-vault' },
-                        { id: 'boyz', label: 'BoyzInTheHood', icon: 'fas fa-city' }
-                    ]
-                },
-                viewTitles: { eaas: 'EAAS 3.0', trading: 'QUANTA SIGNALS', devsecops: 'ACADEMY', sacco: 'SMART SACCO', boyz: 'URBAN BUILDS' },
-                signals: [
-                    { pair: 'BTC/USDT', type: 'BUY', entry: '42,500', tp: '44,800' },
-                    { pair: 'XAU/USD', type: 'SELL', entry: '2024', tp: '1998' },
-                    { pair: 'ETH/USDT', type: 'BUY', entry: '2,250', tp: '2,400' },
-                    { pair: 'EUR/USD', type: 'BUY', entry: '1.0850', tp: '1.0920' }
-                ],
-                services: [
-                    { title: 'AI Automation', icon: 'fas fa-brain', desc: 'Enterprise LLM and business flow bots.' },
-                    { title: 'Knowledge Transfer', icon: 'fas fa-book', desc: 'Selling trading courses and fintech secrets.' },
-                    { title: 'Global Sourcing', icon: 'fas fa-ship', desc: 'Autonomous dropshipping and logistics.' }
-                ],
-                portfolio: [
-                    { title: 'Alpha Complex', desc: 'IOT Residential Builds.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80' }
-                ],
-                coins: [
-                    { name: 'Bitcoin', net: 'Bitcoin Network - Taproot', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
-                    { name: 'USDC', net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
+const { createApp } = Vue;
+createApp({
+    data(){
+        return {
+            view:'eaas', menuOpen:false, showCrypto:false, activeCoin:0, isMobile:window.innerWidth<768,
+            navStructure:{
+                'Operations':[
+                    {id:'eaas', label:'EaaS Dashboard', icon:'fas fa-layer-group'},
+                    {id:'trading', label:'Quanta Signals', icon:'fas fa-chart-line'}
                 ]
-            }
-        },
-        methods: {
-            selectView(id) {
-                this.view = id;
-                this.menuOpen = false;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             },
-            contact(subject) {
-                window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subject}`;
-            }
+            viewTitles:{eaas:'EAAS DASHBOARD', trading:'LIVE SIGNALS'},
+            signals:[{pair:'BTC/USDT',type:'BUY',entry:'42,500',tp:'44,800'}],
+            services:[
+                {title:'AI Infrastructure',icon:'fas fa-brain',desc:'Custom LLM training and business automation.'}
+            ],
+            coins:[
+                {name:'Bitcoin',net:'Bitcoin Network - Taproot',addr:'bc1...',qr:'image1.jpeg'},
+                {name:'USDC',net:'Avalanche C-Chain',addr:'0xFA30...',qr:'image0.jpeg'}
+            ]
         }
-    }).mount('#app');
+    },
+    methods:{
+        selectView(id){this.view=id;this.menuOpen=false;window.scrollTo({top:0,behavior:'smooth'})},
+        contact(subj){window.location.href=`mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subj}`}
+    },
+    mounted(){window.addEventListener('resize',()=>{this.isMobile=window.innerWidth<768})}
+}).mount('#app');
 </script>
 </body>
 </html>
