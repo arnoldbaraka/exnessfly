@@ -3,152 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY | Nexus Ecosystem</title>
+    <title>EXNESFLY | THE SOVEREIGN NEXUS</title>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root { --neon-blue: #00f5ff; --deep-dark: #020617; }
-        body { background-color: var(--deep-dark); color: #f8fafc; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        :root { --neon: #00f5ff; --bg: #020617; }
+        body { background-color: var(--bg); color: #f8fafc; font-family: 'Poppins', sans-serif; overflow: hidden; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { backdrop-filter: blur(15px); background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1); }
-        .section-card { background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%); border-radius: 24px; border: 1px solid rgba(0, 245, 255, 0.1); }
-        .active-glow { filter: drop-shadow(0 0 8px var(--neon-blue)); color: var(--neon-blue) !important; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { backdrop-filter: blur(20px); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); }
+        .card-glow { background: linear-gradient(145deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid rgba(0, 245, 255, 0.1); border-radius: 32px; transition: all 0.4s ease; }
+        .card-glow:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 245, 255, 0.1); }
+        .active-tab { color: var(--neon) !important; filter: drop-shadow(0 0 10px var(--neon)); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Mobile-friendly Button Hiding */
-        .hide-on-action { transition: all 0.3s ease; }
-        
-        @keyframes scan { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(100%); opacity: 0; } }
-        .scanner-line { height: 2px; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation: scan 3s linear infinite; }
-        .premium-blur { filter: blur(6px); user-select: none; }
+        /* Premium Locking Mechanism */
+        .premium-gate { position: relative; overflow: hidden; }
+        .premium-gate.locked::after { content: "SIGN IN TO UNLOCK ACTION"; position: absolute; inset: 0; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 10px; color: var(--neon); font-weight: bold; z-index: 10; cursor: pointer; }
+
+        @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+        .scanner { position: absolute; width: 100%; height: 2px; background: var(--neon); opacity: 0.2; animation: scanline 4s linear infinite; }
     </style>
 </head>
-<body class="overflow-hidden">
+<body>
 
-<div id="app" class="h-screen w-screen flex flex-col md:flex-row">
+<div id="app" class="h-screen w-screen flex flex-col md:flex-row overflow-hidden">
 
-    <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
-        <div class="p-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img src="LOGO.png" class="w-10 h-10" alt="Logo">
-                <h1 class="orbitron font-bold text-lg text-cyan-400">EXNESFLY</h1>
-            </div>
-            <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
-        </div>
-
-        <div class="px-6 py-4 border-b border-slate-800">
-            <div v-if="user" class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl">
-                <img :src="user.photoURL" class="w-8 h-8 rounded-full border border-cyan-400">
-                <div class="overflow-hidden">
-                    <p class="text-[9px] font-bold truncate orbitron">{{ user.displayName }}</p>
-                    <button @click="logout" class="text-[8px] text-red-400 hover:underline">LOGOUT</button>
+    <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-80 z-[100] glass flex flex-col md:relative md:flex border-r border-white/5">
+        <div class="p-8">
+            <div class="flex items-center gap-4 mb-10">
+                <img src="LOGO.png" class="w-12 h-12 drop-shadow-[0_0_10px_rgba(0,245,255,0.4)]" alt="EXNESFLY">
+                <div>
+                    <h1 class="orbitron font-black text-xl tracking-tighter text-white">EXNESFLY</h1>
+                    <p class="text-[8px] orbitron text-cyan-500 tracking-[3px]">SOVEREIGN NEXUS</p>
                 </div>
             </div>
-            <button v-else @click="loginGoogle" class="w-full py-3 bg-white text-black text-[10px] orbitron font-bold rounded-xl flex items-center justify-center gap-2">
-                <i class="fab fa-google"></i> SIGN IN
+
+            <div class="mb-8">
+                <div v-if="user" class="p-4 bg-white/5 rounded-3xl border border-white/10 flex items-center gap-4">
+                    <img :src="user.photoURL" class="w-10 h-10 rounded-full border-2 border-cyan-500">
+                    <div class="overflow-hidden">
+                        <p class="text-[10px] orbitron font-bold truncate">{{ user.displayName }}</p>
+                        <button @click="logout" class="text-[8px] text-red-500 font-bold hover:underline">TERMINATE_SESSION</button>
+                    </div>
+                </div>
+                <button v-else @click="loginGoogle" class="w-full py-4 bg-white text-black orbitron font-black text-[10px] rounded-2xl flex items-center justify-center gap-2 hover:bg-cyan-500 transition">
+                    <i class="fab fa-google"></i> ESTABLISH IDENTITY
+                </button>
+            </div>
+
+            <nav class="space-y-1">
+                <div v-for="(group, name) in menu" :key="name">
+                    <p class="text-[9px] uppercase tracking-[4px] text-slate-600 mb-4 mt-6 px-2 font-black">{{ name }}</p>
+                    <div v-for="item in group" @click="setView(item.id)" 
+                         :class="['flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-500 hover:bg-white/5']">
+                        <i :class="[item.icon, 'text-lg']"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">{{ item.label }}</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <div class="mt-auto p-6">
+            <button @click="showCrypto = true" class="w-full py-4 glass border-cyan-500/30 text-cyan-400 orbitron text-[9px] font-black rounded-2xl hover:bg-cyan-500 hover:text-black transition">
+                SUPPORT ECOSYSTEM
             </button>
         </div>
-
-        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar">
-            <div v-for="(group, gName) in navStructure" :key="gName">
-                <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ gName }}</p>
-                <div v-for="item in group" @click="selectView(item.id)" 
-                     :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
-                    <i :class="item.icon"></i><span class="text-xs font-medium uppercase">{{ item.label }}</span>
-                </div>
-            </div>
-        </nav>
     </aside>
 
-    <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
+    <main class="flex-1 overflow-y-auto no-scrollbar relative">
         
-        <header class="md:hidden flex items-center justify-between p-4 glass sticky top-0 z-[90]">
+        <header class="md:hidden flex items-center justify-between p-6 glass sticky top-0 z-[90]">
             <img src="LOGO.png" class="w-8 h-8">
-            <h2 class="orbitron text-[10px] font-bold text-cyan-400 tracking-widest uppercase">{{ viewTitles[view] }}</h2>
-            <button @click="menuOpen = true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
+            <h2 class="orbitron text-[10px] font-black text-cyan-400 tracking-[4px]">{{ viewTitles[view] }}</h2>
+            <button @click="menuOpen = true" class="text-cyan-400"><i class="fas fa-bars-staggered text-2xl"></i></button>
         </header>
 
-        <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
+        <div class="max-w-6xl mx-auto p-6 md:p-16 space-y-16 pb-32">
 
-            <section v-if="view === 'eaas'" class="space-y-8 animate-in fade-in duration-500">
-                <h2 class="text-4xl md:text-6xl font-black orbitron uppercase">Nexus <span class="text-cyan-400">Core</span></h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div v-for="s in services" class="section-card p-6 group">
-                        <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
-                        <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
-                        <p class="text-xs text-slate-400 mb-6">{{ s.desc }}</p>
-                        <button @click="contact(s.title)" class="w-full py-3 bg-slate-900 rounded-xl text-[10px] orbitron font-bold border border-slate-700 hover:bg-cyan-500 hover:text-black transition">INITIALIZE</button>
+            <section v-if="view === 'eaas'" class="animate-in fade-in zoom-in duration-500">
+                <div class="mb-12">
+                    <h2 class="text-6xl md:text-8xl font-black orbitron mb-6 leading-none">BUILDING <br><span class="text-cyan-400">EVERYTHING.</span></h2>
+                    <p class="text-slate-400 text-lg max-w-2xl font-light">From cloud architecture to physical industrial builds. We own the supply chain of the future.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div v-for="c in core" class="card-glow p-8 group">
+                        <div class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cyan-500 transition-colors">
+                            <i :class="[c.icon, 'text-2xl text-cyan-400 group-hover:text-black']"></i>
+                        </div>
+                        <h3 class="orbitron font-black text-xl mb-4">{{ c.title }}</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-8">{{ c.desc }}</p>
+                        <button @click="contact(c.title)" class="text-[10px] orbitron font-black text-cyan-400 group-hover:tracking-[2px] transition-all uppercase">Initialize Module _</button>
                     </div>
                 </div>
             </section>
 
-            <section v-if="view === 'trading'" class="space-y-6 animate-in slide-in-from-bottom-4">
-                <div class="section-card p-6 relative overflow-hidden">
-                    <div class="absolute inset-0 scanner-line opacity-10"></div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="orbitron text-xl font-bold">QUANTA SIGNALS</h2>
-                        <span class="text-[10px] text-green-400 font-bold animate-pulse">● LIVE DATA FEED</span>
-                    </div>
-
-                    <div v-if="!user" class="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-center">
-                        <p class="text-[10px] orbitron text-cyan-400">UNLOCK PREMIUM ENTRY & TP LEVELS BY SIGNING IN</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="sig in signals" class="glass p-5 rounded-3xl border-l-4" :class="sig.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="orbitron font-bold text-lg">{{ sig.pair }}</span>
-                                <span class="text-[10px] px-3 py-1 bg-slate-800 rounded-full font-black" :class="sig.type === 'BUY' ? 'text-green-500' : 'text-red-500'">{{ sig.type }}</span>
+            <section v-if="view === 'trading'" class="space-y-8 animate-in slide-in-from-bottom-10">
+                <div class="card-glow p-10 relative overflow-hidden">
+                    <div class="scanner"></div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                        <div>
+                            <h2 class="orbitron text-4xl font-black mb-2">QUANTA SIGNALS</h2>
+                            <p class="text-[10px] text-slate-500 orbitron tracking-[4px]">HIGH FREQUENCY INTELLIGENCE</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="px-6 py-3 bg-green-500/10 rounded-full border border-green-500/30">
+                                <span class="text-[10px] text-green-400 orbitron font-bold">WIN RATE: 94.2%</span>
                             </div>
-                            <div :class="['grid grid-cols-2 gap-3 transition-all', !user ? 'premium-blur' : '']">
-                                <div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[9px] text-slate-500">ENTRY</p><p class="text-xs font-bold text-cyan-400">{{ sig.entry }}</p></div>
-                                <div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[9px] text-slate-500">T/P</p><p class="text-xs font-bold text-green-400">{{ sig.tp }}</p></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div v-for="sig in signals" class="glass p-6 rounded-[32px] border-l-8" :class="sig.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="orbitron text-2xl font-black italic">{{ sig.pair }}</span>
+                                <span class="px-4 py-1 rounded-full text-[10px] font-black orbitron" :class="sig.type === 'BUY' ? 'bg-green-500 text-black' : 'bg-red-500 text-white'">{{ sig.type }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4" :class="{'premium-gate locked': !user}">
+                                <div class="bg-black/50 p-4 rounded-2xl border border-white/5">
+                                    <p class="text-[8px] text-slate-500 orbitron mb-1">ENTRY ZONE</p>
+                                    <p class="mono text-lg font-bold text-cyan-400">{{ sig.entry }}</p>
+                                </div>
+                                <div class="bg-black/50 p-4 rounded-2xl border border-white/5">
+                                    <p class="text-[8px] text-slate-500 orbitron mb-1">TAKE PROFIT</p>
+                                    <p class="mono text-lg font-bold text-green-400">{{ sig.tp }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section v-if="view === 'sacco'" class="section-card p-8 border-l-8 border-yellow-500">
-                <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
-                <p class="text-[10px] text-yellow-500 orbitron uppercase mb-10 tracking-[3px]">Financial Freedom Engine</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="p-6 bg-black/50 rounded-3xl border border-slate-800">
-                        <span class="text-[9px] text-slate-500 block orbitron">LIQUIDITY POOL</span>
-                        <span class="text-3xl orbitron font-black">$1,240,500</span>
+            <section v-if="view === 'dropshipping'" class="space-y-8">
+                <h2 class="orbitron text-4xl font-black uppercase tracking-tighter">Class to <span class="text-cyan-400">Action</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="card-glow p-10 bg-gradient-to-br from-blue-900/20 to-transparent">
+                        <h3 class="orbitron text-xl font-bold mb-6">01. THE ACADEMY</h3>
+                        <ul class="space-y-4 mb-10">
+                            <li v-for="t in ['Global Sourcing Strategy', 'Automated Store Deployment', 'Industrial Logistics Integration']" class="text-xs text-slate-400 flex items-center gap-3">
+                                <i class="fas fa-check text-cyan-400"></i> {{ t }}
+                            </li>
+                        </ul>
+                        <button @click="contact('Academy Access')" class="w-full py-4 bg-white text-black orbitron font-black rounded-2xl">START LEARNING</button>
                     </div>
-                    <div class="p-6 bg-black/50 rounded-3xl border border-slate-800">
-                        <span class="text-[9px] text-slate-500 block orbitron">COMMUNITY SIZE</span>
-                        <span class="text-3xl orbitron font-black text-cyan-400">4,209+</span>
+                    <div class="card-glow p-10 bg-gradient-to-br from-purple-900/20 to-transparent border-purple-500/20">
+                        <h3 class="orbitron text-xl font-bold mb-6">02. THE PIPELINE</h3>
+                        <p class="text-xs text-slate-500 mb-8 leading-relaxed">Once certified, get access to our private supply chain network. We move products, you manage the brand.</p>
+                        <div class="p-4 bg-black/40 rounded-2xl border border-purple-500/20 text-center">
+                            <p class="text-[10px] orbitron text-purple-400 animate-pulse">SYSTEM STATUS: READY FOR SHIPMENT</p>
+                        </div>
                     </div>
                 </div>
-                <a href="https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj" target="_blank" class="block w-full py-5 bg-yellow-500 text-black text-center font-black orbitron rounded-2xl shadow-xl">INVEST IN SACCO</a>
+            </section>
+
+            <section v-if="view === 'sacco'" class="card-glow p-10 border-l-8 border-yellow-500">
+                <div class="flex flex-col md:flex-row justify-between gap-10">
+                    <div class="flex-1">
+                        <h2 class="orbitron text-4xl font-black text-yellow-500 mb-4">SMART SACCO</h2>
+                        <p class="text-slate-400 text-sm mb-8 italic">"We started with numbers, now we grow with real assets."</p>
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="p-6 bg-black/40 rounded-3xl"><p class="text-[9px] orbitron text-slate-500 mb-1">POOLED CAPITAL</p><p class="text-2xl font-black orbitron">$1.2M+</p></div>
+                            <div class="p-6 bg-black/40 rounded-3xl"><p class="text-[9px] orbitron text-slate-500 mb-1">ACTIVE MEMBERS</p><p class="text-2xl font-black orbitron text-cyan-400">4,209</p></div>
+                        </div>
+                        <a href="https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj" target="_blank" class="block w-full py-5 bg-yellow-500 text-black text-center orbitron font-black rounded-2xl shadow-xl hover:scale-105 transition">JOIN THE FINANCIAL ENGINE</a>
+                    </div>
+                </div>
             </section>
 
         </div>
     </main>
 
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-16 flex items-center justify-around z-[100] border-t border-slate-800">
-        <div v-for="btn in mobileBtns" @click="selectView(btn.id)" :class="['flex flex-col items-center gap-1', view === btn.id ? 'active-glow' : 'text-slate-500']">
-            <i :class="btn.icon"></i><span class="text-[8px] orbitron font-bold">{{ btn.label }}</span>
+    <nav class="md:hidden fixed bottom-6 left-6 right-6 h-20 glass rounded-[32px] border border-white/10 flex items-center justify-around px-4 shadow-2xl z-[1000]">
+        <div v-for="b in dock" @click="setView(b.id)" :class="['flex flex-col items-center gap-1', view === b.id ? 'active-tab' : 'text-slate-500']">
+            <i :class="[b.icon, 'text-xl']"></i>
+            <span class="text-[8px] orbitron font-bold uppercase">{{ b.label }}</span>
         </div>
     </nav>
 
-    <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto = false"></div>
-        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative border border-cyan-500/20">
-            <h2 class="orbitron text-lg mb-6 tracking-widest">SUPPORT MISSION</h2>
-            <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full">
-                <button v-for="(c, idx) in coins" @click="activeCoin = idx" :class="['flex-1 py-2 rounded-full text-[10px] orbitron font-bold transition', activeCoin === idx ? 'bg-cyan-500 text-black' : 'text-slate-400']">{{ c.name }}</button>
+    <div v-if="showCrypto" class="fixed inset-0 z-[2000] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showCrypto = false"></div>
+        <div class="card-glow w-full max-w-sm p-10 text-center relative border-cyan-500/30">
+            <h2 class="orbitron text-2xl font-black mb-8 tracking-widest text-white">REINFORCE MISSION</h2>
+            <div class="flex gap-2 mb-8 p-1 bg-slate-900 rounded-full border border-white/5">
+                <button v-for="(c, idx) in coins" @click="activeCoin = idx" :class="['flex-1 py-3 rounded-full text-[10px] orbitron font-black transition', activeCoin === idx ? 'bg-cyan-500 text-black' : 'text-slate-400']">{{ c.name }}</button>
             </div>
-            <img :src="coins[activeCoin].qr" class="w-44 h-44 mx-auto mb-6 rounded-2xl border-4 border-white shadow-2xl">
-            <div class="bg-black/80 p-4 rounded-xl text-[9px] font-mono break-all mb-4 text-cyan-400 border border-slate-800 select-all">{{ coins[activeCoin].addr }}</div>
-            <p class="text-[9px] text-slate-500 font-bold mb-8 uppercase">Network: {{ coins[activeCoin].net }}</p>
-            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-600 hover:text-white">CLOSE</button>
+            <img :src="coins[activeCoin].qr" class="w-52 h-52 mx-auto mb-8 rounded-3xl border-4 border-white shadow-2xl">
+            <div class="bg-black/60 p-4 rounded-2xl mono text-[10px] break-all mb-4 text-cyan-400 border border-white/5 select-all">{{ coins[activeCoin].addr }}</div>
+            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-10">Network: <span class="text-white">{{ coins[activeCoin].net }}</span></p>
+            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-600 hover:text-white transition uppercase font-black">Close Terminal</button>
         </div>
     </div>
 
@@ -178,50 +225,54 @@
       return {
         user: null, view: 'eaas', menuOpen: false, showCrypto: false, activeCoin: 0,
         isMobile: window.innerWidth < 768,
-        navStructure: {
+        menu: {
             'Operations': [
-                { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th' },
-                { id: 'trading', label: 'Quanta Signals', icon: 'fas fa-chart-line' },
-                { id: 'devsecops', label: 'Academy', icon: 'fas fa-shield' }
+                { id: 'eaas', label: 'Nexus Dashboard', icon: 'fas fa-dna' },
+                { id: 'trading', label: 'Quanta Signals', icon: 'fas fa-bolt' },
+                { id: 'dropshipping', label: 'Dropshipping Academy', icon: 'fas fa-ship' }
             ],
-            'Social & Sacco': [
-                { id: 'sacco', label: 'Smart Sacco', icon: 'fas fa-vault' },
-                { id: 'community', label: 'WhatsApp', icon: 'fab fa-whatsapp' }
+            'Infrastructure': [
+                { id: 'sacco', label: 'Smart SACCO', icon: 'fas fa-vault' },
+                { id: 'devsecops', label: 'Cloud Academy', icon: 'fas fa-shield-halved' },
+                { id: 'boyz', label: 'Industrial Builds', icon: 'fas fa-city' }
+            ],
+            'Social': [
+                { id: 'community', label: 'WhatsApp Hub', icon: 'fab fa-whatsapp' },
+                { id: 'metaverse', label: 'The Metaverse', icon: 'fas fa-vr-cardboard' }
             ]
         },
-        viewTitles: { eaas: 'NEXUS DASHBOARD', trading: 'TRADING TERMINAL', sacco: 'SACCO ENGINE', devsecops: 'ACADEMY', community: 'WHATSAPP HUB' },
-        mobileBtns: [
-            { id: 'eaas', label: 'CORE', icon: 'fas fa-th' },
-            { id: 'trading', label: 'TRADES', icon: 'fas fa-bolt' },
-            { id: 'sacco', label: 'SACCO', icon: 'fas fa-vault' },
-            { id: 'community', label: 'CHAT', icon: 'fab fa-whatsapp' }
+        viewTitles: { eaas: 'NEXUS_CORE', trading: 'LIVE_QUANTA', dropshipping: 'ACADEMY', sacco: 'SACCO_ENGINE', devsecops: 'CLOUD_SEC', boyz: 'URBAN_BUILDS', community: 'WHATSAPP', metaverse: 'METAVERSE' },
+        dock: [
+            { id: 'eaas', label: 'Nexus', icon: 'fas fa-dna' },
+            { id: 'trading', label: 'Signals', icon: 'fas fa-bolt' },
+            { id: 'sacco', label: 'Sacco', icon: 'fas fa-vault' },
+            { id: 'dropshipping', label: 'Class', icon: 'fas fa-ship' }
         ],
-        services: [
-            { title: 'AI Automation', icon: 'fas fa-brain', desc: 'Custom enterprise AI workflows.' },
-            { title: 'Knowledge Transfer', icon: 'fas fa-book', desc: 'Financial and Technical education.' },
-            { title: 'Global Trade', icon: 'fas fa-globe', desc: 'Logistics and industrial sourcing.' }
+        core: [
+            { title: 'AI Integration', icon: 'fas fa-brain', desc: 'Custom LLM models for automated business governance.' },
+            { title: 'Quanta Trade', icon: 'fas fa-chart-line', desc: 'Predictive intelligence for global capital markets.' },
+            { title: 'Industrial Ops', icon: 'fas fa-warehouse', desc: 'Supply chain management and physical property development.' }
         ],
         signals: [
-            { pair: 'BTC/USDT', type: 'BUY', entry: '42,500', tp: '44,800' },
-            { pair: 'XAU/USD', type: 'SELL', entry: '2,024', tp: '1,998' }
+            { pair: 'BTC/USDT', type: 'BUY', entry: '42,500 - 42,750', tp: '44,800' },
+            { pair: 'XAU/USD', type: 'SELL', entry: '2,042 - 2,045', tp: '2,015' }
         ],
         coins: [
-            { name: 'BTC', net: 'Bitcoin Network', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
-            { name: 'USDC', net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
+            { name: 'BITCOIN', net: 'BTC-Taproot', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
+            { name: 'USDC', net: 'AVAX C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
         ]
       }
     },
     methods: {
-      async loginGoogle() {
-        try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
+      async loginGoogle() { 
+        try { await signInWithPopup(auth, provider); } catch(e) { console.error(e); }
       },
       async logout() { await signOut(auth); },
-      selectView(id) { 
-          this.view = id; 
-          this.menuOpen = false; // Auto-hide menu on mobile after click
-          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      setView(id) { 
+        if (id === 'community') { window.open('https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj', '_blank'); return; }
+        this.view = id; this.menuOpen = false; window.scrollTo({ top: 0, behavior: 'smooth' }); 
       },
-      contact(subj) { window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subj}`; }
+      contact(subj) { window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY_REQUEST: ${subj}`; }
     },
     mounted() {
       onAuthStateChanged(auth, (u) => { this.user = u; });
