@@ -3,536 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXNESFLY NEXUS 3.0 | Everything Ecosystem</title>
+    <title>EXNESFLY | Nexus Ecosystem</title>
     
-    <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Firebase 9 (Compatible with your version) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-        
-        // YOUR EXACT FIREBASE CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
-            authDomain: "exnesfly.firebaseapp.com",
-            projectId: "exnesfly",
-            storageBucket: "exnesfly.firebasestorage.app",
-            messagingSenderId: "1057610102569",
-            appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938",
-            measurementId: "G-SYSSG8HEFB"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
-
-        // Make available globally
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDB = db;
-        window.firebaseProvider = googleProvider;
-        window.firebaseMethods = {
-            signInWithPopup,
-            collection,
-            addDoc,
-            getDocs,
-            query,
-            where
-        };
-        
-        console.log("🔥 Firebase loaded with YOUR config!");
-    </script>
-
-    <!-- Your Original Styles -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root {
-            --neon-blue: #00f5ff;
-            --deep-dark: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.8);
-        }
-        body {
-            background-color: var(--deep-dark);
-            color: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        :root { --neon-blue: #00f5ff; --deep-dark: #020617; }
+        body { background-color: var(--deep-dark); color: #f8fafc; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { backdrop-filter: blur(15px); background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); }
-        
-        .slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
-        .slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
-
+        .glass { backdrop-filter: blur(15px); background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1); }
+        .section-card { background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%); border-radius: 24px; border: 1px solid rgba(0, 245, 255, 0.1); }
+        .active-glow { filter: drop-shadow(0 0 8px var(--neon-blue)); color: var(--neon-blue) !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        .section-card {
-            background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%);
-            border-radius: 24px;
-            border: 1px solid rgba(0, 245, 255, 0.1);
-        }
+        /* Mobile-friendly Button Hiding */
+        .hide-on-action { transition: all 0.3s ease; }
         
-        .active-glow {
-            filter: drop-shadow(0 0 8px var(--neon-blue));
-            color: var(--neon-blue) !important;
-        }
+        @keyframes scan { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(100%); opacity: 0; } }
+        .scanner-line { height: 2px; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation: scan 3s linear infinite; }
+        .premium-blur { filter: blur(6px); user-select: none; }
     </style>
 </head>
 <body class="overflow-hidden">
 
 <div id="app" class="h-screen w-screen flex flex-col md:flex-row">
 
-    <!-- YOUR ORIGINAL SIDEBAR -->
-    <transition name="slide">
-        <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
-            <div class="p-6 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="LOGO.png" class="w-10 h-10" alt="Logo">
-                    <h1 class="orbitron font-bold text-lg tracking-tighter text-cyan-400">EXNESFLY</h1>
-                </div>
-                <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
+    <aside v-if="menuOpen || !isMobile" class="fixed inset-y-0 left-0 w-72 z-[100] glass flex flex-col md:relative md:flex">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="LOGO.png" class="w-10 h-10" alt="Logo">
+                <h1 class="orbitron font-bold text-lg text-cyan-400">EXNESFLY</h1>
             </div>
+            <button @click="menuOpen = false" class="md:hidden text-white"><i class="fas fa-times"></i></button>
+        </div>
 
-            <!-- ORIGINAL NAV -->
-            <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
-                <div v-for="(category, name) in navGroups" :key="name">
-                    <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ name }}</p>
-                    <div v-for="item in category" 
-                         @click="selectView(item.id)" 
-                         :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
-                        <i :class="item.icon"></i>
-                        <span class="text-sm font-medium">{{ item.label }}</span>
-                    </div>
-                </div>
-            </nav>
-
-            <div class="p-4 border-t border-slate-800">
-                <!-- KEPT YOUR DONATE BUTTON -->
-                <button @click="showCrypto = true; menuOpen = false" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-black text-xs orbitron shadow-lg shadow-cyan-500/20">
-                    <i class="fab fa-bitcoin mr-2"></i> DONATE
-                </button>
-                
-                <!-- ADDED: Simple Login Button -->
-                <button v-if="!user" @click="loginWithGoogle" class="w-full py-2 mt-2 rounded-xl bg-white/10 text-white text-xs orbitron border border-white/20">
-                    <i class="fab fa-google mr-2"></i> Sign In with Google
-                </button>
-                
-                <!-- ADDED: User Profile when logged in -->
-                <div v-if="user" class="mt-2 p-3 rounded-xl bg-slate-800/30">
-                    <div class="flex items-center gap-2">
-                        <img :src="user.photoURL" class="w-8 h-8 rounded-full">
-                        <div class="flex-1">
-                            <p class="text-xs font-semibold truncate">{{ user.displayName }}</p>
-                            <p class="text-[10px] text-slate-400 truncate">{{ user.email }}</p>
-                        </div>
-                        <button @click="logout" class="text-red-400">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </div>
+        <div class="px-6 py-4 border-b border-slate-800">
+            <div v-if="user" class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl">
+                <img :src="user.photoURL" class="w-8 h-8 rounded-full border border-cyan-400">
+                <div class="overflow-hidden">
+                    <p class="text-[9px] font-bold truncate orbitron">{{ user.displayName }}</p>
+                    <button @click="logout" class="text-[8px] text-red-400 hover:underline">LOGOUT</button>
                 </div>
             </div>
-        </aside>
-    </transition>
+            <button v-else @click="loginGoogle" class="w-full py-3 bg-white text-black text-[10px] orbitron font-bold rounded-xl flex items-center justify-center gap-2">
+                <i class="fab fa-google"></i> SIGN IN
+            </button>
+        </div>
 
-    <!-- YOUR ORIGINAL MOBILE HEADER -->
-    <header class="md:hidden flex items-center justify-between p-4 glass z-[90]">
-        <img src="LOGO.png" class="w-8 h-8" alt="Logo">
-        <h2 class="orbitron text-xs font-bold tracking-widest">{{ viewTitles[view] }}</h2>
-        <button @click="menuOpen = true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
-    </header>
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar">
+            <div v-for="(group, gName) in navStructure" :key="gName">
+                <p class="text-[10px] uppercase tracking-[3px] text-slate-500 mb-2 mt-6 px-2">{{ gName }}</p>
+                <div v-for="item in group" @click="selectView(item.id)" 
+                     :class="['flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all', view === item.id ? 'bg-cyan-500/10 text-cyan-400 border-l-4 border-cyan-400' : 'text-slate-400 hover:bg-slate-800']">
+                    <i :class="item.icon"></i><span class="text-xs font-medium uppercase">{{ item.label }}</span>
+                </div>
+            </div>
+        </nav>
+    </aside>
 
-    <!-- YOUR ORIGINAL MAIN CONTENT -->
     <main class="flex-1 overflow-y-auto relative no-scrollbar pb-24 md:pb-8">
         
-        <div class="fixed top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[120px] rounded-full -z-10"></div>
-        <div class="fixed bottom-0 left-0 w-96 h-96 bg-fuchsia-500/5 blur-[150px] rounded-full -z-10"></div>
+        <header class="md:hidden flex items-center justify-between p-4 glass sticky top-0 z-[90]">
+            <img src="LOGO.png" class="w-8 h-8">
+            <h2 class="orbitron text-[10px] font-bold text-cyan-400 tracking-widest uppercase">{{ viewTitles[view] }}</h2>
+            <button @click="menuOpen = true" class="text-cyan-400 text-xl"><i class="fas fa-bars-staggered"></i></button>
+        </header>
 
         <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-10">
 
-            <!-- YOUR ORIGINAL EAAS SECTION -->
-            <div v-if="view === 'eaas'" class="space-y-8">
-                <div class="text-center md:text-left">
-                    <h2 class="text-4xl md:text-6xl font-black orbitron mb-4">EaaS <span class="text-cyan-400">3.0</span></h2>
-                    <p class="text-slate-400 max-w-2xl">The modular gateway to AI, Logistics, and Global Trade infrastructure.</p>
-                </div>
-                
-                <!-- ADDED: Simple Order Button for logged in users -->
-                <div v-if="user" class="text-center">
-                    <button @click="createOrder" class="px-6 py-3 bg-green-500 text-black font-bold rounded-xl">
-                        <i class="fas fa-plus mr-2"></i> Create New Order
-                    </button>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="s in services" class="section-card p-6 group hover:border-cyan-400 transition-all cursor-pointer">
+            <section v-if="view === 'eaas'" class="space-y-8 animate-in fade-in duration-500">
+                <h2 class="text-4xl md:text-6xl font-black orbitron uppercase">Nexus <span class="text-cyan-400">Core</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div v-for="s in services" class="section-card p-6 group">
                         <i :class="[s.icon, 'text-3xl text-cyan-400 mb-4']"></i>
                         <h3 class="orbitron font-bold text-lg mb-2">{{ s.title }}</h3>
-                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">{{ s.desc }}</p>
-                        <button @click="contact(s.title)" class="w-full py-2 bg-slate-800 rounded-lg text-[10px] font-bold tracking-widest hover:bg-cyan-500 hover:text-black transition">INITIALIZE MODULE</button>
+                        <p class="text-xs text-slate-400 mb-6">{{ s.desc }}</p>
+                        <button @click="contact(s.title)" class="w-full py-3 bg-slate-900 rounded-xl text-[10px] orbitron font-bold border border-slate-700 hover:bg-cyan-500 hover:text-black transition">INITIALIZE</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- YOUR ORIGINAL SACCO SECTION -->
-            <div v-if="view === 'sacco'" class="space-y-6">
-                <div class="section-card p-8 border-l-8 border-yellow-500 bg-gradient-to-br from-yellow-500/5 to-transparent">
-                    <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
-                    <p class="text-sm text-yellow-500 mb-6 uppercase tracking-widest font-bold italic">Decentralized Community Finance</p>
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="p-4 bg-black/40 rounded-2xl">
-                            <span class="text-[10px] text-slate-500 block uppercase">Global Pool</span>
-                            <span class="orbitron text-xl text-white font-bold">$1.2M+</span>
-                        </div>
-                        <div class="p-4 bg-black/40 rounded-2xl">
-                            <span class="text-[10px] text-slate-500 block uppercase">APY Return</span>
-                            <span class="orbitron text-xl text-green-400 font-bold">18.4%</span>
-                        </div>
+            <section v-if="view === 'trading'" class="space-y-6 animate-in slide-in-from-bottom-4">
+                <div class="section-card p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 scanner-line opacity-10"></div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="orbitron text-xl font-bold">QUANTA SIGNALS</h2>
+                        <span class="text-[10px] text-green-400 font-bold animate-pulse">● LIVE DATA FEED</span>
                     </div>
-                    <button @click="contact('SACCO Membership')" class="w-full py-4 bg-yellow-500 text-black font-black orbitron rounded-2xl shadow-xl shadow-yellow-500/20">JOIN THE SACCO</button>
-                </div>
-            </div>
 
-            <!-- YOUR ORIGINAL DEVSECOPS SECTION -->
-            <div v-if="view === 'devsecops'" class="space-y-6">
-                <div class="section-card p-6 md:p-10 border-t-2 border-cyan-500">
-                    <div class="flex flex-col md:flex-row gap-10">
-                        <div class="flex-1">
-                            <h2 class="orbitron text-2xl md:text-4xl font-bold mb-4">BARAKA DEVSECOPS</h2>
-                            <p class="text-slate-400 mb-8 font-mono text-sm leading-relaxed">
-                                <span class="text-cyan-500">></span> Mastering the Fullstack Lifecycle.<br>
-                                <span class="text-cyan-500">></span> Secure CI/CD Engineering.<br>
-                                <span class="text-cyan-500">></span> Knowledge Transfer Protocol Active.
-                            </p>
-                            <div class="space-y-4">
-                                <div class="flex items-center gap-4 p-4 glass rounded-xl">
-                                    <i class="fas fa-code text-blue-400"></i>
-                                    <div><p class="text-sm font-bold">End-to-End Fullstack</p><p class="text-[10px] text-slate-500">Go, Python, Vue 3, Docker</p></div>
-                                </div>
-                                <div class="flex items-center gap-4 p-4 glass rounded-xl">
-                                    <i class="fas fa-shield-halved text-emerald-400"></i>
-                                    <div><p class="text-sm font-bold">Pentesting & Security</p><p class="text-[10px] text-slate-500">Secure Architecture Deployment</p></div>
-                                </div>
+                    <div v-if="!user" class="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-center">
+                        <p class="text-[10px] orbitron text-cyan-400">UNLOCK PREMIUM ENTRY & TP LEVELS BY SIGNING IN</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div v-for="sig in signals" class="glass p-5 rounded-3xl border-l-4" :class="sig.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="orbitron font-bold text-lg">{{ sig.pair }}</span>
+                                <span class="text-[10px] px-3 py-1 bg-slate-800 rounded-full font-black" :class="sig.type === 'BUY' ? 'text-green-500' : 'text-red-500'">{{ sig.type }}</span>
+                            </div>
+                            <div :class="['grid grid-cols-2 gap-3 transition-all', !user ? 'premium-blur' : '']">
+                                <div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[9px] text-slate-500">ENTRY</p><p class="text-xs font-bold text-cyan-400">{{ sig.entry }}</p></div>
+                                <div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[9px] text-slate-500">T/P</p><p class="text-xs font-bold text-green-400">{{ sig.tp }}</p></div>
                             </div>
                         </div>
-                        <button @click="contact('DevSecOps Course')" class="md:hidden py-4 bg-white text-black font-black orbitron rounded-xl">VIEW CURRICULUM</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- YOUR ORIGINAL BOYZ SECTION -->
-            <div v-if="view === 'boyz'" class="space-y-6">
-                <h2 class="orbitron text-2xl font-bold border-b border-slate-800 pb-4">Industrial Builds</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div v-for="p in portfolio" class="section-card overflow-hidden group">
-                        <div class="h-48 overflow-hidden">
-                            <img :src="p.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-70">
-                        </div>
-                        <div class="p-6">
-                            <h3 class="orbitron font-bold text-lg mb-2">{{ p.title }}</h3>
-                            <p class="text-xs text-slate-400 mb-6">{{ p.desc }}</p>
-                            <button @click="contact('Construction Inquiry: ' + p.title)" class="w-full py-2 border border-slate-700 rounded-lg text-[10px] orbitron font-bold hover:bg-white hover:text-black transition">REQUEST SPECS</button>
-                        </div>
+            <section v-if="view === 'sacco'" class="section-card p-8 border-l-8 border-yellow-500">
+                <h2 class="orbitron text-3xl font-bold mb-2">SMART SACCO</h2>
+                <p class="text-[10px] text-yellow-500 orbitron uppercase mb-10 tracking-[3px]">Financial Freedom Engine</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="p-6 bg-black/50 rounded-3xl border border-slate-800">
+                        <span class="text-[9px] text-slate-500 block orbitron">LIQUIDITY POOL</span>
+                        <span class="text-3xl orbitron font-black">$1,240,500</span>
+                    </div>
+                    <div class="p-6 bg-black/50 rounded-3xl border border-slate-800">
+                        <span class="text-[9px] text-slate-500 block orbitron">COMMUNITY SIZE</span>
+                        <span class="text-3xl orbitron font-black text-cyan-400">4,209+</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- ADDED: Simple Orders Section -->
-            <div v-if="view === 'orders' && user" class="space-y-6">
-                <h2 class="orbitron text-2xl font-bold">My Orders</h2>
-                <div class="section-card p-6">
-                    <div v-if="orders.length === 0" class="text-center py-8">
-                        <i class="fas fa-shopping-cart text-4xl text-slate-700 mb-4"></i>
-                        <p class="text-slate-400">No orders yet</p>
-                        <button @click="createOrder" class="mt-4 px-4 py-2 bg-cyan-500 text-black rounded-lg">
-                            Create Your First Order
-                        </button>
-                    </div>
-                    <div v-else class="space-y-4">
-                        <div v-for="order in orders" class="p-4 bg-slate-800/30 rounded-lg">
-                            <div class="flex justify-between">
-                                <span class="font-semibold">{{ order.service }}</span>
-                                <span class="text-sm text-cyan-400">{{ order.status }}</span>
-                            </div>
-                            <p class="text-sm text-slate-400 mt-2">{{ order.description }}</p>
-                            <p class="text-xs text-slate-500 mt-2">{{ formatDate(order.createdAt) }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <a href="https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj" target="_blank" class="block w-full py-5 bg-yellow-500 text-black text-center font-black orbitron rounded-2xl shadow-xl">INVEST IN SACCO</a>
+            </section>
 
         </div>
     </main>
 
-    <!-- YOUR ORIGINAL MOBILE NAV -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 glass h-16 flex items-center justify-around z-[100] border-t border-slate-800">
-        <div @click="selectView('eaas')" :class="['flex flex-col items-center gap-1', view === 'eaas' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-home text-lg"></i><span class="text-[8px] font-bold orbitron">HOME</span>
-        </div>
-        <div @click="selectView('trading')" :class="['flex flex-col items-center gap-1', view === 'trading' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-bolt text-lg"></i><span class="text-[8px] font-bold orbitron">SIGNALS</span>
-        </div>
-        <div @click="selectView('sacco')" :class="['flex flex-col items-center gap-1', view === 'sacco' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-vault text-lg"></i><span class="text-[8px] font-bold orbitron">SACCO</span>
-        </div>
-        <div @click="selectView('devsecops')" :class="['flex flex-col items-center gap-1', view === 'devsecops' ? 'active-glow' : 'text-slate-500']">
-            <i class="fas fa-brain text-lg"></i><span class="text-[8px] font-bold orbitron">COURSES</span>
+        <div v-for="btn in mobileBtns" @click="selectView(btn.id)" :class="['flex flex-col items-center gap-1', view === btn.id ? 'active-glow' : 'text-slate-500']">
+            <i :class="btn.icon"></i><span class="text-[8px] orbitron font-bold">{{ btn.label }}</span>
         </div>
     </nav>
 
-    <!-- YOUR ORIGINAL CRYPTO MODAL -->
     <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-md" @click="showCrypto = false"></div>
-        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative animate-in zoom-in-95">
-            <h2 class="orbitron text-xl mb-6">DONATE ASSET</h2>
+        <div class="glass w-full max-w-sm p-8 rounded-[40px] text-center relative border border-cyan-500/20">
+            <h2 class="orbitron text-lg mb-6 tracking-widest">SUPPORT MISSION</h2>
             <div class="flex gap-2 mb-6 p-1 bg-slate-900 rounded-full">
-                <button @click="activeCoin = 0" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 0 ? 'bg-cyan-500 text-black' : 'text-slate-400']">BTC</button>
-                <button @click="activeCoin = 1" :class="['flex-1 py-2 rounded-full text-[10px] font-bold orbitron transition', activeCoin === 1 ? 'bg-cyan-500 text-black' : 'text-slate-400']">USDC</button>
+                <button v-for="(c, idx) in coins" @click="activeCoin = idx" :class="['flex-1 py-2 rounded-full text-[10px] orbitron font-bold transition', activeCoin === idx ? 'bg-cyan-500 text-black' : 'text-slate-400']">{{ c.name }}</button>
             </div>
-            <img :src="coins[activeCoin].qr" class="w-44 h-44 mx-auto mb-6 rounded-2xl border-4 border-white shadow-2xl shadow-white/10">
-            <div class="bg-black/50 p-4 rounded-xl mono text-[9px] break-all mb-4 text-cyan-400">{{ coins[activeCoin].addr }}</div>
-            <p class="text-[9px] text-slate-500 uppercase tracking-widest mb-8">Network: {{ coins[activeCoin].net }}</p>
-            <button @click="showCrypto = false" class="text-fuchsia-500 orbitron text-[10px] font-bold">CLOSE</button>
-        </div>
-    </div>
-
-    <!-- ADDED: Simple Create Order Modal -->
-    <div v-if="showOrderModal" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95" @click="showOrderModal = false"></div>
-        <div class="glass w-full max-w-md p-6 rounded-2xl">
-            <h3 class="orbitron text-xl mb-4">Create Order</h3>
-            <input v-model="newOrder.service" placeholder="Service Name" class="w-full p-3 bg-slate-800 rounded mb-3">
-            <textarea v-model="newOrder.description" placeholder="Description" class="w-full p-3 bg-slate-800 rounded mb-3 h-32"></textarea>
-            <button @click="saveOrder" class="w-full py-3 bg-cyan-500 text-black font-bold rounded">
-                Save Order
-            </button>
+            <img :src="coins[activeCoin].qr" class="w-44 h-44 mx-auto mb-6 rounded-2xl border-4 border-white shadow-2xl">
+            <div class="bg-black/80 p-4 rounded-xl text-[9px] font-mono break-all mb-4 text-cyan-400 border border-slate-800 select-all">{{ coins[activeCoin].addr }}</div>
+            <p class="text-[9px] text-slate-500 font-bold mb-8 uppercase">Network: {{ coins[activeCoin].net }}</p>
+            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-600 hover:text-white">CLOSE</button>
         </div>
     </div>
 
 </div>
 
-<script>
-    const { createApp } = Vue;
-    
-    createApp({
-        data() {
-            return {
-                // YOUR ORIGINAL DATA
-                view: 'eaas',
-                menuOpen: false,
-                showCrypto: false,
-                activeCoin: 0,
-                isMobile: window.innerWidth < 768,
-                
-                // ADDED: Firebase User Data
-                user: null,
-                orders: [],
-                showOrderModal: false,
-                newOrder: {
-                    service: '',
-                    description: ''
-                },
-                
-                // YOUR ORIGINAL NAV DATA
-                navGroups: {
-                    'Operations': [
-                        { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th-large' },
-                        { id: 'trading', label: 'Trading Hub', icon: 'fas fa-chart-line' },
-                        { id: 'devsecops', label: 'DevSecOps Academy', icon: 'fas fa-user-shield' }
-                    ],
-                    'Finance & Real World': [
-                        { id: 'sacco', label: 'Digital SACCO', icon: 'fas fa-vault' },
-                        { id: 'boyz', label: 'BoyzInTheHood', icon: 'fas fa-city' },
-                        // ADDED: Orders tab
-                        { id: 'orders', label: 'My Orders', icon: 'fas fa-shopping-cart' }
-                    ]
-                },
-                
-                viewTitles: {
-                    eaas: 'GLOBAL EAAS',
-                    trading: 'QUANTA SIGNALS',
-                    devsecops: 'BARAKA ACADEMY',
-                    sacco: 'SMART SACCO',
-                    boyz: 'URBAN PORTFOLIO',
-                    orders: 'MY ORDERS'
-                },
-                
-                services: [
-                    { title: 'AI Integration', icon: 'fas fa-brain', desc: 'Custom LLM training and business workflow automation.' },
-                    { title: 'Signal Selling', icon: 'fas fa-wifi', desc: 'Premium HFX & Crypto signals delivered via encrypted channels.' },
-                    { title: 'Course Library', icon: 'fas fa-graduation-cap', desc: 'Proprietary knowledge on dropshipping and fintech.' },
-                    { title: 'Energy Meters', icon: 'fas fa-bolt', desc: 'Smart IOT evolution for modern energy management.' }
-                ],
-                
-                portfolio: [
-                    { title: 'Alpha Complex', desc: 'IOT-Integrated residential builds.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80' },
-                    { title: 'Logistics One', desc: 'Supply chain automation warehouse.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80' }
-                ],
-                
-                coins: [
-                    { net: 'Bitcoin Network', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
-                    { net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
-                ]
-            };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
+    authDomain: "exnesfly.firebaseapp.com",
+    projectId: "exnesfly",
+    storageBucket: "exnesfly.firebasestorage.app",
+    messagingSenderId: "1057610102569",
+    appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938",
+    measurementId: "G-SYSSG8HEFB"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const { createApp } = Vue;
+  createApp({
+    data() {
+      return {
+        user: null, view: 'eaas', menuOpen: false, showCrypto: false, activeCoin: 0,
+        isMobile: window.innerWidth < 768,
+        navStructure: {
+            'Operations': [
+                { id: 'eaas', label: 'EaaS Dashboard', icon: 'fas fa-th' },
+                { id: 'trading', label: 'Quanta Signals', icon: 'fas fa-chart-line' },
+                { id: 'devsecops', label: 'Academy', icon: 'fas fa-shield' }
+            ],
+            'Social & Sacco': [
+                { id: 'sacco', label: 'Smart Sacco', icon: 'fas fa-vault' },
+                { id: 'community', label: 'WhatsApp', icon: 'fab fa-whatsapp' }
+            ]
         },
-        
-        methods: {
-            // YOUR ORIGINAL METHODS
-            selectView(id) {
-                this.view = id;
-                this.menuOpen = false;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-            
-            contact(subject) {
-                window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subject}`;
-            },
-            
-            // ADDED: Firebase Methods
-            async loginWithGoogle() {
-                try {
-                    const result = await window.firebaseMethods.signInWithPopup(
-                        window.firebaseAuth, 
-                        window.firebaseProvider
-                    );
-                    
-                    this.user = result.user;
-                    console.log('Logged in:', this.user.email);
-                    
-                    // Load user's orders
-                    await this.loadOrders();
-                    
-                    alert('✅ Successfully signed in!');
-                } catch (error) {
-                    console.error('Login error:', error);
-                    alert('❌ Login failed: ' + error.message);
-                }
-            },
-            
-            async logout() {
-                try {
-                    await window.firebaseAuth.signOut();
-                    this.user = null;
-                    this.orders = [];
-                    alert('✅ Signed out successfully');
-                } catch (error) {
-                    console.error('Logout error:', error);
-                }
-            },
-            
-            async loadOrders() {
-                if (!this.user) return;
-                
-                try {
-                    const q = window.firebaseMethods.query(
-                        window.firebaseMethods.collection(window.firebaseDB, "orders"),
-                        window.firebaseMethods.where("userId", "==", this.user.uid)
-                    );
-                    
-                    const querySnapshot = await window.firebaseMethods.getDocs(q);
-                    this.orders = [];
-                    
-                    querySnapshot.forEach((doc) => {
-                        this.orders.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    console.log('Loaded orders:', this.orders.length);
-                } catch (error) {
-                    console.error('Error loading orders:', error);
-                }
-            },
-            
-            async createOrder() {
-                if (!this.user) {
-                    alert('Please sign in first');
-                    await this.loginWithGoogle();
-                    return;
-                }
-                
-                this.newOrder = { service: '', description: '' };
-                this.showOrderModal = true;
-            },
-            
-            async saveOrder() {
-                if (!this.user) return;
-                
-                if (!this.newOrder.service || !this.newOrder.description) {
-                    alert('Please fill in all fields');
-                    return;
-                }
-                
-                try {
-                    const orderData = {
-                        userId: this.user.uid,
-                        userEmail: this.user.email,
-                        userName: this.user.displayName,
-                        service: this.newOrder.service,
-                        description: this.newOrder.description,
-                        status: 'pending',
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    };
-                    
-                    // Save to Firestore
-                    const docRef = await window.firebaseMethods.addDoc(
-                        window.firebaseMethods.collection(window.firebaseDB, "orders"),
-                        orderData
-                    );
-                    
-                    console.log('Order saved with ID:', docRef.id);
-                    
-                    // Add to local array
-                    this.orders.unshift({ id: docRef.id, ...orderData });
-                    
-                    // Reset and close
-                    this.newOrder = { service: '', description: '' };
-                    this.showOrderModal = false;
-                    
-                    alert('✅ Order created successfully!');
-                    
-                    // Switch to orders view
-                    this.view = 'orders';
-                    
-                } catch (error) {
-                    console.error('Error saving order:', error);
-                    alert('❌ Failed to create order: ' + error.message);
-                }
-            },
-            
-            formatDate(dateString) {
-                if (!dateString) return '';
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-            }
-        },
-        
-        mounted() {
-            // Check if user is already logged in
-            window.firebaseAuth.onAuthStateChanged((user) => {
-                this.user = user;
-                if (user) {
-                    console.log('User already logged in:', user.email);
-                    this.loadOrders();
-                }
-            });
-            
-            window.addEventListener('resize', () => { 
-                this.isMobile = window.innerWidth < 768;
-            });
-        }
-    }).mount('#app');
+        viewTitles: { eaas: 'NEXUS DASHBOARD', trading: 'TRADING TERMINAL', sacco: 'SACCO ENGINE', devsecops: 'ACADEMY', community: 'WHATSAPP HUB' },
+        mobileBtns: [
+            { id: 'eaas', label: 'CORE', icon: 'fas fa-th' },
+            { id: 'trading', label: 'TRADES', icon: 'fas fa-bolt' },
+            { id: 'sacco', label: 'SACCO', icon: 'fas fa-vault' },
+            { id: 'community', label: 'CHAT', icon: 'fab fa-whatsapp' }
+        ],
+        services: [
+            { title: 'AI Automation', icon: 'fas fa-brain', desc: 'Custom enterprise AI workflows.' },
+            { title: 'Knowledge Transfer', icon: 'fas fa-book', desc: 'Financial and Technical education.' },
+            { title: 'Global Trade', icon: 'fas fa-globe', desc: 'Logistics and industrial sourcing.' }
+        ],
+        signals: [
+            { pair: 'BTC/USDT', type: 'BUY', entry: '42,500', tp: '44,800' },
+            { pair: 'XAU/USD', type: 'SELL', entry: '2,024', tp: '1,998' }
+        ],
+        coins: [
+            { name: 'BTC', net: 'Bitcoin Network', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
+            { name: 'USDC', net: 'Avalanche C-Chain', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
+        ]
+      }
+    },
+    methods: {
+      async loginGoogle() {
+        try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
+      },
+      async logout() { await signOut(auth); },
+      selectView(id) { 
+          this.view = id; 
+          this.menuOpen = false; // Auto-hide menu on mobile after click
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      },
+      contact(subj) { window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subj}`; }
+    },
+    mounted() {
+      onAuthStateChanged(auth, (u) => { this.user = u; });
+      window.addEventListener('resize', () => { this.isMobile = window.innerWidth < 768 });
+    }
+  }).mount('#app');
 </script>
 </body>
 </html>
