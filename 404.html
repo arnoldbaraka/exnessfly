@@ -7,272 +7,232 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root { --neon: #00f5ff; --matrix-green: #34d399; --arno-red: #ff3e3e; --bg: #010409; }
+        :root { --neon: #00f5ff; --matrix: #10b981; --arno: #ef4444; --bg: #010409; --glass: rgba(13, 17, 23, 0.85); }
         body { background-color: var(--bg); color: #c9d1d9; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass-panel { backdrop-filter: blur(25px); background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(255,255,255,0.03); }
-        .bento-node { border: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255,255,255,0.01); border-radius: 24px; transition: 0.3s; position: relative; overflow: hidden; }
-        .bento-node:hover { border-color: var(--neon); background: rgba(0, 245, 255, 0.02); }
-        .matrix-border { border-left: 4px solid var(--matrix-green); }
-        .arno-border { border-left: 4px solid var(--arno-red); }
+        
+        /* The "Coolest" UI enhancements */
+        .glass-panel { backdrop-filter: blur(30px); background: var(--glass); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .bento-card { border-radius: 28px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .bento-card:hover { border-color: var(--neon); background: rgba(0, 245, 255, 0.02); transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 245, 255, 0.1); }
+        
+        .input-cyber { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px; width: 100%; outline: none; transition: 0.3s; }
+        .input-cyber:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 245, 255, 0.2); }
+        
+        .status-glow { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px currentColor; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .neon-text { background: linear-gradient(90deg, #7c3aed, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon); animation: pulse 2s infinite; }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col overflow-hidden">
+<body class="h-screen w-screen flex flex-col no-scrollbar">
 
-<div id="app" class="flex flex-col h-full">
+<div id="app" class="flex flex-col h-full overflow-hidden relative">
 
-    <header class="h-14 border-b border-white/5 flex items-center justify-between px-6 glass-panel z-50">
-        <div class="flex items-center gap-4 cursor-pointer" @click="view = 'nexus'">
-            <img src="LOGO.png" class="h-6 w-6">
-            <h1 class="orbitron font-black text-sm tracking-[4px] text-white">EXNESFLY_OS</h1>
+    <header class="h-16 border-b border-white/5 flex items-center justify-between px-8 glass-panel z-[100]">
+        <div class="flex items-center gap-6 cursor-pointer" @click="view = 'nexus'">
+            <img src="LOGO.png" class="h-8 w-8 drop-shadow-[0_0_8px_rgba(0,245,255,0.5)]">
+            <h1 class="orbitron font-black text-sm tracking-[5px] text-white hidden md:block">EXNESFLY_OS</h1>
         </div>
-        <div class="flex items-center gap-6 text-[9px] orbitron font-bold text-slate-500">
-            <div class="flex items-center gap-2"><div class="status-dot"></div> {{ sysStatus }}</div>
-            <div v-if="user" class="text-cyan-400">OPERATOR: {{ user.displayName.split(' ')[0] }}</div>
+        
+        <div class="flex items-center gap-6">
+            <div v-if="user" class="flex items-center gap-4 bg-white/5 p-1 pr-4 rounded-full border border-white/10">
+                <img :src="user.photoURL" class="w-8 h-8 rounded-full border border-cyan-500">
+                <div class="flex flex-col">
+                    <span class="text-[8px] orbitron font-bold text-cyan-400">{{ userRole.toUpperCase() }}</span>
+                    <span class="text-[10px] text-white font-bold">{{ user.displayName.split(' ')[0] }}</span>
+                </div>
+            </div>
+            <button v-else @click="login" class="orbitron text-[10px] bg-white text-black px-6 py-2 font-black rounded-full hover:bg-cyan-400 transition">INITIALIZE</button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-        <nav class="w-16 md:w-64 border-r border-white/5 flex flex-col p-4 space-y-2 glass-panel">
-            <div v-for="item in menu" @click="view = item.id" 
-                 :class="['p-4 rounded-xl cursor-pointer transition-all flex items-center gap-4', view === item.id ? 'bg-white/5 text-cyan-400 border border-white/10 shadow-lg' : 'text-slate-500 hover:text-white']">
-                <i :class="item.icon" class="text-xl"></i>
-                <span class="hidden md:block text-[10px] orbitron font-black tracking-widest uppercase">{{ item.label }}</span>
+        <nav class="w-20 md:w-72 border-r border-white/5 flex flex-col p-6 space-y-3 glass-panel">
+            <div v-for="n in nav" @click="view = n.id" 
+                 :class="['p-4 rounded-2xl cursor-pointer flex items-center gap-5 transition-all duration-300', view === n.id ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30' : 'text-slate-500 hover:text-white']">
+                <i :class="n.icon" class="text-xl"></i>
+                <span class="hidden md:block text-[10px] orbitron font-black uppercase tracking-widest">{{ n.label }}</span>
             </div>
-            <div class="mt-auto p-4 border-t border-white/5">
-                <button @click="showCrypto = true" class="w-full text-[9px] orbitron text-yellow-500 font-black hover:text-white transition uppercase">Reinforce_Core</button>
+            <div class="mt-auto p-4 bg-white/5 rounded-2xl border border-white/5">
+                <p class="text-[8px] orbitron text-slate-500 mb-2 text-center uppercase">System Integrity</p>
+                <div class="h-1.5 w-full bg-black rounded-full overflow-hidden">
+                    <div class="h-full bg-cyan-500 w-[94%]"></div>
+                </div>
             </div>
         </nav>
 
-        <main class="flex-1 overflow-y-auto p-4 md:p-10 no-scrollbar">
+        <main class="flex-1 overflow-y-auto p-8 md:p-16 no-scrollbar bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-cyan-500/5 via-transparent to-transparent">
 
-            <div v-if="view === 'nexus'" class="animate-in fade-in duration-500 space-y-12">
-                <section class="max-w-4xl">
-                    <h2 class="text-5xl md:text-7xl font-black orbitron text-white leading-[0.9] mb-6">GLOBAL <br><span class="neon-text uppercase italic underline">Operations.</span></h2>
-                    <p class="text-slate-400 text-lg font-light leading-relaxed">Integrated Industrial Hub: Microfinance, Bio-Triage, and Autonomous Racing Systems.</p>
+            <div v-if="view === 'nexus'" class="max-w-5xl space-y-16 animate-in fade-in duration-700">
+                <section>
+                    <div class="flex items-center gap-3 text-cyan-500 mb-4">
+                        <div class="status-glow bg-cyan-500"></div>
+                        <span class="orbitron text-[10px] font-black tracking-widest">SYSTEM_LINK_ESTABLISHED</span>
+                    </div>
+                    <h2 class="orbitron text-6xl md:text-8xl font-black text-white leading-none uppercase tracking-tighter">SOVEREIGN <br><span class="text-transparent stroke-text" style="-webkit-text-stroke: 1px white;">COMMAND.</span></h2>
+                    <p class="mt-8 text-slate-400 text-xl font-light max-w-2xl leading-relaxed">Integrated E-Commerce, Medical Triage, and Industrial Logistics for the East African Matrix.</p>
                 </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div @click="view = 'matrix'" class="bento-node p-8 matrix-border cursor-pointer group hover:scale-[1.02]">
-                        <h4 class="orbitron text-xs font-black text-emerald-400 mb-4 tracking-[3px]">THE_MATRIX</h4>
-                        <p class="text-xl font-bold mb-2 uppercase">Microfinance & SACCO</p>
-                        <p class="text-[10px] text-slate-500">Managing KES 10M+ in liquidity for Kenya & Tanzania.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div @click="view = 'market'" class="bento-card p-10 cursor-pointer">
+                        <i class="fas fa-shopping-cart text-3xl text-cyan-400 mb-6"></i>
+                        <h4 class="orbitron text-lg font-black text-white mb-2">MARKETPLACE</h4>
+                        <p class="text-xs text-slate-500">Register as Buyer/Seller and trade industrial assets.</p>
                     </div>
-                    <div @click="view = 'arno'" class="bento-node p-8 arno-border cursor-pointer group hover:scale-[1.02]">
-                        <h4 class="orbitron text-xs font-black text-red-500 mb-4 tracking-[3px]">ARNO_DRIVE</h4>
-                        <p class="text-xl font-bold mb-2 uppercase">Autonomous Racing</p>
-                        <p class="text-[10px] text-slate-500">Nairobi Bypass Matchmaking & Auto-Market.</p>
+                    <div @click="view = 'telemed'" class="bento-card p-10 cursor-pointer border-l-4 border-red-500/50">
+                        <i class="fas fa-heart-pulse text-3xl text-red-500 mb-6"></i>
+                        <h4 class="orbitron text-lg font-black text-white mb-2">HUMAN_MED</h4>
+                        <p class="text-xs text-slate-500">24/7 Virtual Triage for primary healthcare nodes.</p>
                     </div>
-                    <div @click="view = 'vetmed'" class="bento-node p-8 border-l-4 border-cyan-500 cursor-pointer group hover:scale-[1.02]">
-                        <h4 class="orbitron text-xs font-black text-cyan-400 mb-4 tracking-[3px]">VET_MED</h4>
-                        <p class="text-xl font-bold mb-2 uppercase">Tele-Pharma Hub</p>
-                        <p class="text-[10px] text-slate-500">Dr. Esty lead surgical & dropship pipeline.</p>
+                    <div @click="view = 'vetmed'" class="bento-card p-10 cursor-pointer border-l-4 border-matrix/50">
+                        <i class="fas fa-paw text-3xl text-matrix mb-6"></i>
+                        <h4 class="orbitron text-lg font-black text-white mb-2">VET_NEXUS</h4>
+                        <p class="text-xs text-slate-500">Dr. Esty lead Bio-Triage for Canine/Feline/Livestock.</p>
                     </div>
                 </div>
             </div>
 
-            <div v-if="view === 'matrix'" class="space-y-8 animate-in slide-in-from-bottom-5">
-                <section class="bento-node p-10 bg-emerald-500/5 matrix-border">
-                    <div class="flex justify-between items-start mb-10">
-                        <div>
-                            <h2 class="text-3xl orbitron font-black text-white">THE MATRIX</h2>
-                            <p class="text-xs text-emerald-400 font-bold uppercase tracking-widest">Micro-Credit • SACCO • Shares</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[9px] text-slate-500">OPERATIONAL REGION</p>
-                            <p class="text-xs font-bold">KE / TZ</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                        <div class="space-y-6">
-                            <div class="p-6 bg-black/40 rounded-3xl border border-white/5">
-                                <h4 class="text-xs orbitron font-bold mb-4">Loan Quick-Scan</h4>
-                                <input type="number" v-model="loan.amount" class="w-full bg-transparent border-b border-emerald-500/30 p-2 mb-4 outline-none text-xl" placeholder="Amount (KES)">
-                                <div class="flex justify-between text-[10px] font-bold">
-                                    <span>TERM: {{ loan.months }} MO</span>
-                                    <span>RATE: {{ loan.rate }}%</span>
-                                </div>
-                                <input type="range" v-model="loan.rate" min="6" max="30" class="w-full h-1 bg-emerald-900 mt-4 accent-emerald-400">
-                                <div class="mt-6 p-4 bg-emerald-500/10 rounded-2xl text-center">
-                                    <p class="text-[8px] uppercase">Est. Monthly Payment</p>
-                                    <p class="text-2xl font-black text-emerald-400">KES {{ calcLoan() }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bento-node p-6 bg-black/20">
-                            <h4 class="text-xs orbitron font-bold mb-4 text-center">PORTFOLIO ALLOCATION</h4>
-                            <canvas id="matrixChart" height="200"></canvas>
-                        </div>
-                    </div>
-                </section>
-                
-                <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-6 bento-node">
-                        <h5 class="font-bold text-emerald-400 text-xs mb-2 uppercase">Quick Cash</h5>
-                        <p class="text-[10px] text-slate-500">Up to KES 100k disbursed via M-Pesa instantly.</p>
-                    </div>
-                    <div class="p-6 bento-node">
-                        <h5 class="font-bold text-emerald-400 text-xs mb-2 uppercase">SACCO Backed</h5>
-                        <p class="text-[10px] text-slate-500">Group guarantees with rates as low as 8% APR.</p>
-                    </div>
-                    <div class="p-6 bento-node">
-                        <h5 class="font-bold text-emerald-400 text-xs mb-2 uppercase">Equity Shares</h5>
-                        <p class="text-[10px] text-slate-500">Quarterly dividends from Matrix umbrella projects.</p>
-                    </div>
-                </section>
-            </div>
-
-            <div v-if="view === 'arno'" class="space-y-8 animate-in slide-in-from-bottom-5">
-                <section class="bento-node p-10 bg-red-500/5 arno-border">
-                    <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
-                        <div class="max-w-xl">
-                            <h2 class="text-3xl orbitron font-black text-white">ARNO DRIVE</h2>
-                            <p class="text-xs text-red-500 font-bold uppercase tracking-[4px] mb-4">Autonomous Racing Network Operations</p>
-                            <p class="text-sm text-slate-400 leading-relaxed italic">Nairobi's streets, digitized. Connect your ride, climb the leaderboards, and trade precision machinery in the AutoMarket.</p>
-                        </div>
-                        <div class="bg-black/60 p-6 rounded-3xl border border-red-500/20 text-center min-w-[200px]">
-                            <p class="text-[9px] orbitron text-red-500 mb-2">NEXT MATCHMAKING</p>
-                            <p class="text-3xl font-black italic">12:04:15</p>
-                        </div>
-                    </div>
-
+            <div v-if="view === 'market'" class="space-y-12 animate-in slide-in-from-bottom-10">
+                <div v-if="!roleSelected" class="bento-card p-12 text-center bg-cyan-500/5">
+                    <h3 class="orbitron text-2xl font-black mb-10 text-white">IDENTITY_VERIFICATION</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bento-node p-6 bg-black/20">
-                            <h4 class="text-xs orbitron font-bold mb-6 text-red-500 uppercase tracking-widest flex items-center gap-2">
-                                <i class="fas fa-map-location-dot"></i> ACTIVE_ROUTES
-                            </h4>
-                            <div class="space-y-4">
-                                <div v-for="r in routes" class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
-                                    <span class="text-[10px] font-bold">{{ r.name }}</span>
-                                    <span class="text-[9px] text-slate-500">{{ r.distance }}km</span>
-                                </div>
+                        <button @click="setRole('buyer')" class="p-10 bento-card hover:bg-white hover:text-black group">
+                            <i class="fas fa-user-tag text-4xl mb-6 group-hover:text-black"></i>
+                            <p class="orbitron font-black">REGISTER_BUYER</p>
+                        </button>
+                        <button @click="setRole('seller')" class="p-10 bento-card hover:bg-yellow-500 hover:text-black group">
+                            <i class="fas fa-store-alt text-4xl mb-6 group-hover:text-black"></i>
+                            <p class="orbitron font-black">REGISTER_SELLER</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div v-else class="space-y-8">
+                    <div class="flex justify-between items-center">
+                        <h2 class="orbitron text-3xl font-black italic">GLOBAL_MARKET</h2>
+                        <button v-if="userRole === 'seller'" @click="showAddProduct = true" class="px-8 py-3 bg-white text-black orbitron text-[10px] font-black rounded-full shadow-[0_0_20px_rgba(255,255,255,0.2)]">LIST_NEW_ASSET</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div v-for="p in products" class="bento-card overflow-hidden group">
+                            <div class="h-56 bg-black/40 flex items-center justify-center relative">
+                                <i class="fas fa-microchip text-5xl text-white/10 group-hover:text-cyan-500 transition-all duration-500"></i>
+                                <div class="absolute top-4 left-4 bg-cyan-500 text-black text-[8px] font-black px-3 py-1 orbitron rounded-full">{{ p.cat }}</div>
                             </div>
-                        </div>
-                        <div class="bento-node p-6 bg-black/20">
-                            <h4 class="text-xs orbitron font-bold mb-6 text-red-500 uppercase tracking-widest">REGISTER_RIDE</h4>
-                            <div class="grid grid-cols-2 gap-3 mb-6">
-                                <input placeholder="Make/Model" class="p-3 bg-black/40 border border-white/5 rounded-xl text-[10px] outline-none">
-                                <input placeholder="Horsepower" class="p-3 bg-black/40 border border-white/5 rounded-xl text-[10px] outline-none">
+                            <div class="p-6">
+                                <h4 class="font-bold text-white mb-1 uppercase tracking-wider">{{ p.name }}</h4>
+                                <p class="text-cyan-400 font-black orbitron mb-4">${{ p.price }}</p>
+                                <button class="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] orbitron font-black hover:bg-white hover:text-black transition">PURCHASE_CONTRACT</button>
                             </div>
-                            <button class="w-full py-4 bg-red-600 text-white orbitron text-[10px] font-black rounded-xl">ENTER_LEADERBOARD</button>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
 
-            <div v-if="view === 'vetmed'" class="space-y-6">
-                <section class="bento-node p-12 border-l-4 border-cyan-500 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-10 opacity-5"><i class="fas fa-microscope text-[200px]"></i></div>
-                    <h2 class="orbitron text-4xl font-black text-white mb-6 uppercase">Vet-Med <span class="text-cyan-400 italic underline">Nexus</span></h2>
-                    <p class="text-slate-400 max-w-xl mb-10 leading-relaxed">The global veterinary pipeline lead by Dr. Esty. From complex livestock triage to domestic prescription dropshipping.</p>
-                    <button @click="contact('Telemedicine Pipeline')" class="px-10 py-5 bg-cyan-500 text-black orbitron font-black text-xs tracking-widest rounded-xl">START CONSULTATION</button>
-                </section>
+            <div v-if="view === 'vetmed'" class="space-y-8 animate-in slide-in-from-right-10">
+                <div class="bento-card p-12 border-l-4 border-matrix relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 opacity-[0.03] rotate-12">
+                        <i class="fas fa-dog text-[300px]"></i>
+                    </div>
+                    <h2 class="orbitron text-4xl font-black mb-4 uppercase">Bio-Nexus <span class="text-matrix italic">Vet</span></h2>
+                    <p class="text-slate-400 max-w-2xl mb-12">Nairobi's premier surgical triage node led by Dr. Esty. Precision medicine for domestic and industrial-grade livestock.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-6">
+                            <h4 class="orbitron text-xs font-black text-matrix tracking-widest uppercase">Species_Triage_Console</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button v-for="s in ['Canine', 'Feline', 'Equine', 'Bovine']" @click="triage.species = s" 
+                                        :class="triage.species === s ? 'bg-matrix text-black border-matrix' : 'bg-black/40 border-white/5 text-slate-500'" 
+                                        class="py-4 rounded-2xl border orbitron text-[10px] font-black transition">
+                                    {{ s.toUpperCase() }}
+                                </button>
+                            </div>
+                            <textarea v-model="triage.symptoms" class="input-cyber h-40" placeholder="Input clinical symptoms..."></textarea>
+                            <button @click="submitTriage('vet')" class="w-full py-5 bg-matrix text-black orbitron font-black text-xs tracking-[4px] rounded-2xl shadow-lg">INITIALIZE_REMOTE_DIAGNOSIS</button>
+                        </div>
+                        <div class="space-y-6">
+                            <h4 class="orbitron text-xs font-black text-slate-500 tracking-widest uppercase">Pipeline_Services</h4>
+                            <div v-for="item in ['Tele-Surgical Consult', 'Pharmaceutical Dropship', 'Genetic Mapping']" class="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-full bg-matrix/20 flex items-center justify-center text-matrix"><i class="fas fa-check"></i></div>
+                                <span class="orbitron text-[11px] font-bold text-white">{{ item.toUpperCase() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </main>
     </div>
 
-    <div v-if="showCrypto" class="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/90 backdrop-blur-3xl">
-        <div class="bento-node max-w-sm w-full p-10 text-center glass-panel border-cyan-500/20">
-            <h2 class="orbitron text-xl font-black mb-8 text-white uppercase tracking-widest">Reinforce_Core</h2>
-            <div class="flex gap-2 mb-8 bg-black/40 p-1 rounded border border-white/5">
-                <button v-for="(c, i) in coins" @click="activeCoin = i" :class="activeCoin === i ? 'bg-cyan-500 text-black' : 'text-slate-500'" class="flex-1 py-2 rounded orbitron text-[9px] font-black transition">{{ c.name }}</button>
-            </div>
-            <img :src="coins[activeCoin].qr" class="w-48 h-48 mx-auto mb-8 rounded-2xl border-2 border-white/10 shadow-2xl">
-            <div class="bg-black/60 p-4 rounded font-mono text-[9px] break-all mb-8 text-cyan-400 border border-white/5 select-all">{{ coins[activeCoin].addr }}</div>
-            <button @click="showCrypto = false" class="orbitron text-[9px] text-slate-500 uppercase font-black hover:text-white transition">_Disconnect</button>
+    <transition name="fade">
+        <div v-if="notification" class="fixed bottom-10 right-10 z-[3000] p-6 bg-cyan-500 text-black orbitron text-[10px] font-black rounded-2xl shadow-2xl animate-bounce">
+            {{ notification }}
         </div>
-    </div>
+    </transition>
 
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
-    authDomain: "exnesfly.firebaseapp.com",
-    projectId: "exnesfly",
-    storageBucket: "exnesfly.firebasestorage.app",
-    messagingSenderId: "1057610102569",
-    appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
+        authDomain: "exnesfly.firebaseapp.com",
+        projectId: "exnesfly",
+        storageBucket: "exnesfly.firebasestorage.app",
+        messagingSenderId: "1057610102569",
+        appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
+    const fb = initializeApp(firebaseConfig);
+    const auth = getAuth(fb);
+    const provider = new GoogleAuthProvider();
 
-  const { createApp } = Vue;
-  createApp({
-    data() {
-      return {
-        view: 'nexus', user: null, showCrypto: false, activeCoin: 0, sysStatus: 'NEXUS_READY',
-        loan: { amount: 50000, months: 12, rate: 14 },
-        menu: [
-            { id: 'nexus', label: 'Operations', icon: 'fas fa-dna' },
-            { id: 'matrix', label: 'The Matrix', icon: 'fas fa-vault' },
-            { id: 'arno', label: 'Arno Drive', icon: 'fas fa-gauge-high' },
-            { id: 'vetmed', label: 'Vet Med', icon: 'fas fa-shield-dog' },
-            { id: 'trade', label: 'Quanta', icon: 'fas fa-bolt' }
-        ],
-        routes: [
-            { name: 'Southern Bypass (Circuit One)', distance: '28' },
-            { name: 'Eastern Bypass (Turbo East)', distance: '32' },
-            { name: 'Full Ring Loop (MegaDrive)', distance: '60' }
-        ],
-        coins: [
-            { name: 'BTC', net: 'Taproot', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
-            { name: 'USDC', net: 'AVAX', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
-        ]
-      }
-    },
-    methods: {
-      async login() { await signInWithPopup(auth, provider); },
-      async logout() { await signOut(auth); },
-      calcLoan() {
-        const r = this.loan.rate / 100 / 12;
-        const n = this.loan.months;
-        const p = this.loan.amount;
-        if (r === 0) return Math.round(p / n).toLocaleString();
-        const pay = (p * r) / (1 - Math.pow(1 + r, -n));
-        return Math.round(pay).toLocaleString();
-      },
-      initChart() {
-        const ctx = document.getElementById('matrixChart');
-        if (!ctx) return;
-        new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Loans', 'Shares', 'Fixed Income'],
-            datasets: [{
-                data: [40, 30, 30],
-                backgroundColor: ['#34d399', '#60a5fa', '#a78bfa'],
-                borderWidth: 0
-            }]
-          },
-          options: { plugins: { legend: { position: 'bottom', labels: { color: '#64748b', font: { size: 10, family: 'Orbitron' } } } } }
-        });
-      },
-      contact(sub) { window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY_OPERATIONS: ${sub}`; }
-    },
-    watch: {
-        view(newV) { if(newV === 'matrix') { this.$nextTick(() => this.initChart()); } }
-    },
-    mounted() {
-      onAuthStateChanged(auth, u => { this.user = u; });
-    }
-  }).mount('#app');
+    const { createApp } = Vue;
+    createApp({
+        data() {
+            return {
+                view: 'nexus', user: null, userRole: 'buyer', roleSelected: false,
+                notification: null, showAddProduct: false,
+                nav: [
+                    { id: 'nexus', label: 'Nexus', icon: 'fas fa-terminal' },
+                    { id: 'market', label: 'Market', icon: 'fas fa-globe' },
+                    { id: 'telemed', label: 'Human', icon: 'fas fa-user-md' },
+                    { id: 'vetmed', label: 'Vet_Nexus', icon: 'fas fa-dna' }
+                ],
+                triage: { species: 'Canine', symptoms: '' },
+                products: [
+                    { name: 'Industrial Microscope', price: 1200, cat: 'LAB' },
+                    { name: 'Vet Pharmaceutical v9', price: 450, cat: 'MED' },
+                    { name: 'Surgical Drone Kit', price: 3000, cat: 'TECH' }
+                ]
+            }
+        },
+        methods: {
+            async login() { await signInWithPopup(auth, provider); },
+            setRole(r) { 
+                this.userRole = r; 
+                this.roleSelected = true;
+                this.notify(`USER_IDENTITY: ${r.toUpperCase()} VERIFIED`);
+            },
+            notify(msg) {
+                this.notification = msg;
+                setTimeout(() => this.notification = null, 3000);
+            },
+            submitTriage(type) {
+                this.notify(`${type.toUpperCase()} TRIAGE DATA UPLOADED`);
+                this.triage.symptoms = '';
+            }
+        },
+        mounted() {
+            onAuthStateChanged(auth, u => { this.user = u; });
+        }
+    }).mount('#app');
 </script>
 </body>
 </html>
