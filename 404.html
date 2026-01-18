@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EXNESFLY | SOVEREIGN NEXUS</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Poppins:wght@300;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --neon: #00f5ff; --gold: #f59e0b; }
+        body { background: #020617; color: #f8fafc; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { backdrop-filter: blur(20px); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.05); }
+        .bento-card { background: linear-gradient(145deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid rgba(0, 245, 255, 0.1); border-radius: 40px; transition: 0.4s; }
+        .bento-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,245,255,0.1); }
+        .premium-blur { filter: blur(10px); pointer-events: none; user-select: none; }
+        @keyframes flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .animate-flow { background: linear-gradient(-45deg, #00f5ff, #3b82f6, #020617); background-size: 400% 400%; animation: flow 10s ease infinite; }
+    </style>
+</head>
+<body class="no-scrollbar">
+
+<div id="app" class="min-h-screen relative pb-32 md:pb-10">
+
+    <nav class="max-w-7xl mx-auto p-6 flex justify-between items-center sticky top-0 z-[100] glass mt-4 rounded-[32px] mx-4 md:mx-auto">
+        <div class="flex items-center gap-3">
+            <img src="LOGO.png" class="w-12 h-12">
+            <h1 class="orbitron font-black text-2xl tracking-tighter">EXNESFLY</h1>
+        </div>
+        <div v-if="user" class="hidden md:flex items-center gap-4 bg-white/5 p-2 rounded-full px-4 border border-white/10">
+            <img :src="user.photoURL" class="w-8 h-8 rounded-full">
+            <span class="text-[10px] orbitron font-bold uppercase tracking-widest">{{ user.displayName }}</span>
+            <button @click="logout" class="text-red-500 text-[10px] font-black uppercase">_exit</button>
+        </div>
+        <button v-else @click="loginGoogle" class="px-6 py-2 bg-white text-black orbitron font-black text-[10px] rounded-full hover:bg-cyan-400 transition">ACCESS_NEXUS</button>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6 mt-10 space-y-12">
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 bento-card p-10 flex flex-col justify-between border-l-8 border-cyan-500">
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="px-4 py-1 bg-cyan-500/20 text-cyan-400 rounded-full orbitron text-[10px] font-bold">LIVE TELEMEDICAL</div>
+                        <div class="px-4 py-1 bg-green-500/20 text-green-400 rounded-full orbitron text-[10px] font-bold">DR_ESTY_ONLINE</div>
+                    </div>
+                    <h2 class="text-5xl font-black orbitron mb-4 leading-none uppercase">Vet-Med <br><span class="text-cyan-400">Dropshipping</span></h2>
+                    <p class="text-slate-400 max-w-md mb-8">Global veterinary telemedicine and prescription-grade product sourcing. From Dr. Esty's advice to your doorstep.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button @click="contact('Vet-Med Consultation')" class="flex-1 py-4 bg-cyan-500 text-black orbitron font-black rounded-2xl">START CONSULTATION</button>
+                    <button @click="setView('pharma')" class="px-8 py-4 border border-cyan-500/30 text-cyan-400 orbitron font-black rounded-2xl hover:bg-white/5">PHARMA_LIST</button>
+                </div>
+            </div>
+
+            <div class="bento-card p-10 bg-gradient-to-br from-yellow-500/20 to-transparent border-yellow-500/30">
+                <h3 class="orbitron font-black text-xl text-yellow-500 mb-10">SOVEREIGN SACCO</h3>
+                <div class="space-y-8">
+                    <div>
+                        <p class="text-[10px] orbitron text-slate-500 uppercase tracking-[4px]">Liquidity Pool</p>
+                        <p class="text-4xl font-black orbitron text-white">$1,240,500</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] orbitron text-slate-500 uppercase tracking-[4px]">Global Members</p>
+                        <p class="text-4xl font-black orbitron text-cyan-400">4,209+</p>
+                    </div>
+                    <a href="https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj" target="_blank" class="block w-full py-4 bg-yellow-500 text-black text-center orbitron font-black rounded-2xl shadow-xl">JOIN_FINANCE</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="bento-card p-10 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row justify-between gap-6 mb-10 border-b border-white/5 pb-10">
+                <div>
+                    <h2 class="orbitron text-3xl font-black uppercase tracking-tighter">Quanta <span class="text-cyan-400 italic underline">Signals</span></h2>
+                    <p class="text-xs text-slate-500 mt-2">HFX, Forex, and Crypto Intelligence.</p>
+                </div>
+                <div v-if="!user" class="px-6 py-3 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center gap-3">
+                    <i class="fas fa-lock text-red-500"></i>
+                    <p class="text-[9px] orbitron font-black text-red-500 uppercase tracking-widest">Login to Unlock Entry Points</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div v-for="sig in signals" class="glass p-6 rounded-[32px] border-l-4" :class="sig.type === 'BUY' ? 'border-green-500' : 'border-red-500'">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="orbitron font-black text-xl">{{ sig.pair }}</span>
+                        <span class="text-[9px] px-3 py-1 bg-white/5 rounded-full font-black orbitron" :class="sig.type === 'BUY' ? 'text-green-500' : 'text-red-500'">{{ sig.type }}</span>
+                    </div>
+                    <div :class="['grid grid-cols-2 gap-3', !user ? 'premium-blur' : '']">
+                        <div class="bg-black/40 p-3 rounded-2xl"><p class="text-[8px] text-slate-500 uppercase">Entry</p><p class="font-bold text-cyan-400">{{ sig.entry }}</p></div>
+                        <div class="bg-black/40 p-3 rounded-2xl"><p class="text-[8px] text-slate-500 uppercase">Target</p><p class="font-bold text-green-400">{{ sig.tp }}</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bento-card p-10 border-t-8 border-purple-500">
+                <h3 class="orbitron font-black text-xl mb-6 uppercase">Dropshipping Academy</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-8">From setting up your store to managing global freight. We teach you how to dominate the supply chain using EXNESFLY infrastructure.</p>
+                <button @click="contact('Academy Access')" class="w-full py-4 bg-purple-600 text-white orbitron font-black rounded-2xl uppercase text-[10px] tracking-widest">Start Learning Path</button>
+            </div>
+            <div class="bento-card p-10 border-t-8 border-cyan-500 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+                <h3 class="orbitron font-black text-xl mb-6 uppercase">Industrial Builds</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-8">Proprietary Urban Builds and real estate projects within the EXNESFLY ecosystem. View our physical asset progress.</p>
+                <button @click="contact('Builds Portfolio')" class="w-full py-4 border border-cyan-500/30 text-cyan-400 orbitron font-black rounded-2xl uppercase text-[10px] tracking-widest hover:bg-cyan-500 hover:text-black">View Blueprints</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="md:hidden fixed bottom-6 left-6 right-6 h-20 glass rounded-[32px] border border-white/10 flex items-center justify-around px-4 z-[1000] shadow-2xl">
+        <i @click="setView('nexus')" class="fas fa-dna text-xl cursor-pointer" :class="activeTab === 'nexus' ? 'text-cyan-400' : 'text-slate-500'"></i>
+        <i @click="setView('trading')" class="fas fa-bolt text-xl cursor-pointer" :class="activeTab === 'trading' ? 'text-cyan-400' : 'text-slate-500'"></i>
+        <i @click="setView('sacco')" class="fas fa-vault text-xl cursor-pointer" :class="activeTab === 'sacco' ? 'text-yellow-500' : 'text-slate-500'"></i>
+        <i @click="setView('chat')" class="fab fa-whatsapp text-xl cursor-pointer text-green-500"></i>
+    </div>
+
+    <div v-if="showCrypto" class="fixed inset-0 z-[2000] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" @click="showCrypto = false"></div>
+        <div class="glass w-full max-w-sm p-10 rounded-[40px] text-center relative border border-white/10">
+            <h2 class="orbitron text-xl font-black mb-8">REINFORCE MISSION</h2>
+            <div class="flex gap-2 mb-8 bg-black/40 p-1 rounded-full border border-white/5">
+                <button v-for="(c, i) in coins" @click="activeCoin = i" :class="['flex-1 py-3 rounded-full text-[10px] orbitron font-black transition', activeCoin === i ? 'bg-cyan-500 text-black' : 'text-slate-500']">{{ c.name }}</button>
+            </div>
+            <img :src="coins[activeCoin].qr" class="w-52 h-52 mx-auto mb-8 rounded-3xl border-4 border-white shadow-2xl">
+            <div class="bg-black/60 p-4 rounded-2xl font-mono text-[9px] break-all mb-4 text-cyan-400 border border-white/5 select-all">{{ coins[activeCoin].addr }}</div>
+            <button @click="showCrypto = false" class="orbitron text-[10px] text-slate-500 uppercase font-black">Close Terminal</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
+    authDomain: "exnesfly.firebaseapp.com",
+    projectId: "exnesfly",
+    storageBucket: "exnesfly.firebasestorage.app",
+    messagingSenderId: "1057610102569",
+    appId: "1:1057610102569:web:3cbeecfa2a3ef703eaa938"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const { createApp } = Vue;
+  createApp({
+    data() {
+      return {
+        user: null, showCrypto: false, activeCoin: 0, activeTab: 'nexus',
+        signals: [
+            { pair: 'BTC/USDT', type: 'BUY', entry: '42,500', tp: '44,800' },
+            { pair: 'XAU/USD', type: 'SELL', entry: '2,024', tp: '1,998' },
+            { pair: 'ETH/USDT', type: 'BUY', entry: '2,250', tp: '2,400' }
+        ],
+        coins: [
+            { name: 'BTC', addr: 'bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4', qr: 'image1.jpeg' },
+            { name: 'USDC', addr: '0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd', qr: 'image0.jpeg' }
+        ]
+      }
+    },
+    methods: {
+      async loginGoogle() { await signInWithPopup(auth, provider); },
+      async logout() { await signOut(auth); },
+      setView(v) { 
+          this.activeTab = v; 
+          if(v === 'chat') window.open('https://chat.whatsapp.com/ENqNkb3r6rZ5h91eEwjHZj', '_blank');
+      },
+      contact(subj) { window.location.href = `mailto:barakasupertrades@gmail.com?subject=EXNESFLY: ${subj}`; }
+    },
+    mounted() {
+      onAuthStateChanged(auth, (u) => { this.user = u; });
+    }
+  }).mount('#app');
+</script>
+</body>
+</html>
