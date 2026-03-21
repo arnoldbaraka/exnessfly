@@ -190,6 +190,23 @@ export const links = {
   exness: "https://one.exnessonelink.com/a/1rb35x5i57?source=app"
 };
 
+export const paymentRails = [
+  {
+    name: "BTC",
+    network: "Bitcoin",
+    address: "bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4",
+    qr: "./image1.jpeg",
+    purpose: "Treasury reserve and high-value direct support"
+  },
+  {
+    name: "USDC",
+    network: "ERC-20",
+    address: "0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd",
+    qr: "./image0.jpeg",
+    purpose: "Fast ecosystem contributions and stablecoin settlements"
+  }
+];
+
 export const firebaseConfig = {
   apiKey: "AIzaSyBC-dgumIAulCEIlKvZY8QoaA_PyXLTB4I",
   authDomain: "exnesfly.firebaseapp.com",

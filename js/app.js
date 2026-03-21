@@ -19,6 +19,7 @@ import {
   marketplaceItems,
   mediaPipeline,
   metrics,
+  paymentRails,
   pricingTiers,
   revenueStreams,
   roadmap,
@@ -88,6 +89,7 @@ const elements = {
   pricingGrid: document.querySelector("#pricingGrid"),
   roadmapGrid: document.querySelector("#roadmapGrid"),
   principlesList: document.querySelector("#principlesList"),
+  paymentRails: document.querySelector("#paymentRails"),
   academyTracks: document.querySelector("#academyTracks"),
   mediaPipeline: document.querySelector("#mediaPipeline"),
   marketGrid: document.querySelector("#marketGrid"),
@@ -189,6 +191,27 @@ function renderPricing() {
         </div>
         <p>${tier.summary}</p>
         <div class="pricing-meta">${tier.features.map((feature) => `<span>${feature}</span>`).join("")}</div>
+      </article>
+    `)
+    .join("");
+}
+
+function renderPaymentRails() {
+  elements.paymentRails.innerHTML = paymentRails
+    .map((rail) => `
+      <article class="payment-card">
+        <div class="payment-topline">
+          <div>
+            <strong class="payment-name">${rail.name}</strong>
+            <div class="payment-network">${rail.network}</div>
+          </div>
+          <span class="chip">${rail.purpose}</span>
+        </div>
+        <img class="payment-qr" src="${rail.qr}" alt="${rail.name} payment QR code">
+        <div class="address-box">${rail.address}</div>
+        <div class="proposal-actions">
+          <button class="button button-primary" data-copy-address="${rail.address}" type="button">Copy Address</button>
+        </div>
       </article>
     `)
     .join("");
@@ -488,6 +511,16 @@ function handleProposalVote(event) {
   showToast(`Your ${vote.toUpperCase()} vote has been recorded.`);
 }
 
+function handleCopyAddress(event) {
+  const button = event.target.closest("[data-copy-address]");
+  if (!button) return;
+
+  const address = button.dataset.copyAddress;
+  navigator.clipboard.writeText(address)
+    .then(() => showToast("Crypto address copied to clipboard."))
+    .catch(() => showToast("Could not copy the address automatically."));
+}
+
 function bindEvents() {
   elements.authToggle.addEventListener("click", () => {
     document.querySelector("#auth").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -499,6 +532,7 @@ function bindEvents() {
   elements.walletButton.addEventListener("click", connectWallet);
   elements.treasuryForm.addEventListener("submit", handleTreasurySubmit);
   elements.proposalList.addEventListener("click", handleProposalVote);
+  elements.paymentRails.addEventListener("click", handleCopyAddress);
   elements.marketSearch.addEventListener("input", filterMarketplace);
   elements.marketFilter.addEventListener("change", filterMarketplace);
 
@@ -543,6 +577,7 @@ function init() {
   renderPricing();
   renderRoadmap();
   renderPrinciples();
+  renderPaymentRails();
   renderAcademy();
   renderTreasury();
   renderProposals();
