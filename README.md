@@ -1,39 +1,57 @@
 # ExnesFly
 
-ExnesFly is a multi-vertical technology and commerce company delivering digital solutions, intelligent systems, education, media, finance, and global product fulfillment.
+ExnesFly is being shaped into a premium multi-vertical platform for:
 
-This version of the project is now a GitHub Pages-friendly static super app rather than a single promo page. It presents ExnesFly as a unified ecosystem with:
+- AI-powered digital services
+- founder growth systems
+- academy and membership
+- media and brand authority
+- marketplace-scale digital offers
+- wallet-native community infrastructure
 
-- a flagship command-center landing experience
-- dedicated product lanes for digital solutions, AI systems, finance, education, media, and commerce
-- a wallet-aware web3 layer with browser wallet connection
-- treasury contribution tracking with local persistence
-- DAO-style proposal voting with local persistence
-- academy, media, and marketplace modules for the broader business vision
+## Product Direction
 
-## Tech Approach
+The business model behind this build is deliberate:
 
-The app intentionally stays static-first so it can deploy easily on GitHub Pages and custom domains:
+1. `Cash engine`: premium done-for-you services
+2. `Trust engine`: content, education, and private membership
+3. `Scale engine`: digital products and marketplace offers
+4. `Treasury engine`: web3 access, contribution flows, and governance
 
-- `index.html` contains the app shell
-- `css/styles.css` holds the full visual system and responsive layout
-- `js/data.js` stores structured product data
-- `js/app.js` powers rendering, filtering, persistence, and wallet interaction
-- `404.html` supports redirect behavior for GitHub Pages/custom-domain fallback
+This keeps ExnesFly grounded in real revenue first while still leaving room for a larger web3-powered ecosystem later.
 
-## Web3 Notes
+## What This Version Includes
 
-The current build supports injected EVM wallets such as MetaMask through the browser `window.ethereum` API. It reads:
+- a stronger business-model narrative in the UI
+- pricing tiers and founder vision sections
+- marketplace, academy, roadmap, and treasury experiences
+- browser wallet connectivity with the `window.ethereum` API
+- Firebase authentication using the ExnesFly Firebase project config already present in repo history
+- Google sign-in support
+- email/password account creation and login support
 
-- connected address
-- current chain
-- ETH balance
+## File Structure
 
-The treasury and governance systems are currently client-side simulations designed to make the product feel real on a static host. A future version can connect these surfaces to smart contracts, token gating, and on-chain treasury execution.
+- `index.html` contains the app shell and product sections
+- `css/styles.css` holds the full design system and responsive layout
+- `js/data.js` stores the business, pricing, roadmap, and product data
+- `js/app.js` powers rendering, filtering, wallet interaction, and Firebase auth
+- `404.html` provides static-host-friendly redirect behavior
+
+## Firebase Auth Notes
+
+The site now uses Firebase Web Auth for:
+
+- Google login
+- email/password signup
+- email/password login
+- logout and returning member state
+
+For production use, make sure the correct auth providers are enabled in the Firebase console and that the deployment domain is added to Firebase authorized domains.
 
 ## Local Preview
 
-Because the project is fully static, you can preview it with any simple local server, for example:
+Because the project is static-first, you can preview it with a simple local server:
 
 ```bash
 python -m http.server 8080

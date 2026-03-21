@@ -1,10 +1,27 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 import {
   academyTracks,
   defaultProposals,
+  firebaseConfig,
+  founderPrinciples,
   growthSignals,
+  links,
   marketplaceItems,
   mediaPipeline,
   metrics,
+  pricingTiers,
+  revenueStreams,
+  roadmap,
   signalNodes,
   verticals
 } from "./data.js";
@@ -22,12 +39,17 @@ function save(key, value) {
   window.localStorage.setItem(key, JSON.stringify(value));
 }
 
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const provider = new GoogleAuthProvider();
+
 const state = {
   wallet: {
     address: "",
     balance: "0.0000 ETH",
     chain: "Browser mode"
   },
+  member: null,
   proposals: load("exnesfly-proposals", defaultProposals),
   pledges: load("exnesfly-pledges", [
     { name: "Genesis Member", amount: 1000, stream: "AI Products" },
@@ -36,6 +58,17 @@ const state = {
 };
 
 const elements = {
+  authToggle: document.querySelector("#authToggle"),
+  googleLoginButton: document.querySelector("#googleLoginButton"),
+  logoutButton: document.querySelector("#logoutButton"),
+  emailAuthForm: document.querySelector("#emailAuthForm"),
+  emailSignupButton: document.querySelector("#emailSignupButton"),
+  emailInput: document.querySelector("#emailInput"),
+  passwordInput: document.querySelector("#passwordInput"),
+  memberHeading: document.querySelector("#memberHeading"),
+  memberBadge: document.querySelector("#memberBadge"),
+  memberName: document.querySelector("#memberName"),
+  memberEmail: document.querySelector("#memberEmail"),
   walletButton: document.querySelector("#walletButton"),
   walletAddress: document.querySelector("#walletAddress"),
   walletBalance: document.querySelector("#walletBalance"),
@@ -44,12 +77,17 @@ const elements = {
   chainChip: document.querySelector("#chainChip"),
   treasurySignal: document.querySelector("#treasurySignal"),
   treasuryForm: document.querySelector("#treasuryForm"),
+  supporterName: document.querySelector("#supporterName"),
   treasuryLedger: document.querySelector("#treasuryLedger"),
   proposalList: document.querySelector("#proposalList"),
   heroMetrics: document.querySelector("#heroMetrics"),
   signalGrid: document.querySelector("#signalGrid"),
   growthBars: document.querySelector("#growthBars"),
+  revenueGrid: document.querySelector("#revenueGrid"),
   verticalGrid: document.querySelector("#verticalGrid"),
+  pricingGrid: document.querySelector("#pricingGrid"),
+  roadmapGrid: document.querySelector("#roadmapGrid"),
+  principlesList: document.querySelector("#principlesList"),
   academyTracks: document.querySelector("#academyTracks"),
   mediaPipeline: document.querySelector("#mediaPipeline"),
   marketGrid: document.querySelector("#marketGrid"),
@@ -64,7 +102,7 @@ function showToast(message) {
   window.clearTimeout(showToast.timer);
   showToast.timer = window.setTimeout(() => {
     elements.toast.classList.remove("is-visible");
-  }, 2800);
+  }, 3200);
 }
 
 function formatCurrency(value) {
@@ -105,7 +143,25 @@ function renderSignals() {
 
 function renderGrowthBars() {
   elements.growthBars.innerHTML = growthSignals
-    .map((item) => `<div class="bar"><span>${item.label}</span><div class="track-progress"><span style="width:${item.value}%"></span></div></div>`)
+    .map((item) => `
+      <div class="bar">
+        <span>${item.label}</span>
+        <div class="track-progress"><span style="width:${item.value}%"></span></div>
+      </div>
+    `)
+    .join("");
+}
+
+function renderRevenueStreams() {
+  elements.revenueGrid.innerHTML = revenueStreams
+    .map((item) => `
+      <article class="vertical-card">
+        <p class="card-kicker">${item.model}</p>
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <div class="vertical-meta">${item.tags.map((tag) => `<span>${tag}</span>`).join("")}</div>
+      </article>
+    `)
     .join("");
 }
 
@@ -117,6 +173,45 @@ function renderVerticals() {
         <h3>${item.title}</h3>
         <p>${item.description}</p>
         <div class="vertical-meta">${item.tags.map((tag) => `<span>${tag}</span>`).join("")}</div>
+      </article>
+    `)
+    .join("");
+}
+
+function renderPricing() {
+  elements.pricingGrid.innerHTML = pricingTiers
+    .map((tier, index) => `
+      <article class="pricing-card ${index === 2 ? "featured" : ""}">
+        <p class="card-kicker">${tier.audience}</p>
+        <h3>${tier.name}</h3>
+        <div class="price-line">
+          <strong>${tier.price}</strong>
+        </div>
+        <p>${tier.summary}</p>
+        <div class="pricing-meta">${tier.features.map((feature) => `<span>${feature}</span>`).join("")}</div>
+      </article>
+    `)
+    .join("");
+}
+
+function renderRoadmap() {
+  elements.roadmapGrid.innerHTML = roadmap
+    .map((item) => `
+      <article class="roadmap-card">
+        <span>${item.phase}</span>
+        <h3>${item.title}</h3>
+        <p>${item.detail}</p>
+      </article>
+    `)
+    .join("");
+}
+
+function renderPrinciples() {
+  elements.principlesList.innerHTML = founderPrinciples
+    .map((item) => `
+      <article class="principle-item">
+        <span class="check-icon">+</span>
+        <div><p>${item}</p></div>
       </article>
     `)
     .join("");
@@ -231,9 +326,29 @@ function updateWalletUI() {
   elements.walletAddress.textContent = shortAddress(state.wallet.address);
   elements.walletBalance.textContent = state.wallet.balance;
   elements.walletChain.textContent = state.wallet.chain;
-  elements.walletStatus.textContent = state.wallet.address ? "Connected" : "Guest mode";
+  elements.walletStatus.textContent = state.member ? "Member live" : state.wallet.address ? "Wallet connected" : "Guest mode";
   elements.chainChip.textContent = state.wallet.address ? state.wallet.chain : "No chain";
   elements.walletButton.textContent = state.wallet.address ? "Wallet Connected" : "Connect Wallet";
+}
+
+function updateMemberUI() {
+  if (!state.member) {
+    elements.memberHeading.textContent = "Guest mode active";
+    elements.memberBadge.textContent = "Public";
+    elements.memberName.textContent = "Not signed in";
+    elements.memberEmail.textContent = "Use Google or email/password to save your place in the ecosystem.";
+    elements.authToggle.textContent = "Member Login";
+    updateWalletUI();
+    return;
+  }
+
+  const name = state.member.displayName || "ExnesFly Member";
+  elements.memberHeading.textContent = "Member access unlocked";
+  elements.memberBadge.textContent = "Member";
+  elements.memberName.textContent = name;
+  elements.memberEmail.textContent = state.member.email || "Authenticated account";
+  elements.authToggle.textContent = name;
+  updateWalletUI();
 }
 
 async function connectWallet() {
@@ -290,10 +405,54 @@ async function hydrateWallet() {
   }
 }
 
+async function loginWithGoogle() {
+  try {
+    await signInWithPopup(auth, provider);
+    showToast("Google sign-in successful.");
+  } catch (error) {
+    showToast(error?.message || "Google sign-in failed.");
+  }
+}
+
+async function loginWithEmail(event) {
+  event.preventDefault();
+  const email = elements.emailInput.value.trim();
+  const password = elements.passwordInput.value.trim();
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showToast("Email login successful.");
+  } catch (error) {
+    showToast(error?.message || "Email login failed.");
+  }
+}
+
+async function signupWithEmail() {
+  const email = elements.emailInput.value.trim();
+  const password = elements.passwordInput.value.trim();
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    showToast("Account created successfully.");
+  } catch (error) {
+    showToast(error?.message || "Account creation failed.");
+  }
+}
+
+async function logoutMember() {
+  try {
+    await signOut(auth);
+    showToast("Logged out successfully.");
+  } catch (error) {
+    showToast(error?.message || "Logout failed.");
+  }
+}
+
 function handleTreasurySubmit(event) {
   event.preventDefault();
   const form = new FormData(event.currentTarget);
-  const name = String(form.get("supporterName") || "Anonymous Member").trim() || "Anonymous Member";
+  const fallbackName = state.member?.displayName || state.member?.email || "Anonymous Member";
+  const name = String(form.get("supporterName") || fallbackName).trim() || fallbackName;
   const amount = Number(form.get("supportAmount"));
   const stream = String(form.get("supportStream"));
 
@@ -330,6 +489,13 @@ function handleProposalVote(event) {
 }
 
 function bindEvents() {
+  elements.authToggle.addEventListener("click", () => {
+    document.querySelector("#auth").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  elements.googleLoginButton.addEventListener("click", loginWithGoogle);
+  elements.logoutButton.addEventListener("click", logoutMember);
+  elements.emailAuthForm.addEventListener("submit", loginWithEmail);
+  elements.emailSignupButton.addEventListener("click", signupWithEmail);
   elements.walletButton.addEventListener("click", connectWallet);
   elements.treasuryForm.addEventListener("submit", handleTreasurySubmit);
   elements.proposalList.addEventListener("click", handleProposalVote);
@@ -357,20 +523,37 @@ function bindEvents() {
       updateWalletUI();
     });
   }
+
+  onAuthStateChanged(auth, (user) => {
+    state.member = user;
+    updateMemberUI();
+
+    if (user && !elements.supporterName.value) {
+      elements.supporterName.value = user.displayName || user.email || "";
+    }
+  });
 }
 
 function init() {
   renderMetrics();
   renderSignals();
   renderGrowthBars();
+  renderRevenueStreams();
   renderVerticals();
+  renderPricing();
+  renderRoadmap();
+  renderPrinciples();
   renderAcademy();
   renderTreasury();
   renderProposals();
   renderMarketplace(marketplaceItems);
-  updateWalletUI();
+  updateMemberUI();
   bindEvents();
   hydrateWallet();
+
+  if (links.domain) {
+    document.title = "ExnesFly | The Operating System For Ambitious Digital Builders";
+  }
 }
 
 init();
