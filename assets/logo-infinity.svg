@@ -1,0 +1,34 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="640" rx="160" fill="#07111F"/>
+  <circle cx="186" cy="182" r="116" fill="url(#paint0_radial)" fill-opacity="0.8"/>
+  <circle cx="468" cy="468" r="124" fill="url(#paint1_radial)" fill-opacity="0.65"/>
+  <path d="M82 320C82 244.889 141.824 185 215.25 185C266.627 185 304.729 209.909 356.495 272.404L378.504 299.029C417.064 346.087 443.117 370 479.75 370C514.682 370 543 341.516 543 306.375C543 271.234 514.682 242.75 479.75 242.75C447.488 242.75 424.901 263.936 390.156 307.804L281.722 438.435C244.396 483.705 206.894 507 160.25 507C86.8241 507 27 447.111 27 372C27 296.889 86.8241 237 160.25 237C214.289 237 252.392 265.384 299.796 325.377L320 351.122" stroke="url(#paint2_linear)" stroke-width="46" stroke-linecap="round"/>
+  <path d="M558 320C558 395.111 498.176 455 424.75 455C373.373 455 335.271 430.091 283.505 367.596L261.496 340.971C222.936 293.913 196.883 270 160.25 270C125.318 270 97 298.484 97 333.625C97 368.766 125.318 397.25 160.25 397.25C192.512 397.25 215.099 376.064 249.844 332.196L358.278 201.565C395.604 156.295 433.106 133 479.75 133C553.176 133 613 192.889 613 268C613 343.111 553.176 403 479.75 403C425.711 403 387.608 374.616 340.204 314.623L320 288.878" stroke="url(#paint3_linear)" stroke-width="46" stroke-linecap="round"/>
+  <path d="M195 319C195 288.072 220.072 263 251 263C272.474 263 288.641 274.027 307.152 296.962L332.444 328.264C351.145 351.496 367.282 361 389 361C419.928 361 445 335.928 445 305C445 274.072 419.928 249 389 249C366.548 249 349.81 261.821 331.112 285.031L307.03 314.847L281.71 283.941C251.556 247.152 223.621 231 190 231C141.399 231 102 270.399 102 319C102 367.601 141.399 407 190 407C223.621 407 251.556 390.848 281.71 354.059L307.03 323.153L331.112 352.969C349.81 376.179 366.548 389 389 389C437.601 389 477 349.601 477 301C477 252.399 437.601 213 389 213C355.379 213 327.444 229.152 297.29 265.941L272 296.736C253.316 273.361 237.167 263 215 263C184.072 263 159 288.072 159 319C159 349.928 184.072 375 215 375" fill="url(#paint4_linear)" fill-opacity="0.88"/>
+  <text x="320" y="548" text-anchor="middle" fill="#EBF2FF" font-family="Syne, Arial, sans-serif" font-size="74" font-weight="700" letter-spacing="8">EXNESFLY</text>
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(186 182) rotate(90) scale(116)">
+      <stop stop-color="#56F0C0"/>
+      <stop offset="1" stop-color="#56F0C0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(468 468) rotate(90) scale(124)">
+      <stop stop-color="#FF8B5F"/>
+      <stop offset="1" stop-color="#FF8B5F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paint2_linear" x1="27" y1="346" x2="543" y2="346" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DA8FF"/>
+      <stop offset="0.46" stop-color="#56F0C0"/>
+      <stop offset="1" stop-color="#FFD36A"/>
+    </linearGradient>
+    <linearGradient id="paint3_linear" x1="613" y1="294" x2="97" y2="294" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8B5F"/>
+      <stop offset="0.5" stop-color="#56F0C0"/>
+      <stop offset="1" stop-color="#7DA8FF"/>
+    </linearGradient>
+    <linearGradient id="paint4_linear" x1="102" y1="310" x2="477" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EBF2FF"/>
+      <stop offset="0.52" stop-color="#A8FFF1"/>
+      <stop offset="1" stop-color="#FFD36A"/>
+    </linearGradient>
+  </defs>
+</svg>
