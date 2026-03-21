@@ -1,204 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXNESFLY | SOVEREIGN TRADING CAPITAL</title>
-
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root { --gold: #f5bc41; --neon-blue: #00f5ff; --bg: #05070a; }
-        body { background: var(--bg); color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .gold-glow { box-shadow: 0 0 20px rgba(245, 188, 65, 0.2); border: 1px solid var(--gold); }
-        .trading-view-card { background: #0c111d; border-radius: 16px; border: 1px solid #1e293b; transition: 0.3s; }
-        .trading-view-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .ticker { display: flex; animation: marquee 30s linear infinite; }
-        
-        .cta-button { 
-            background: linear-gradient(90deg, #f5bc41, #ff9f1c);
-            color: black; font-weight: 900; transition: 0.4s;
-            box-shadow: 0 4px 15px rgba(245, 188, 65, 0.4);
-        }
-        .cta-button:hover { transform: scale(1.05); box-shadow: 0 4px 25px rgba(245, 188, 65, 0.6); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="ExnesFly is a multi-vertical technology and commerce super app spanning finance, AI systems, education, media, global commerce, and web3 community infrastructure."
+  >
+  <title>ExnesFly | Multi-Vertical Web3 Super App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
+  <div class="noise"></div>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
 
-<div id="app" class="min-h-screen flex flex-col">
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="ExnesFly home">
+      <span class="brand-mark">XF</span>
+      <span>
+        <strong>ExnesFly</strong>
+        <small>Global Systems Without Borders</small>
+      </span>
+    </a>
 
-    <div class="h-10 bg-black border-b border-white/5 flex items-center overflow-hidden z-[1001]">
-        <div class="ticker whitespace-nowrap flex gap-10">
-            <span v-for="pair in pairs" :key="pair.symbol" class="text-[10px] orbitron font-bold">
-                {{ pair.symbol }} <span :class="pair.change > 0 ? 'text-green-400' : 'text-red-400'">{{ pair.price }} ({{ pair.change }}%)</span>
-            </span>
-            <span v-for="pair in pairs" :key="pair.symbol+'2'" class="text-[10px] orbitron font-bold">
-                {{ pair.symbol }} <span :class="pair.change > 0 ? 'text-green-400' : 'text-red-400'">{{ pair.price }} ({{ pair.change }}%)</span>
-            </span>
-        </div>
-    </div>
-
-    <nav class="h-20 flex items-center justify-between px-8 glass sticky top-0 z-[1000]">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gold rounded-lg flex items-center justify-center">
-                <i class="fas fa-chart-line text-black text-xl"></i>
-            </div>
-            <h1 class="orbitron font-black text-lg tracking-widest text-white">EXNESFLY<span class="text-gold">.CAPITAL</span></h1>
-        </div>
-
-        <div class="hidden md:flex items-center gap-8 text-[11px] orbitron font-bold">
-            <a href="#signals" class="hover:text-gold transition">SIGNALS</a>
-            <a href="#academy" class="hover:text-gold transition">ACADEMY</a>
-            <a href="#community" class="hover:text-gold transition">COMMUNITY</a>
-            <a href="https://one.exnessonelink.com/a/1rb35x5i57?source=app" target="_blank" class="cta-button px-6 py-3 rounded-full">START TRADING</a>
-        </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="#platform">Platform</a>
+      <a href="#verticals">Verticals</a>
+      <a href="#web3">Web3</a>
+      <a href="#academy">Academy</a>
+      <a href="#marketplace">Marketplace</a>
     </nav>
 
-    <header class="relative py-24 px-8 flex flex-col items-center text-center overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(245,188,65,0.08)_0%,_transparent_70%)] -z-10"></div>
-        
-        <div class="inline-block px-4 py-1 rounded-full border border-gold/30 text-gold text-[10px] orbitron font-bold mb-6 animate-pulse">
-            <i class="fas fa-shield-halved mr-2"></i> CERTIFIED EXNESS PARTNER NODE
-        </div>
-        
-        <h2 class="text-6xl md:text-8xl font-black orbitron text-white leading-tight mb-8">
-            TRADE THE <span class="text-gold italic">ALGORITHM.</span>
-        </h2>
-        
-        <p class="max-w-2xl text-slate-400 text-lg mb-12">
-            The world's first community-driven capital nexus. Free Forex signals, institutional training, and the most powerful trading tools in the EXNESFLY ecosystem.
+    <div class="header-actions">
+      <button id="walletButton" class="button button-ghost" type="button">Connect Wallet</button>
+      <a class="button button-primary" href="#launchpad">Launch Console</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Technology. Finance. AI. Education. Media. Commerce. Web3.</p>
+        <h1>One flagship web app for the full ExnesFly ecosystem.</h1>
+        <p class="hero-text">
+          We rebuilt ExnesFly into a GitHub Pages-ready super app: a multi-vertical operating layer for digital products,
+          intelligent systems, learning, creator media, global trade, and token-enabled community infrastructure.
         </p>
-
-        <div class="flex flex-col sm:flex-row gap-6">
-            <a href="https://one.exnessonelink.com/a/1rb35x5i57?source=app" target="_blank" class="cta-button px-10 py-5 rounded-2xl orbitron text-sm">
-                OPEN EXNESS ACCOUNT
-            </a>
-            <a href="https://chat.whatsapp.com/G5W7N14m8Y98l8k9n3m2k" target="_blank" class="bg-white/5 hover:bg-white/10 border border-white/10 px-10 py-5 rounded-2xl orbitron text-sm font-bold transition">
-                JOIN WHATSAPP
-            </a>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#platform">Explore Platform</a>
+          <a class="button button-ghost" href="#web3">View Web3 Stack</a>
         </div>
-    </header>
+        <div class="hero-metrics" id="heroMetrics"></div>
+      </div>
 
-    <section id="signals" class="py-20 px-8 max-w-7xl mx-auto w-full">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <div>
-                <h3 class="orbitron text-3xl font-black text-white">LIVE_SIGNALS</h3>
-                <p class="text-slate-500 text-sm mt-2">Real-time technical analysis from the EXNESFLY Alpha Engine.</p>
-            </div>
-            <div class="flex gap-4">
-                <span class="text-[10px] orbitron font-bold px-4 py-2 bg-green-500/10 text-green-400 rounded-full border border-green-500/20">WIN RATE: 87%</span>
-                <span class="text-[10px] orbitron font-bold px-4 py-2 bg-blue-500/10 text-blue-400 rounded-full border border-blue-500/20">TODAY: +420 Pips</span>
-            </div>
+      <aside class="hero-panel panel">
+        <div class="panel-topline">
+          <span>ExnesFly Live Grid</span>
+          <span class="status-pill">Operational</span>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div v-for="sig in signals" :key="sig.pair" class="trading-view-card p-8 flex flex-col relative overflow-hidden">
-                <div v-if="sig.type === 'BUY'" class="absolute top-0 right-0 w-24 h-24 bg-green-500/10 blur-3xl"></div>
-                <div v-else class="absolute top-0 right-0 w-24 h-24 bg-red-500/10 blur-3xl"></div>
-
-                <div class="flex justify-between items-center mb-6">
-                    <span class="orbitron font-black text-xl">{{ sig.pair }}</span>
-                    <span :class="sig.type === 'BUY' ? 'bg-green-500 text-black' : 'bg-red-500 text-white'" class="text-[10px] orbitron font-black px-3 py-1 rounded">
-                        {{ sig.type }}
-                    </span>
-                </div>
-
-                <div class="space-y-3 mb-8">
-                    <div class="flex justify-between text-xs font-mono"><span class="text-slate-500">Entry:</span> <span class="text-white">{{ sig.entry }}</span></div>
-                    <div class="flex justify-between text-xs font-mono"><span class="text-slate-500">Take Profit:</span> <span class="text-green-400 font-bold">{{ sig.tp }}</span></div>
-                    <div class="flex justify-between text-xs font-mono"><span class="text-slate-500">Stop Loss:</span> <span class="text-red-400">{{ sig.sl }}</span></div>
-                </div>
-
-                <a href="https://one.exnessonelink.com/a/1rb35x5i57?source=app" target="_blank" class="w-full py-3 border border-gold/20 hover:bg-gold hover:text-black transition-all text-center orbitron text-[10px] font-black rounded-lg">
-                    EXECUTE ON EXNESS
-                </a>
-            </div>
+        <div class="pulse-grid" id="signalGrid"></div>
+        <div class="mini-stat-row">
+          <article>
+            <span>Treasury signal</span>
+            <strong id="treasurySignal">$0</strong>
+          </article>
+          <article>
+            <span>Wallet status</span>
+            <strong id="walletStatus">Guest mode</strong>
+          </article>
         </div>
+      </aside>
     </section>
 
-    <section class="py-20 bg-black/50 border-y border-white/5 px-8">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h3 class="orbitron text-4xl font-black text-white mb-6">THE TRADERS <span class="text-gold italic">VAULT.</span></h3>
-                <p class="text-slate-400 leading-relaxed mb-8">Secure your trading capital. We integrate directly with Exness for liquidity and Firebase for your community profile. Deposit via crypto to fund your global ventures.</p>
-                
-                <div class="space-y-4">
-                    <div v-for="coin in wallets" class="p-6 bg-white/5 rounded-2xl border border-white/5 flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <i :class="coin.icon" class="text-2xl text-gold"></i>
-                            <div>
-                                <p class="text-xs orbitron font-bold">{{ coin.name }}</p>
-                                <p class="text-[10px] font-mono text-slate-500">{{ coin.addr.substring(0,10) }}...</p>
-                            </div>
-                        </div>
-                        <button @click="copy(coin.addr)" class="text-[10px] orbitron font-bold text-gold hover:underline">COPY</button>
-                    </div>
-                </div>
-            </div>
+    <section class="shell" id="platform">
+      <div class="section-heading">
+        <p class="eyebrow">Platform Core</p>
+        <h2>A clear product architecture, not just a landing page.</h2>
+        <p>
+          The experience is organized as a modern product shell with interactive dashboards, governance modules,
+          commerce flows, knowledge systems, and wallet-aware state.
+        </p>
+      </div>
 
-            <div class="bento-node p-10 glass gold-glow rounded-[40px] text-center">
-                <i class="fas fa-crown text-4xl text-gold mb-6"></i>
-                <h4 class="orbitron text-xl font-black text-white mb-2">VIP SIGNALS ACCESS</h4>
-                <p class="text-xs text-slate-500 mb-8 uppercase tracking-widest">Sign up with our link to unlock</p>
-                <ol class="text-left text-sm space-y-4 mb-10">
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-gold"></i> 1. Click Exness Link below</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-gold"></i> 2. Register & Verify Account</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-gold"></i> 3. Deposit & Send Screenshot to WhatsApp</li>
-                </ol>
-                <a href="https://one.exnessonelink.com/a/1rb35x5i57?source=app" target="_blank" class="cta-button w-full block py-5 rounded-2xl orbitron text-xs">ACTIVATE NOW</a>
-            </div>
-        </div>
+      <div class="platform-grid">
+        <article class="panel feature-card feature-card-wide">
+          <div>
+            <p class="card-kicker">Mission Control</p>
+            <h3>Command center for multi-vertical operations</h3>
+            <p>
+              Track ecosystem growth, member activity, treasury momentum, learning progress, and high-priority product
+              streams from a single interface.
+            </p>
+          </div>
+          <div class="stacked-bars" id="growthBars"></div>
+        </article>
+        <article class="panel feature-card">
+          <p class="card-kicker">AI Systems</p>
+          <h3>Automation-ready product studio</h3>
+          <p>Model-assisted workflows, idea pipelines, and service packaging for digital-first operations.</p>
+        </article>
+        <article class="panel feature-card">
+          <p class="card-kicker">Education</p>
+          <h3>Structured academy and member progression</h3>
+          <p>Roadmaps, challenges, cohort tracks, and certification-style milestones for skills growth.</p>
+        </article>
+        <article class="panel feature-card">
+          <p class="card-kicker">Global Commerce</p>
+          <h3>Cross-border product discovery and fulfillment</h3>
+          <p>Marketplace flows for sourcing, distribution, and premium service packaging across regions.</p>
+        </article>
+      </div>
     </section>
 
-    <footer class="py-12 px-8 border-t border-white/5 text-center">
-        <p class="text-[10px] orbitron text-slate-600 tracking-[5px] mb-4">POWERED BY GOOGLE CLOUD & FIREBASE ALPHA</p>
-        <div class="flex justify-center gap-8 mb-8 text-slate-500">
-            <i class="fab fa-whatsapp text-2xl hover:text-green-500 cursor-pointer"></i>
-            <i class="fab fa-telegram text-2xl hover:text-blue-400 cursor-pointer"></i>
-            <i class="fab fa-instagram text-2xl hover:text-pink-500 cursor-pointer"></i>
+    <section class="shell" id="verticals">
+      <div class="section-heading">
+        <p class="eyebrow">Business Verticals</p>
+        <h2>Every major promise in the README gets a real product lane.</h2>
+      </div>
+      <div class="vertical-grid" id="verticalGrid"></div>
+    </section>
+
+    <section class="shell" id="web3">
+      <div class="section-heading">
+        <p class="eyebrow">Web3 Layer</p>
+        <h2>Community capital, token utility, and wallet-native identity.</h2>
+        <p>
+          This static build uses browser wallet support, local governance persistence, and a treasury simulation so the
+          project feels truly web3-ready even on GitHub Pages.
+        </p>
+      </div>
+
+      <div class="web3-grid">
+        <article class="panel">
+          <div class="card-header">
+            <div>
+              <p class="card-kicker">Wallet Console</p>
+              <h3>Connect and inspect your browser wallet</h3>
+            </div>
+            <span class="chip" id="chainChip">No chain</span>
+          </div>
+          <div class="wallet-grid">
+            <div><span>Address</span><strong id="walletAddress">Not connected</strong></div>
+            <div><span>Balance</span><strong id="walletBalance">0.0000 ETH</strong></div>
+            <div><span>Network</span><strong id="walletChain">Browser mode</strong></div>
+            <div><span>Identity score</span><strong id="identityScore">74 / 100</strong></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="card-header">
+            <div>
+              <p class="card-kicker">Treasury</p>
+              <h3>On-chain style contribution gateway</h3>
+            </div>
+            <span class="chip">Member-backed</span>
+          </div>
+          <form id="treasuryForm" class="treasury-form">
+            <label>
+              Member name
+              <input id="supporterName" name="supporterName" type="text" placeholder="Arnold Baraka">
+            </label>
+            <label>
+              Contribution (USD)
+              <input id="supportAmount" name="supportAmount" type="number" min="25" step="25" value="250">
+            </label>
+            <label>
+              Allocation
+              <select id="supportStream" name="supportStream">
+                <option value="AI Products">AI Products</option>
+                <option value="Education">Education</option>
+                <option value="Media">Media</option>
+                <option value="Commerce">Commerce</option>
+              </select>
+            </label>
+            <button class="button button-primary" type="submit">Pledge to Treasury</button>
+          </form>
+          <div class="ledger" id="treasuryLedger"></div>
+        </article>
+
+        <article class="panel">
+          <div class="card-header">
+            <div>
+              <p class="card-kicker">Governance</p>
+              <h3>Vote on ecosystem proposals</h3>
+            </div>
+            <span class="chip">DAO mode</span>
+          </div>
+          <div id="proposalList" class="proposal-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell" id="academy">
+      <div class="section-heading">
+        <p class="eyebrow">Academy and Media</p>
+        <h2>Learning programs that turn attention into capability.</h2>
+      </div>
+
+      <div class="academy-grid">
+        <article class="panel">
+          <div class="card-header">
+            <div>
+              <p class="card-kicker">Learning Tracks</p>
+              <h3>Roadmaps for skills and certification momentum</h3>
+            </div>
+          </div>
+          <div id="academyTracks" class="track-list"></div>
+        </article>
+        <article class="panel">
+          <div class="card-header">
+            <div>
+              <p class="card-kicker">Media Engine</p>
+              <h3>Content streams built for brand authority</h3>
+            </div>
+          </div>
+          <div id="mediaPipeline" class="media-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell" id="marketplace">
+      <div class="section-heading">
+        <p class="eyebrow">Marketplace</p>
+        <h2>Digital offers, services, and commerce-ready inventory.</h2>
+      </div>
+
+      <div class="market-shell panel">
+        <div class="market-toolbar">
+          <input id="marketSearch" type="search" placeholder="Search products, services, or verticals">
+          <select id="marketFilter">
+            <option value="all">All categories</option>
+            <option value="Finance">Finance</option>
+            <option value="AI">AI</option>
+            <option value="Education">Education</option>
+            <option value="Media">Media</option>
+            <option value="Commerce">Commerce</option>
+          </select>
         </div>
-        <p class="text-[9px] text-slate-700 uppercase">Risk Warning: Trading involves significant risk of loss. Exnesfly is an educational community.</p>
-    </footer>
+        <div class="market-grid" id="marketGrid"></div>
+      </div>
+    </section>
 
-</div>
+    <section class="shell" id="launchpad">
+      <div class="section-heading">
+        <p class="eyebrow">Launchpad</p>
+        <h2>Next-level execution from a static deployment surface.</h2>
+      </div>
 
-<script type="module">
-    const { createApp } = Vue;
-    createApp({
-        data() {
-            return {
-                pairs: [
-                    { symbol: 'XAUUSD', price: '2034.42', change: '+1.24' },
-                    { symbol: 'EURUSD', price: '1.0821', change: '-0.15' },
-                    { symbol: 'GBPUSD', price: '1.2655', change: '+0.08' },
-                    { symbol: 'BTCUSD', price: '62450', change: '+4.52' }
-                ],
-                signals: [
-                    { pair: 'XAUUSD', type: 'BUY', entry: '2032.00', tp: '2045.00', sl: '2025.00' },
-                    { pair: 'GBPUSD', type: 'SELL', entry: '1.2680', tp: '1.2580', sl: '1.2720' },
-                    { pair: 'USOIL', type: 'BUY', entry: '78.50', tp: '81.00', sl: '77.00' }
-                ],
-                wallets: [
-                    { name: 'USDT (TRC20)', icon: 'fas fa-tether', addr: 'TX123...REINFORCE_NODE_ADDR' },
-                    { name: 'BITCOIN', icon: 'fab fa-bitcoin', addr: 'bc1...REINFORCE_NODE_ADDR' }
-                ]
-            }
-        },
-        methods: {
-            copy(txt) {
-                navigator.clipboard.writeText(txt);
-                alert("Address Copied to Secure Clipboard.");
-            }
-        }
-    }).mount('#app');
-</script>
+      <div class="launchpad-grid">
+        <article class="panel">
+          <p class="card-kicker">Deployment</p>
+          <h3>Optimized for GitHub Pages and custom domains</h3>
+          <p>The app uses a redirect-ready `404.html` and no build dependencies to deploy instantly.</p>
+        </article>
+        <article class="panel">
+          <p class="card-kicker">State</p>
+          <h3>Persistent member interactions</h3>
+          <p>Wallet status, treasury pledges, and governance votes persist locally so the app behaves like a living product.</p>
+        </article>
+        <article class="panel">
+          <p class="card-kicker">Positioning</p>
+          <h3>A stronger flagship experience</h3>
+          <p>This redesign shifts ExnesFly from a promo page into a platform narrative with stronger trust, ambition, and usability.</p>
+        </article>
+      </div>
+    </section>
+  </main>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./js/app.js"></script>
 </body>
 </html>
