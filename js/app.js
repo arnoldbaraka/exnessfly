@@ -59,6 +59,9 @@ const state = {
 };
 
 const elements = {
+  siteHeader: document.querySelector(".site-header"),
+  menuToggle: document.querySelector("#menuToggle"),
+  primaryNav: document.querySelector("#primaryNav"),
   authToggle: document.querySelector("#authToggle"),
   googleLoginButton: document.querySelector("#googleLoginButton"),
   logoutButton: document.querySelector("#logoutButton"),
@@ -105,6 +108,14 @@ function showToast(message) {
   showToast.timer = window.setTimeout(() => {
     elements.toast.classList.remove("is-visible");
   }, 3200);
+}
+
+function setMenuState(isOpen) {
+  if (!elements.menuToggle || !elements.siteHeader) return;
+  elements.menuToggle.classList.toggle("is-open", isOpen);
+  elements.menuToggle.setAttribute("aria-expanded", String(isOpen));
+  elements.siteHeader.classList.toggle("menu-open", isOpen);
+  document.body.classList.toggle("menu-open", isOpen);
 }
 
 function formatCurrency(value) {
@@ -522,7 +533,19 @@ function handleCopyAddress(event) {
 }
 
 function bindEvents() {
+  elements.menuToggle.addEventListener("click", () => {
+    const isOpen = elements.menuToggle.getAttribute("aria-expanded") !== "true";
+    setMenuState(isOpen);
+  });
+
+  elements.primaryNav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      setMenuState(false);
+    }
+  });
+
   elements.authToggle.addEventListener("click", () => {
+    setMenuState(false);
     document.querySelector("#auth").scrollIntoView({ behavior: "smooth", block: "start" });
   });
   elements.googleLoginButton.addEventListener("click", loginWithGoogle);
@@ -535,6 +558,12 @@ function bindEvents() {
   elements.paymentRails.addEventListener("click", handleCopyAddress);
   elements.marketSearch.addEventListener("input", filterMarketplace);
   elements.marketFilter.addEventListener("change", filterMarketplace);
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720) {
+      setMenuState(false);
+    }
+  });
 
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", (accounts) => {
