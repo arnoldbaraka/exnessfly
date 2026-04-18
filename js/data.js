@@ -196,14 +196,20 @@ export const paymentRails = [
     network: "Bitcoin",
     address: "bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4",
     qr: "./image1.jpeg",
-    purpose: "Treasury reserve and high-value direct support"
+    purpose: "Treasury reserve and high-value direct support",
+    recommendedFor: "Larger one-time treasury support and long-term reserve contributions.",
+    settlement: "Best when the sender already holds BTC and wants direct treasury exposure.",
+    warning: "Send only native Bitcoin to this address. Do not use wrapped BTC or exchange-only internal networks."
   },
   {
     name: "USDC",
     network: "ERC-20",
     address: "0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd",
     qr: "./image0.jpeg",
-    purpose: "Fast ecosystem contributions and stablecoin settlements"
+    purpose: "Fast ecosystem contributions and stablecoin settlements",
+    recommendedFor: "Fast member payments, stable treasury support, and invoice-style settlements.",
+    settlement: "Recommended for most users who want a USD-denominated payment rail.",
+    warning: "Send only ERC-20 USDC on Ethereum to this address. Do not use TRC-20, BEP-20, or Polygon routes."
   }
 ];
 
