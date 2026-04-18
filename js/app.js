@@ -51,6 +51,7 @@ const state = {
     chain: "Browser mode"
   },
   member: null,
+  selectedRail: paymentRails.find((rail) => rail.name === "USDC")?.name || paymentRails[0]?.name || "",
   proposals: load("exnesfly-proposals", defaultProposals),
   pledges: load("exnesfly-pledges", [
     { name: "Genesis Member", amount: 1000, stream: "AI Products" },
@@ -92,6 +93,7 @@ const elements = {
   pricingGrid: document.querySelector("#pricingGrid"),
   roadmapGrid: document.querySelector("#roadmapGrid"),
   principlesList: document.querySelector("#principlesList"),
+  paymentPlanner: document.querySelector("#paymentPlanner"),
   paymentRails: document.querySelector("#paymentRails"),
   academyTracks: document.querySelector("#academyTracks"),
   mediaPipeline: document.querySelector("#mediaPipeline"),
@@ -140,6 +142,10 @@ function chainName(chainId) {
     "0x38": "BNB Smart Chain"
   };
   return names[chainId] || chainId;
+}
+
+function getSelectedRail() {
+  return paymentRails.find((rail) => rail.name === state.selectedRail) || paymentRails[0];
 }
 
 function renderMetrics() {
@@ -210,7 +216,7 @@ function renderPricing() {
 function renderPaymentRails() {
   elements.paymentRails.innerHTML = paymentRails
     .map((rail) => `
-      <article class="payment-card">
+      <article class="payment-card ${rail.name === state.selectedRail ? "is-selected" : ""}">
         <div class="payment-topline">
           <div>
             <strong class="payment-name">${rail.name}</strong>
@@ -220,12 +226,72 @@ function renderPaymentRails() {
         </div>
         <img class="payment-qr" src="${rail.qr}" alt="${rail.name} payment QR code">
         <div class="address-box">${rail.address}</div>
+        <p class="payment-caption">${rail.recommendedFor}</p>
         <div class="proposal-actions">
+          <button class="button button-ghost" data-select-rail="${rail.name}" type="button">Use ${rail.name}</button>
           <button class="button button-primary" data-copy-address="${rail.address}" type="button">Copy Address</button>
         </div>
       </article>
     `)
     .join("");
+}
+
+function renderPaymentPlanner() {
+  const rail = getSelectedRail();
+  if (!rail) return;
+
+  const contribution = Number(elements.supportAmount?.value || 250);
+  const memberLabel =
+    state.member?.displayName ||
+    state.member?.email ||
+    elements.supporterName?.value.trim() ||
+    "Guest";
+  const usingWallet = Boolean(state.wallet.address);
+  const walletWarning =
+    rail.network === "ERC-20" && usingWallet && state.wallet.chain !== "Ethereum Mainnet"
+      ? `Connected wallet network is ${state.wallet.chain}. Switch to Ethereum Mainnet before sending USDC.`
+      : rail.network === "Bitcoin" && usingWallet
+        ? "Browser wallet is connected for identity only. Send BTC from a Bitcoin-compatible wallet."
+        : rail.warning;
+
+  elements.paymentPlanner.innerHTML = `
+    <div class="payment-planner-card">
+      <div class="payment-planner-head">
+        <div>
+          <p class="card-kicker">Payment Planner</p>
+          <h4>${rail.name} is selected for this contribution</h4>
+        </div>
+        <span class="chip">${rail.network}</span>
+      </div>
+      <div class="payment-planner-grid">
+        <article>
+          <span>Intended support</span>
+          <strong>${formatCurrency(contribution)}</strong>
+          <p>Use your wallet or exchange to send the equivalent value at checkout time.</p>
+        </article>
+        <article>
+          <span>Best for</span>
+          <strong>${rail.purpose}</strong>
+          <p>${rail.settlement}</p>
+        </article>
+        <article>
+          <span>Member label</span>
+          <strong>${memberLabel}</strong>
+          <p>Your treasury form entry stays aligned with the payment you are preparing.</p>
+        </article>
+      </div>
+      <div class="payment-warning" role="status">${walletWarning}</div>
+      <div class="payment-steps">
+        <div><span>1</span><p>Select the matching network in your wallet before sending.</p></div>
+        <div><span>2</span><p>Copy the address below or scan the QR code on the selected rail card.</p></div>
+        <div><span>3</span><p>After sending, submit the treasury pledge so ExnesFly can reconcile the contribution.</p></div>
+      </div>
+      <div class="proposal-actions">
+        <button class="button button-primary" data-copy-address="${rail.address}" type="button">Copy ${rail.name} Address</button>
+        <button class="button button-ghost" data-scroll-to-treasury="true" type="button">Review Treasury Form</button>
+      </div>
+    </div>
+  `;
 }
 
 function renderRoadmap() {
@@ -523,6 +589,21 @@ function handleProposalVote(event) {
 }
 
 function handleCopyAddress(event) {
+  const railButton = event.target.closest("[data-select-rail]");
+  if (railButton) {
+    state.selectedRail = railButton.dataset.selectRail;
+    renderPaymentPlanner();
+    renderPaymentRails();
+    showToast(`${state.selectedRail} selected for the payment plan.`);
+    return;
+  }
+
+  const scrollButton = event.target.closest("[data-scroll-to-treasury]");
+  if (scrollButton) {
+    document.querySelector("#treasuryForm").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
   const button = event.target.closest("[data-copy-address]");
   if (!button) return;
 
@@ -554,8 +635,11 @@ function bindEvents() {
   elements.emailSignupButton.addEventListener("click", signupWithEmail);
   elements.walletButton.addEventListener("click", connectWallet);
   elements.treasuryForm.addEventListener("submit", handleTreasurySubmit);
+  elements.supportAmount.addEventListener("input", renderPaymentPlanner);
+  elements.supporterName.addEventListener("input", renderPaymentPlanner);
   elements.proposalList.addEventListener("click", handleProposalVote);
   elements.paymentRails.addEventListener("click", handleCopyAddress);
+  elements.paymentPlanner.addEventListener("click", handleCopyAddress);
   elements.marketSearch.addEventListener("input", filterMarketplace);
   elements.marketFilter.addEventListener("change", filterMarketplace);
 
@@ -574,25 +658,30 @@ function bindEvents() {
           chain: "Browser mode"
         };
         updateWalletUI();
+        renderPaymentPlanner();
         return;
       }
 
       state.wallet.address = accounts[0];
       updateWalletUI();
+      renderPaymentPlanner();
     });
 
     window.ethereum.on("chainChanged", (chainId) => {
       state.wallet.chain = chainName(chainId);
       updateWalletUI();
+      renderPaymentPlanner();
     });
   }
 
   onAuthStateChanged(auth, (user) => {
     state.member = user;
     updateMemberUI();
+    renderPaymentPlanner();
 
     if (user && !elements.supporterName.value) {
       elements.supporterName.value = user.displayName || user.email || "";
+      renderPaymentPlanner();
     }
   });
 }
@@ -606,6 +695,7 @@ function init() {
   renderPricing();
   renderRoadmap();
   renderPrinciples();
+  renderPaymentPlanner();
   renderPaymentRails();
   renderAcademy();
   renderTreasury();
