@@ -1,187 +1,187 @@
 export const metrics = [
-  { label: "Flagship revenue engines", value: "4" },
-  { label: "Core offers ready to sell", value: "12" },
-  { label: "Priority growth horizon", value: "36 months" }
+  { label: "Experience zones", value: "7" },
+  { label: "Launch drops", value: "24" },
+  { label: "Platform mode", value: "Future" }
 ];
 
 export const signalNodes = [
-  { name: "Service pipeline", value: "$18.6K", tone: "Premium delivery model" },
-  { name: "Academy demand", value: "11 cohorts", tone: "Membership flywheel" },
-  { name: "Marketplace stack", value: "24 offers", tone: "Scalable catalog" },
-  { name: "Treasury layer", value: "Web3 ready", tone: "Wallet-native identity" }
+  { name: "Vibes feed", value: "Live", tone: "Curated social energy" },
+  { name: "Music cloud", value: "Artist-ready", tone: "Drops, managers, fans" },
+  { name: "Gollvariety", value: "Global catalog", tone: "Cars to earrings" },
+  { name: "Awards", value: "Monthly", tone: "Fashionisters + creators" }
 ];
 
 export const growthSignals = [
-  { label: "Cash engine: services", value: 88 },
-  { label: "Trust engine: content", value: 79 },
-  { label: "Scale engine: membership", value: 73 },
-  { label: "Future engine: marketplace", value: 69 }
+  { label: "Vibes: social addiction but healthy", value: 92 },
+  { label: "Music: artist/fan management", value: 84 },
+  { label: "Commerce: curated dropshipping", value: 78 },
+  { label: "Awards: status + recognition", value: 88 }
 ];
 
 export const revenueStreams = [
   {
-    title: "Done-for-you services",
-    description: "Premium website builds, AI automation systems, media assets, and launch infrastructure for ambitious founders and businesses.",
-    model: "High-ticket cash engine",
-    tags: ["Fastest revenue", "Client delivery", "Premium pricing"]
+    title: "Creator memberships",
+    description: "Fans, fashionisters, artists, DJs and curators join ExnesFly for identity, visibility, badges, private drops and member-only experiences.",
+    model: "Recurring community engine",
+    tags: ["Google sign-in", "Profiles", "Badges"]
   },
   {
-    title: "Membership and academy",
-    description: "Monthly recurring revenue from private community access, premium lessons, templates, office hours, and execution playbooks.",
-    model: "Recurring trust engine",
-    tags: ["Subscription", "Retention", "Community"]
+    title: "Music management",
+    description: "Artists can package releases, showcase tracks, manage campaigns, build fan squads and prepare premium promo drops.",
+    model: "Entertainment engine",
+    tags: ["Artists", "Drops", "Promo"]
   },
   {
-    title: "Digital products and templates",
-    description: "Prompt packs, site kits, launch playbooks, automation recipes, and business assets sold globally at scale.",
-    model: "Scalable margin engine",
-    tags: ["Digital offers", "Low delivery cost", "Global sales"]
+    title: "Gollvariety marketplace",
+    description: "A curated global goods layer for desired items: cars, phones, fashion, jewellery, shoes, accessories, gifting items and bold lifestyle products.",
+    model: "Commerce engine",
+    tags: ["Dropshipping", "Catalog", "Global"]
   },
   {
-    title: "Marketplace and partner commissions",
-    description: "Platform fees from vendor listings, partner services, referrals, and curated commerce flows across the ExnesFly network.",
-    model: "Network scale engine",
-    tags: ["Commissions", "Vendors", "Ecosystem growth"]
+    title: "Awards and gifting",
+    description: "Monthly recognition for fashionisters, creators, artists and supporters through fan voting, gifts, merch and spotlight campaigns.",
+    model: "Status engine",
+    tags: ["Awards", "Gifts", "Merch"]
   }
 ];
 
 export const verticals = [
   {
-    title: "Digital Solutions",
-    description: "Productized sites, apps, operational systems, and launch infrastructure built for serious founders.",
-    tags: ["Web Builds", "Launch Systems", "Client Delivery"]
+    title: "Vibes Universe",
+    description: "A carefully curated social layer for posts, moments, polls, style battles, challenges and positive community energy.",
+    tags: ["Feed", "Challenges", "Social"]
   },
   {
-    title: "AI Systems",
-    description: "Prompt operations, automation flows, AI assistants, and decision support tools that multiply output.",
-    tags: ["Automation", "Assistants", "Workflow Design"]
+    title: "Music Management",
+    description: "Artist profiles, release drops, fan squads, management boards, promo packages and discovery cards.",
+    tags: ["Artists", "Releases", "Fans"]
   },
   {
-    title: "Business Growth",
-    description: "Positioning, sales architecture, funnels, CRM thinking, and conversion systems for fast-moving brands.",
-    tags: ["Strategy", "Conversion", "Sales Ops"]
+    title: "Fashionisters Arena",
+    description: "A fashion and personality ranking zone for style icons, models, designers and creators who deserve spotlight.",
+    tags: ["Fashion", "Spotlight", "Awards"]
   },
   {
-    title: "Education",
-    description: "Structured cohort-based learning, premium resources, and execution-driven upskilling for builders.",
-    tags: ["Academy", "Cohorts", "Templates"]
+    title: "Gollvariety Market",
+    description: "A wild but organized marketplace from cars to earrings to phones to gifting merch and curated lifestyle drops.",
+    tags: ["Cars", "Phones", "Merch"]
   },
   {
-    title: "Media",
-    description: "Founder storytelling, creator assets, authority campaigns, and high-signal brand publishing.",
-    tags: ["Content", "Brand Authority", "Distribution"]
+    title: "Gift Cloud",
+    description: "Fans and friends can gift creators, lovers, winners and community icons through campaigns and wishlists.",
+    tags: ["Gifting", "Wishlists", "Love"]
   },
   {
-    title: "Global Commerce",
-    description: "Digital and physical offer packaging, storefront strategy, sourcing logic, and marketplace expansion.",
-    tags: ["Marketplace", "Dropshipping", "Global Reach"]
+    title: "Awards Galaxy",
+    description: "Fan-powered monthly awards for creators, artists, fashionisters, curators, communities and breakthrough talent.",
+    tags: ["Voting", "Badges", "Recognition"]
   }
 ];
 
 export const pricingTiers = [
   {
-    name: "Starter",
-    audience: "Builders entering the ecosystem",
+    name: "Guest",
+    audience: "Public explorers",
     price: "Free",
-    summary: "Public tools, waitlist access, newsletter, and community entry points.",
-    features: ["Public roadmap", "Selected resources", "Intro marketplace access"]
+    summary: "Browse the vibes, see drops, discover creators and enter the ExnesFly universe.",
+    features: ["Public feed", "Marketplace preview", "Awards preview"]
   },
   {
-    name: "Pro",
-    audience: "Operators and freelancers",
-    price: "$29/mo",
-    summary: "Premium community, templates, academy lessons, and execution resources.",
-    features: ["Private member area", "Weekly templates", "Academy library"]
+    name: "Member",
+    audience: "Fans and community people",
+    price: "Free / Invite",
+    summary: "Create your identity with Google sign-in, save your profile and join curated social experiences.",
+    features: ["Google account", "Profile card", "Voting access"]
   },
   {
-    name: "Elite",
-    audience: "Founders and growth-focused teams",
-    price: "$149/mo",
-    summary: "Strategic office hours, advanced playbooks, priority drops, and premium access.",
-    features: ["Founder sessions", "Advanced workflows", "Priority support"]
+    name: "Creator Pro",
+    audience: "Artists, fashionisters and sellers",
+    price: "$9/mo planned",
+    summary: "Premium creator tools for drops, campaigns, music visibility, awards and commerce placement.",
+    features: ["Creator dashboard", "Priority drops", "Campaign tools"]
   },
   {
-    name: "Enterprise",
-    audience: "Businesses ready for implementation",
+    name: "Brand Partner",
+    audience: "Merchants and sponsors",
     price: "Custom",
-    summary: "Done-for-you ExnesFly systems, AI setup, media execution, and launch infrastructure.",
-    features: ["Custom delivery", "Dedicated roadmap", "Growth systems buildout"]
+    summary: "Sponsored drops, marketplace campaigns, award sponsorship and creator collaborations.",
+    features: ["Sponsored awards", "Catalog placement", "Campaign analytics"]
   }
 ];
 
 export const academyTracks = [
-  { title: "AI Product Builder", progress: 76, detail: "Prompt systems, offer design, automation packaging, and service delivery logic." },
-  { title: "Founder Growth OS", progress: 68, detail: "Positioning, sales architecture, pricing strategy, and customer acquisition basics." },
-  { title: "Global Commerce Operator", progress: 51, detail: "Catalog strategy, sourcing, storefront design, and fulfillment operations." }
+  { title: "Artist Launch Track", progress: 72, detail: "Release planning, fan squads, content drops and music campaign strategy." },
+  { title: "Fashionister Growth Track", progress: 64, detail: "Personal brand, style positioning, shoots, voting and award campaigns." },
+  { title: "Gollvariety Seller Track", progress: 58, detail: "Product curation, supplier logic, storefront copy and fulfillment discipline." }
 ];
 
 export const mediaPipeline = [
-  { title: "Founder Signal Series", detail: "Short-form authority drops and business-building commentary." },
-  { title: "ExnesFly Dispatch", detail: "Weekly ecosystem updates covering launches, wins, and roadmap movement." },
-  { title: "Client Transformation Stories", detail: "Before-and-after proof built around results, systems, and premium positioning." }
+  { title: "Vibe Drops", detail: "Daily curated culture moments, creator highlights and mood-led content." },
+  { title: "ExnesFly Charts", detail: "Weekly rankings across music, fashion, products, creators and community energy." },
+  { title: "Winner Stories", detail: "Award winners, gifted members and breakthrough creators turned into social proof." }
 ];
 
 export const marketplaceItems = [
-  { title: "AI Operations Sprint", category: "AI", price: 2400, detail: "Two-week automation and workflow setup for a business team." },
-  { title: "Treasury Intelligence Dashboard", category: "Finance", price: 1800, detail: "Capital overview, signal reporting, and strategic dashboarding." },
-  { title: "Founder Brand Launch Kit", category: "Media", price: 950, detail: "Messaging, creative direction, and authority-building content structure." },
-  { title: "Global Store Blueprint", category: "Commerce", price: 1200, detail: "Dropshipping-oriented storefront and supply flow design." },
-  { title: "Cohort Program Engine", category: "Education", price: 1350, detail: "Learning structure, member journey, and retention-focused experience design." },
-  { title: "ExnesFly Signature Site Build", category: "AI", price: 3200, detail: "Premium web presence with growth systems, positioning, and polished UX." }
+  { title: "iPhone Glow Drop", category: "Phones", price: 899, detail: "Premium smartphone sourcing request with style-first product presentation." },
+  { title: "Fashionister Earring Set", category: "Fashion", price: 35, detail: "Curated jewellery drop for style creators and gifting moments." },
+  { title: "Car Dream Request", category: "Cars", price: 2500, detail: "Lead-generation style car sourcing request for desired models and budgets." },
+  { title: "Artist Promo Pack", category: "Music", price: 149, detail: "Release poster, fan campaign concept, profile spotlight and drop checklist." },
+  { title: "Gift Box For Her", category: "Gifts", price: 79, detail: "Curated surprise package for fashion, beauty and love moments." },
+  { title: "Creator Merch Capsule", category: "Merch", price: 299, detail: "Starter merch concept for artists, fashionisters and viral community icons." }
 ];
 
 export const defaultProposals = [
   {
-    id: "proposal-app",
-    title: "Expand the ExnesFly product cloud",
-    summary: "Allocate more treasury resources into productized digital solutions and AI-backed client delivery.",
-    yes: 42,
-    no: 8
+    id: "proposal-vibes",
+    title: "Launch the Vibes Feed first",
+    summary: "Prioritize curated social posts, creator cards, reactions and safe addictive community loops.",
+    yes: 88,
+    no: 9
   },
   {
-    id: "proposal-media",
-    title: "Fund a media-first authority campaign",
-    summary: "Launch recurring founder media, case studies, and ecosystem storytelling across channels.",
-    yes: 31,
-    no: 11
+    id: "proposal-music",
+    title: "Build the Music Management layer",
+    summary: "Give artists profiles, release drops, fan squads and campaign tools before full commerce expansion.",
+    yes: 75,
+    no: 15
   },
   {
-    id: "proposal-academy",
-    title: "Token-gate premium academy access",
-    summary: "Use wallet-aware membership logic to unlock premium learning tracks and cohort tiers.",
-    yes: 25,
-    no: 7
+    id: "proposal-awards",
+    title: "Start monthly Fashionister Awards",
+    summary: "Let members vote, gift and spotlight the most stylish creators every month.",
+    yes: 91,
+    no: 6
   }
 ];
 
 export const roadmap = [
   {
     phase: "Phase 1",
-    title: "Cash engine",
-    detail: "Sell premium websites, AI setup, business launch kits, and media systems to generate fast revenue and proof."
+    title: "Identity + Vibes",
+    detail: "Google sign-in, full profile registration, curated homepage, vibes feed simulation and member state."
   },
   {
     phase: "Phase 2",
-    title: "Trust engine",
-    detail: "Turn delivery knowledge into academy lessons, member-only templates, and a high-signal founder community."
+    title: "Music + Creators",
+    detail: "Artist pages, release cards, fan squads, creator badges and promo campaign templates."
   },
   {
     phase: "Phase 3",
-    title: "Scale engine",
-    detail: "Expand into marketplace offers, vetted vendors, and cross-border digital product distribution."
+    title: "Gollvariety Market",
+    detail: "Curated product requests, dropshipping catalogs, gift campaigns, wishlists and vendor onboarding."
   },
   {
     phase: "Phase 4",
-    title: "Treasury engine",
-    detail: "Layer in web3 identity, premium access passes, contribution flows, and governance-backed member participation."
+    title: "Awards Galaxy",
+    detail: "Voting, rankings, monthly winners, sponsor placements, merch rewards and public leaderboards."
   }
 ];
 
 export const founderPrinciples = [
-  "Start with one strong cash engine, not six weak businesses.",
-  "Use services to fund products, products to fund community, and community to fund scale.",
-  "Let web3 add utility, access, and ownership, not empty hype.",
-  "Build ExnesFly into the operating system for ambitious digital builders in Africa and beyond."
+  "Make the internet addictive for good: curated, positive, stylish and opportunity-driven.",
+  "Entertainment first, but every vibe should connect to identity, commerce, music or recognition.",
+  "Let Google sign-in make membership simple while the platform grows into a full social operating system.",
+  "Build ExnesFly as a future African-born entertainment universe with global taste and global reach."
 ];
 
 export const links = {
@@ -197,7 +197,7 @@ export const paymentRails = [
     address: "bc1pu4rr9jcm5fstd6zsfs3uau38g5htzgtc5y2ww0dwwrz7ehpz7r63srxknv4",
     qr: "./image1.jpeg",
     purpose: "Treasury reserve and high-value direct support",
-    recommendedFor: "Larger one-time treasury support and long-term reserve contributions.",
+    recommendedFor: "Larger one-time support, sponsor pledges and long-term platform treasury contributions.",
     settlement: "Best when the sender already holds BTC and wants direct treasury exposure.",
     warning: "Send only native Bitcoin to this address. Do not use wrapped BTC or exchange-only internal networks."
   },
@@ -207,7 +207,7 @@ export const paymentRails = [
     address: "0xFA306FF7D4e7FaCB8717070fA088ac6CccDE0cAd",
     qr: "./image0.jpeg",
     purpose: "Fast ecosystem contributions and stablecoin settlements",
-    recommendedFor: "Fast member payments, stable treasury support, and invoice-style settlements.",
+    recommendedFor: "Fast member support, sponsor payments, gift campaigns and stable treasury support.",
     settlement: "Recommended for most users who want a USD-denominated payment rail.",
     warning: "Send only ERC-20 USDC on Ethereum to this address. Do not use TRC-20, BEP-20, or Polygon routes."
   }
