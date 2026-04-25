@@ -25,6 +25,7 @@
     <nav id="primaryNav" class="nav" aria-label="Primary">
       <a href="#vibes">Vibes</a>
       <a href="#platform">Platform</a>
+    <a href="#music">Entertainment</a>
       <a href="#auth">Join</a>
       <a href="#marketplace">Gollvariety</a>
       <a href="#awards">Awards</a>
@@ -32,7 +33,8 @@
     <div class="header-actions">
       <button id="authToggle" class="button button-ghost" type="button">Member Login</button>
       <button id="walletButton" class="button button-ghost" type="button">Connect Wallet</button>
-      <a class="button button-primary" href="#vibes">Enter Vibes</a>
+        
+      
     </div>
   </header>
 
@@ -63,11 +65,27 @@
       <div class="section-heading"><p class="eyebrow">Vibes Feed</p><h2>The addictive part — but curated for good.</h2><p>Static demo feed for launch: members can create local vibes, react, and imagine the future social layer before Firebase persistence is added.</p></div>
       <div class="vibes-layout">
         <article class="panel vibe-composer"><p class="card-kicker">Post a vibe</p><h3>Drop energy into the universe</h3><form id="vibeForm" class="treasury-form"><label>Your vibe<input id="vibeInput" type="text" maxlength="140" placeholder="ExnesFly is loading... world not ready 🚀"></label><label>Vibe lane<select id="vibeLane"><option>Music</option><option>Fashion</option><option>Gollvariety</option><option>Awards</option><option>Love & Gifts</option></select></label><button class="button button-primary" type="submit">Post Static Vibe</button></form><p class="fine-print">Static mode saves demo vibes in this browser using localStorage.</p></article>
-        <div id="vibesFeed" class="vibes-feed"></div>
+  
+    
+    </div>
+  </section>
+<div id="vibesFeed" class="vibes-feed"></div>
       </div>
     </section>
 
-    <section class="shell" id="platform"><div class="section-heading"><p class="eyebrow">Platform Core</p><h2>This is an entertainment OS, not a normal website.</h2><p>One world for vibes, music, creators, fashion, product desire, gifting, recognition and future monetization.</p></div><div class="platform-grid"><article class="panel feature-card feature-card-wide"><div><p class="card-kicker">Experience Console</p><h3>One interface for social energy, commerce discovery and creator status</h3><p>Track the growth logic across social addiction, music releases, awards, marketplace drops and gifting loops.</p></div><div class="stacked-bars" id="growthBars"></div></article><article class="panel feature-card"><p class="card-kicker">Real Users</p><h3>Google and email sign-in</h3><p>Let members enter with identity and move beyond passive browsing.</p></article><article class="panel feature-card"><p class="card-kicker">Status</p><h3>Awards, badges and leaderboards</h3><p>Recognition is the engine that keeps creators and fans returning.</p></article><article class="panel feature-card"><p class="card-kicker">Commerce</p><h3>Gollvariety marketplace</h3><p>Desired goods, gifting, merch and future seller onboarding in one social commerce layer.</p></article></div></section>
+    
+    <section class="shell" id="music">
+  <div class="section-heading">
+    <p class="eyebrow">Entertainment Engine</p>
+    <h2>ExnesFly TV</h2>
+  </div>
+  <div class="tv-wrapper" style="position:relative;max-width:800px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.5);">
+    <iframe src="https://www.youtube.com/embed/7rRS5egnizo?autoplay=0&rel=0&modestbranding=1" title="ExnesFly TV" style="width:100%;height:450px;border:none;" allowfullscreen></iframe>
+    <p class="now-playing">Now Playing: Riomieo – Universe</p>
+    <p class="description">Watch exclusive content on ExnesFly TV and join the fan squad.</p>
+  </div>
+</section>
+<section class="shell" id="platform"><div class="section-heading"><p class="eyebrow">Platform Core</p><h2>This is an entertainment OS, not a normal website.</h2><p>One world for vibes, music, creators, fashion, product desire, gifting, recognition and future monetization.</p></div><div class="platform-grid"><article class="panel feature-card feature-card-wide"><div><p class="card-kicker">Experience Console</p><h3>One interface for social energy, commerce discovery and creator status</h3><p>Track the growth logic across social addiction, music releases, awards, marketplace drops and gifting loops.</p></div><div class="stacked-bars" id="growthBars"></div></article><article class="panel feature-card"><p class="card-kicker">Real Users</p><h3>Google and email sign-in</h3><p>Let members enter with identity and move beyond passive browsing.</p></article><article class="panel feature-card"><p class="card-kicker">Status</p><h3>Awards, badges and leaderboards</h3><p>Recognition is the engine that keeps creators and fans returning.</p></article><article class="panel feature-card"><p class="card-kicker">Commerce</p><h3>Gollvariety marketplace</h3><p>Desired goods, gifting, merch and future seller onboarding in one social commerce layer.</p></article></div></section>
 
     <section class="shell" id="business"><div class="section-heading"><p class="eyebrow">Revenue Engines</p><h2>Vibes become identity. Identity becomes commerce. Commerce funds culture.</h2><p>The static version shows the business logic clearly while keeping hosting free and simple.</p></div><div class="vertical-grid" id="revenueGrid"></div></section>
     <section class="shell" id="verticals"><div class="section-heading"><p class="eyebrow">Experience Zones</p><h2>Every zone should feel like its own world.</h2></div><div class="vertical-grid" id="verticalGrid"></div></section>
